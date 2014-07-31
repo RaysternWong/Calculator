@@ -1,0 +1,19 @@
+---
+:source:
+  :path: test
+  :file: test_Evaluate.c
+:successes:
+- :test: test_tryToPushOperatorAndEvaluate_given_plus_should_push_to_stack
+  :line: 23
+  :message: ''
+- :test: test_tryToPushOperatorAndEvaluate_given_plus_multi_should_push_to_stack
+  :line: 38
+  :message: ''
+:failures: []
+:ignores: []
+:counts:
+  :total: 2
+  :passed: 2
+  :failed: 0
+  :ignored: 0
+:stdout: []

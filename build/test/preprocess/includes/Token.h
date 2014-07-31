@@ -1,0 +1,2 @@
+---
+- StringObject.h

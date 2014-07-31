@@ -1,0 +1,40 @@
+---
+:source:
+  :path: test
+  :file: test_Stack.c
+:successes:
+- :test: test_stackNew_should_setup_the_new_stack
+  :line: 21
+  :message: ''
+- :test: test_stackPush_given_1number_push_to_stack_should_alocate
+  :line: 31
+  :message: ''
+- :test: test_stackPush_given_2number_push_to_stack_should_alocate
+  :line: 44
+  :message: ''
+- :test: test_stackPush_given_4number_push_to_stack_but_length_is_3_should_throw_exception
+  :line: 62
+  :message: ''
+- :test: test_stackPop_given_2_number_should_pop_2_number_and_size_become_zero
+  :line: 87
+  :message: ''
+- :test: test_stackPop_given_2number_but_pop_3_times_should_return_NULL
+  :line: 105
+  :message: ''
+- :test: test_stackPeep_given_1_should_set_1_as_Peep
+  :line: 127
+  :message: ''
+- :test: test_stackPeep_given_1_2_should_set_2_as_Peep
+  :line: 140
+  :message: ''
+- :test: test_stackPeep_given_nothing_should_set_NULL_as_Peep
+  :line: 156
+  :message: ''
+:failures: []
+:ignores: []
+:counts:
+  :total: 9
+  :passed: 9
+  :failed: 0
+  :ignored: 0
+:stdout: []

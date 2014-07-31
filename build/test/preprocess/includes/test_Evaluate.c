@@ -1,0 +1,10 @@
+---
+- Evaluate.h
+- NumberToken.h
+- Operator.h
+- OperatorToken.h
+- Stack.h
+- TokenDebug.h
+- mock_StringObject.h
+- mock_Token.h
+- unity.h

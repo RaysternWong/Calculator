@@ -4,16 +4,29 @@
   :file: test_Evaluate.c
 :successes:
 - :test: test_tryToPushOperatorAndEvaluate_given_plus_should_push_to_stack
-  :line: 23
+  :line: 22
   :message: ''
 - :test: test_tryToPushOperatorAndEvaluate_given_plus_multi_should_push_to_stack
-  :line: 38
+  :line: 34
+  :message: ''
+- :test: test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_token_six
+  :line: 49
+  :message: ''
+- :test: test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_token_four
+  :line: 79
+  :message: ''
+- :test: test_tryToPushOperatorAndEvaluate_given_2_Plus_4_BITWISE_AND_should_answer_the_token_four
+  :line: 110
   :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 2
-  :passed: 2
+  :total: 5
+  :passed: 5
   :failed: 0
   :ignored: 0
-:stdout: []
+:stdout:
+- Number Token = 4
+- Number Token = 2
+- Number Token = 4
+- Number Token = 2

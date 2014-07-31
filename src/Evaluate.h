@@ -6,7 +6,7 @@
 #include "Stack.h"
 
 void ChooseTheOperation(  Operator *opr, Stack *dataStack );
-void tryToPushOperatorAndEvaluate( Stack *operatorStack, Operator *opr, Stack *dataStack );
+void tryToPushOperatorAndEvaluate(  Operator *opr, Stack *operatorStack, Stack *dataStack );
 void ChooseTheAffix(Stack *dataStack , Operator *opr);
 int calculation(Number *num1 , Operator *opr , Number *num2);
 

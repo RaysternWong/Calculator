@@ -60,16 +60,13 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 	if(  (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)  ) 
 	{	
 		stackPush( operatorStack , opr );
-	
 	}
+	
 	else if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
 	{ 
-	
 		Operator *oprNew = stackPop( operatorStack);
-		ChooseTheOperation(  oprNew , dataStack );
-       
+		ChooseTheOperation(  oprNew , dataStack );    
 	}
-
 }
 
 int evaluate(String *expression){
@@ -89,7 +86,7 @@ int evaluate(String *expression){
 					if ( token->type == NUMBER_TOKEN)
 					{
 						Number *num = (Number*)token;	
-						stackPush( dataStack   , &num );
+						stackPush( dataStack   , num );
 					}
 	
 					else if ( token->type == OPERATOR_TOKEN)
@@ -104,7 +101,7 @@ int evaluate(String *expression){
 
 	Number *ans = (Number *)stackPop( dataStack );
 	Result = ans->value;
-	
+
 	return Result;
 
 }

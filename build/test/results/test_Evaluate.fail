@@ -21,7 +21,7 @@
 :failures:
 - :test: test_evaluate_given_token_2_plus_3_should_get_5
   :line: 198
-  :message: Expected 5 Was 17
+  :message: Expected 5 Was 3
 :ignores: []
 :counts:
   :total: 6

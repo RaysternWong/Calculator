@@ -374,7 +374,7 @@ void test_evaluate_given_token_2_plus_3_should_get_5(void){
 
     getToken_CMockExpectAndReturn(194, &expression, (Token*)three);
 
-     getToken_CMockExpectAndReturn(195, &expression, ((void *)0));
+    getToken_CMockExpectAndReturn(195, &expression, ((void *)0));
 
 
 

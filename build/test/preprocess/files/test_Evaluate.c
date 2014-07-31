@@ -350,7 +350,7 @@ void xtest_tryToPushOperatorAndEvaluate_given_2_multi_2_plus_2_should_answer_the
 
 
 
-void xtest_evaluate_given_token_2plus_3_should_get_5(void){
+void test_evaluate_given_token_2_plus_3_should_get_5(void){
 
 
 
@@ -368,13 +368,13 @@ void xtest_evaluate_given_token_2plus_3_should_get_5(void){
 
 
 
- getToken_CMockExpectAndReturn(192, &expression, (Token*)&two);
+ getToken_CMockExpectAndReturn(192, &expression, (Token*)two);
 
- getToken_CMockExpectAndReturn(193, &expression, (Token*)&Plus);
+ getToken_CMockExpectAndReturn(193, &expression, (Token*)Plus);
 
-    getToken_CMockExpectAndReturn(194, &expression, (Token*)&three);
+    getToken_CMockExpectAndReturn(194, &expression, (Token*)three);
 
-
+     getToken_CMockExpectAndReturn(195, &expression, ((void *)0));
 
 
 

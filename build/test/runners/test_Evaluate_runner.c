@@ -45,6 +45,7 @@ extern void test_tryToPushOperatorAndEvaluate_given_plus_multi_should_push_to_st
 extern void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_token_six(void);
 extern void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_token_four(void);
 extern void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_BITWISE_AND_should_answer_the_token_four(void);
+extern void test_evaluate_given_token_2_plus_3_should_get_5(void);
 
 
 //=======Mock Management=====
@@ -88,6 +89,7 @@ int main(void)
   RUN_TEST(test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_token_six, 49);
   RUN_TEST(test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_token_four, 79);
   RUN_TEST(test_tryToPushOperatorAndEvaluate_given_2_Plus_4_BITWISE_AND_should_answer_the_token_four, 110);
+  RUN_TEST(test_evaluate_given_token_2_plus_3_should_get_5, 183);
 
   return (UnityEnd());
 }

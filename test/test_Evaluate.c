@@ -180,7 +180,7 @@ void xtest_tryToPushOperatorAndEvaluate_given_2_multi_2_plus_2_should_answer_the
 		
 }
 
-void xtest_evaluate_given_token_2plus_3_should_get_5(void){
+void test_evaluate_given_token_2_plus_3_should_get_5(void){
 
 	int Result;
 	
@@ -189,13 +189,13 @@ void xtest_evaluate_given_token_2plus_3_should_get_5(void){
 	Operator *Plus = operatorNewByName("+"); 
 	String expression = {.string="2+3"};
 
-	getToken_ExpectAndReturn(&expression, (Token*)&two	);  	//2
-	getToken_ExpectAndReturn(&expression, (Token*)&Plus  );		//+
-    getToken_ExpectAndReturn(&expression, (Token*)&three );		//3
-
+	getToken_ExpectAndReturn(&expression, (Token*)two	);  	//2
+	getToken_ExpectAndReturn(&expression, (Token*)Plus  );		//+
+    getToken_ExpectAndReturn(&expression, (Token*)three );		//3
+    getToken_ExpectAndReturn(&expression, NULL );	
 
 	Result = evaluate(&expression);
-	TEST_ASSERT_EQUAL( 5, Result);
+	TEST_ASSERT_EQUAL( 5 , Result);
 
 }
 

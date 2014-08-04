@@ -240,7 +240,7 @@ void test_tryToPushOperatorAndEvaluate_given_2_plus_4_plus_5__Multi_should_answe
 		
 }
 
-void xtest_evaluate_given_token_2_plus_3_should_get_5(void){
+void test_evaluate_given_token_2_plus_3_should_get_5(void){
 
 	int Result;
 	
@@ -259,26 +259,29 @@ void xtest_evaluate_given_token_2_plus_3_should_get_5(void){
 
 }
 
-void xtest_evaluate_given_token_2_plus_3_Mutiple_5_plus_6_should_get_23(void){
+void test_evaluate_given_token_2_plus_3_Mutiple_5_plus_6_should_get_23(void){
 
-	int result;
-    Number two  	={.type = NUMBER_TOKEN, .value = 2};
-	Number three	={.type = NUMBER_TOKEN, .value = 3};
-	Number five  	={.type = NUMBER_TOKEN, .value = 5};
-	Number six		={.type = NUMBER_TOKEN, .value = 6};	
-	Operator Plus	= {.type = OPERATOR_TOKEN, .info =getOperatorByID(ADD_OP) };
-	Operator Multi	= {.type = OPERATOR_TOKEN, .info =getOperatorByID(MUL_OP) };
+	int Result;
+  Number *two   = numberNew(2);
+	Number *three = numberNew(3);
+  Number *five  = numberNew(5);
+  Number *six   = numberNew(6);
+	Operator *Plus1		 = operatorNewByName("+");
+  Operator *Plus2		 = operatorNewByName("+");
+	Operator *Multi		 = operatorNewByName("*");
 	String expression = {.string="2+3*5+6"};
    
-  getToken_ExpectAndReturn(&expression, (Token*)&two	);	//2
-	getToken_ExpectAndReturn(&expression, (Token*)&Plus );	//+
-  getToken_ExpectAndReturn(&expression, (Token*)&three);	//3
-	getToken_ExpectAndReturn(&expression, (Token*)&Multi);	//*	
-	getToken_ExpectAndReturn(&expression, (Token*)&five );	//5
-  getToken_ExpectAndReturn(&expression, (Token*)&Plus );	//+
-	getToken_ExpectAndReturn(&expression, (Token*)&six);	//6
+  getToken_ExpectAndReturn(&expression, (Token*)two	  );	//2
+	getToken_ExpectAndReturn(&expression, (Token*)Plus1 );	//+
+  getToken_ExpectAndReturn(&expression, (Token*)three );	//3
+	getToken_ExpectAndReturn(&expression, (Token*)Multi );	//*	
+	getToken_ExpectAndReturn(&expression, (Token*)five  );	//5
+  getToken_ExpectAndReturn(&expression, (Token*)Plus2 );	//+
+	getToken_ExpectAndReturn(&expression, (Token*)six   );	//6
+  getToken_ExpectAndReturn(&expression, NULL );	
 
-	result = evaluate(&expression);
+	Result = evaluate(&expression);
+  TEST_ASSERT_EQUAL( 23 , Result);
 
 }
 

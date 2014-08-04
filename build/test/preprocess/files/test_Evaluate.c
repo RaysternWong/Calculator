@@ -470,7 +470,7 @@ void test_tryToPushOperatorAndEvaluate_given_2_plus_4_plus_5__Multi_should_answe
 
 
 
-void xtest_evaluate_given_token_2_plus_3_should_get_5(void){
+void test_evaluate_given_token_2_plus_3_should_get_5(void){
 
 
 
@@ -508,45 +508,51 @@ void xtest_evaluate_given_token_2_plus_3_should_get_5(void){
 
 
 
-void xtest_evaluate_given_token_2_plus_3_Mutiple_5_plus_6_should_get_23(void){
+void test_evaluate_given_token_2_plus_3_Mutiple_5_plus_6_should_get_23(void){
 
 
 
- int result;
+ int Result;
 
-    Number two ={.type = NUMBER_TOKEN, .value = 2};
+  Number *two = numberNew(2);
 
- Number three ={.type = NUMBER_TOKEN, .value = 3};
+ Number *three = numberNew(3);
 
- Number five ={.type = NUMBER_TOKEN, .value = 5};
+  Number *five = numberNew(5);
 
- Number six ={.type = NUMBER_TOKEN, .value = 6};
+  Number *six = numberNew(6);
 
- Operator Plus = {.type = OPERATOR_TOKEN, .info =getOperatorByID(ADD_OP) };
+ Operator *Plus1 = operatorNewByName("+");
 
- Operator Multi = {.type = OPERATOR_TOKEN, .info =getOperatorByID(MUL_OP) };
+  Operator *Plus2 = operatorNewByName("+");
+
+ Operator *Multi = operatorNewByName("*");
 
  String expression = {.string="2+3*5+6"};
 
 
 
-  getToken_CMockExpectAndReturn(273, &expression, (Token*)&two);
+  getToken_CMockExpectAndReturn(274, &expression, (Token*)two);
 
- getToken_CMockExpectAndReturn(274, &expression, (Token*)&Plus);
+ getToken_CMockExpectAndReturn(275, &expression, (Token*)Plus1);
 
-  getToken_CMockExpectAndReturn(275, &expression, (Token*)&three);
+  getToken_CMockExpectAndReturn(276, &expression, (Token*)three);
 
- getToken_CMockExpectAndReturn(276, &expression, (Token*)&Multi);
+ getToken_CMockExpectAndReturn(277, &expression, (Token*)Multi);
 
- getToken_CMockExpectAndReturn(277, &expression, (Token*)&five);
+ getToken_CMockExpectAndReturn(278, &expression, (Token*)five);
 
-  getToken_CMockExpectAndReturn(278, &expression, (Token*)&Plus);
+  getToken_CMockExpectAndReturn(279, &expression, (Token*)Plus2);
 
- getToken_CMockExpectAndReturn(279, &expression, (Token*)&six);
+ getToken_CMockExpectAndReturn(280, &expression, (Token*)six);
+
+  getToken_CMockExpectAndReturn(281, &expression, ((void *)0));
 
 
 
- result = evaluate(&expression);
+ Result = evaluate(&expression);
+
+  UnityAssertEqualNumber((_U_SINT)((23)), (_U_SINT)((Result)), (((void *)0)), (_U_UINT)284, UNITY_DISPLAY_STYLE_INT);
 
 
 

@@ -16,8 +16,6 @@
 
 void ChooseTheOperation(  Operator *opr, Stack *dataStack ){
 
- 
-
 	switch(opr->info->id)
 	{	
 		case  ADD_OP:
@@ -56,17 +54,13 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 		
 	Operator *ptrOpr;   // pointer to operator	
 
-	// printf("opr1: ");
-  // tokenDump((Token *)opr);
+
 	ptrOpr = (Operator *)stackPeep(operatorStack);
-	// printf("ptrOpr: ");
-  // tokenDump((Token *)ptrOpr); 
-    
+
 	if( (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)  ) 
 	{	
 		stackPush( operatorStack , opr );
-    // printf("opr2: ");
-    // tokenDump((Token *)opr); 
+  
 	}	else { 
 
 			while( ptrOpr != NULL)
@@ -74,9 +68,7 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 		
 				if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
 					{ 
-						Operator *oprNew = stackPop( operatorStack);
-            // printf("oprNew: ");
-            // tokenDump((Token *)oprNew);             
+						Operator *oprNew = stackPop( operatorStack);        
 						ChooseTheOperation(  oprNew , dataStack );    
 					}
 					
@@ -84,7 +76,6 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 			}		
       stackPush( operatorStack , opr ); //while the operator stack is empty then push into the last operator
 
- 
 	}
  
 }
@@ -102,26 +93,22 @@ int evaluate(String *expression){
 	
 				if ( token!=NULL)    
 				{
-	
-					//token dump function
-					if ( token->type == NUMBER_TOKEN)
-					{
-						Number *num = (Number*)token;	
-						stackPush( dataStack   , num );
-					}
-	
-					else if ( token->type == OPERATOR_TOKEN)
-					{
-						Operator *opr = (Operator*)token;
-						tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
-					}
-					
-					
-					//token dump function
-			
+            if ( token->type == NUMBER_TOKEN)
+            {
+              Number *num = (Number*)token;	
+              stackPush( dataStack   , num );
+            }  
+            else if ( token->type == OPERATOR_TOKEN)
+            {
+              Operator *opr = (Operator*)token;
+              tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
+            }		
 				}
 			} while (token != NULL);
 	
+    Operator *oprNew = stackPop( operatorStack);        
+    ChooseTheOperation(  oprNew , dataStack );
+  
 	Number *ans = (Number *)stackPop( dataStack );
 	Result = ans->value;
 

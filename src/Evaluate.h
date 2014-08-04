@@ -5,9 +5,11 @@
 #include "NumberToken.h"
 #include "Stack.h"
 
-void ChooseTheOperation(  Operator *opr, Stack *dataStack );
+
+void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack);
 void tryToPushOperatorAndEvaluate(  Operator *opr, Stack *operatorStack, Stack *dataStack );
-void ChooseTheAffix(Stack *dataStack , Operator *opr);
-int calculation(Number *num1 , Operator *opr , Number *num2);
+void doOperatorStackRewinding ( Stack *dataStack , Stack *operatorStack );
+int evaluate(String *expression);
+
 
 #endif // ShuntingYard_H

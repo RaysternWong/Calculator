@@ -92,10 +92,3 @@ int evaluate(String *expression){
 }
 
 
-
-	// else if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
-	// { 
-		// Operator *oprNew = stackPop( operatorStack);
-		// ChooseTheOperation(  oprNew , dataStack );    
-	// }
-

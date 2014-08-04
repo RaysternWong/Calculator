@@ -230,3 +230,55 @@ void executeEqual(Stack *dataStack)
 	getInfixValues(&valueA, &valueB, dataStack);
 	pushNewNumber(valueA == valueB, dataStack);
 }
+
+void executeNot(Stack *dataStack)
+{
+	Number *num;
+	Number *answer;
+	int result;
+	
+	num = (Number *)stackPop(dataStack);
+	tokenDump((Token *)num);
+	
+	if((Token *)num == NULL)
+		Throw(ERR_INCOMPLETE_NUMBER);
+	
+	if(num->type != NUMBER_TOKEN)
+		Throw(ERR_NOT_NUMBER_TOKEN);
+	
+	result = ~(num->value);
+	numberDel(num);
+	answer = numberNew(result);
+	stackPush(dataStack, answer);
+}
+
+void executePrefixSub(Stack *dataStack)
+{
+	Number *num;
+	
+	num = (Number *)stackPeep(dataStack);
+	tokenDump((Token *)num);
+	
+	if((Token *)num == NULL)
+		Throw(ERR_INCOMPLETE_NUMBER);
+	
+	if(num->type != NUMBER_TOKEN)
+		Throw(ERR_NOT_NUMBER_TOKEN);
+	
+	num->value = -(num->value);
+}
+
+void executePrefixAdd(Stack *dataStack)
+{
+	Number *num;
+	
+	num = (Number *)stackPeep(dataStack);
+	tokenDump((Token *)num);
+	
+	if((Token *)num == NULL)
+		Throw(ERR_INCOMPLETE_NUMBER);
+	
+	if(num->type != NUMBER_TOKEN)
+		Throw(ERR_NOT_NUMBER_TOKEN);
+	
+}

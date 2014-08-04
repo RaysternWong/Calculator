@@ -22,5 +22,8 @@ void executeShiftRight(Stack *dataStack);
 void executeLesser(Stack *dataStack);
 void executeGreater(Stack *dataStack);
 void executeEqual(Stack *dataStack);
+void executePrefixSub(Stack *dataStack);
+void executePrefixAdd(Stack *dataStack);
+void executeNot(Stack *dataStack);
 
 #endif // Operator_H

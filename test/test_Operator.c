@@ -573,3 +573,45 @@ void test_executeEqual_after_integer_2_and_1_is_processed_it_should_return_0(voi
 	TEST_ASSERT_EQUAL(0, result->value);
 	stackDel(stack);
 } 
+
+void test_executePrefixSub_after_integer_2_pushed_in_it_should_return_value_negative_2(void)
+{
+	Stack *stack = stackNew(10);
+	Number *result;
+	Number *value1 = numberNew(2);
+	
+	stackPush(stack, value1);
+
+	executePrefixSub(stack);
+	result = (Number *)stackPop(stack);
+	TEST_ASSERT_EQUAL(-2, result->value);
+	stackDel(stack);
+}
+
+void test_executePrefixAdd_after_integer_3_is_pushed_in_it_should_return_3(void)
+{
+	Stack *stack = stackNew(10);
+	Number *result;
+	Number *value1 = numberNew(3);
+	
+	stackPush(stack, value1);
+
+	executePrefixAdd(stack);
+	result = (Number *)stackPop(stack);
+	TEST_ASSERT_EQUAL(3, result->value);
+	stackDel(stack);
+}
+// void test_executeNot_after_integer_2_pushed_it_should_return_13(void)
+// {
+	// Stack *stack = stackNew(10);
+	// Number *result;
+	// Number *value1 = numberNew(2);
+	
+	// stackPush(stack, value1);
+	
+	// executeNot(stack);
+	// result = (Number *)stackPop(stack);
+	// printf("value: %d\n", result->value);
+	// TEST_ASSERT_EQUAL(0, result->value);
+	// stackDel(stack);
+// } 

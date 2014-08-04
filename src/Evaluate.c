@@ -39,6 +39,7 @@ void ChooseTheOperation(  Operator *opr, Stack *dataStack ){
 		break;
 		
 		case  OR_OP:
+    printf("or\n");
 		executeOr(dataStack);
 		break;
 		
@@ -80,6 +81,16 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
  
 }
 
+void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
+  if(stackPop( operatorStack) != NULL) {
+    printf("Error: operatorStack is not empty\n");
+    exit(EXIT_FAILURE);
+  }
+  if(stackPop( dataStack) != NULL) {
+    printf("Error: dataStack is not empty\n");
+    exit(EXIT_FAILURE);
+  }
+}
 
 int evaluate(String *expression){
 
@@ -88,30 +99,32 @@ int evaluate(String *expression){
 	Stack *dataStack     = stackNew(STACK_LENGTH);
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 
-		do {
-			token =getToken(expression);
-	
-				if ( token!=NULL)    
-				{
-            if ( token->type == NUMBER_TOKEN)
-            {
-              Number *num = (Number*)token;	
-              stackPush( dataStack   , num );
-            }  
-            else if ( token->type == OPERATOR_TOKEN)
-            {
-              Operator *opr = (Operator*)token;
-              tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
-            }		
-				}
-			} while (token != NULL);
-	
-    Operator *oprNew = stackPop( operatorStack);        
-    ChooseTheOperation(  oprNew , dataStack );
+  do {
+    token =getToken(expression);
+
+    if ( token!=NULL)    
+    {
+        if ( token->type == NUMBER_TOKEN)
+        {
+          Number *num = (Number*)token;	
+          stackPush( dataStack   , num );
+        }  
+        else if ( token->type == OPERATOR_TOKEN)
+        {
+          Operator *opr = (Operator*)token;
+          tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
+        }		
+    }
+  } while (token != NULL);
+
+  Operator *oprNew = stackPop( operatorStack);        
+  ChooseTheOperation(  oprNew , dataStack );
   
 	Number *ans = (Number *)stackPop( dataStack );
 	Result = ans->value;
 
+  verifyAllStacksAreEmpty(dataStack, operatorStack);
+  
 	return Result;
 
 }

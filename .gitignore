@@ -1,2 +1,2 @@
-build/.
-!build/ README.txt
+build/*
+!build/README.txt

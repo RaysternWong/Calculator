@@ -19,9 +19,9 @@ void setUp(void){}
 void tearDown(void){}
 
 
-void test_tryToPushOperatorAndEvaluate_given_plus_should_push_to_stack(void){
-   
-	Stack *operatorStack = stackNew(STACK_LENGTH);
+void test_tryToPushOperatorAndEvaluate_given_plus_should_push_to_stack(void)
+{
+   Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack	 = stackNew(STACK_LENGTH) ;
 	Operator *Plus		 = operatorNewByName("+");
 	Operator *ptrOpr;
@@ -31,8 +31,8 @@ void test_tryToPushOperatorAndEvaluate_given_plus_should_push_to_stack(void){
 	TEST_ASSERT_NULL ( (Number *)stackPop( dataStack ) );
 }
 
-void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_token_six(void){
-
+void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_token_six(void)
+{
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack 	 = stackNew(STACK_LENGTH);
 	Operator *Plus1		 = operatorNewByName("+");
@@ -43,27 +43,26 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_tok
 	Number *num;
 	
 	//2+4+ same predecedence 
-	stackPush( dataStack , two );
-	stackPush( dataStack , four );
-	stackPush( operatorStack , Plus1 );
-	tryToPushOperatorAndEvaluate( Plus2 , operatorStack, dataStack ); 
+	stackPush(dataStack , two);
+	stackPush(dataStack , four);
+	stackPush(operatorStack , Plus1);
+	tryToPushOperatorAndEvaluate(Plus2 , operatorStack, dataStack); 
 		
-	num = (Number *)stackPop( dataStack );
-	TEST_ASSERT_NOT_NULL ( num );
-	TEST_ASSERT_EQUAL (	NUMBER_TOKEN, num->type);
-	TEST_ASSERT_EQUAL ( 6 , num->value );
-  TEST_ASSERT_NULL ( (Number *)stackPop( dataStack ) );
+	num = (Number *)stackPop(dataStack);
+	TEST_ASSERT_NOT_NULL(num);
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN, num->type);
+	TEST_ASSERT_EQUAL( 6 , num->value);
+	TEST_ASSERT_NULL((Number *)stackPop(dataStack));
 	
-	op = (Operator *)stackPop( operatorStack );
-	TEST_ASSERT_NOT_NULL ( op );
-	TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	TEST_ASSERT_EQUAL ( ADD_OP , op->info->id );
-	TEST_ASSERT_NULL ( (Operator *)stackPop( operatorStack ) );		
+	op = (Operator *)stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL (op);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL(ADD_OP , op->info->id);
+	TEST_ASSERT_NULL((Operator *)stackPop(operatorStack));		
 }
 
-void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_token_four(void){
-
-
+void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_token_four(void)
+{
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack 	 = stackNew(STACK_LENGTH);
 	Operator *Plus		 = operatorNewByName("+");
@@ -74,42 +73,41 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_to
 	Number *num;
 
 	//2+4* higher precedence
-	stackPush( dataStack , two );
-	stackPush( dataStack , four );
-	stackPush( operatorStack , Plus );
-	tryToPushOperatorAndEvaluate( Multi , operatorStack, dataStack ); 
+	stackPush(dataStack, two);
+	stackPush(dataStack, four);
+	stackPush(operatorStack, Plus);
+	tryToPushOperatorAndEvaluate(Multi, operatorStack, dataStack); 
 		
-	num = (Number *)stackPop( dataStack );
-	TEST_ASSERT_NOT_NULL ( num );
-	TEST_ASSERT_EQUAL (	NUMBER_TOKEN, num->type);
-	TEST_ASSERT_EQUAL ( 4 , num->value );
+	num = (Number *)stackPop(dataStack);
+	TEST_ASSERT_NOT_NULL (num);
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN, num->type);
+	TEST_ASSERT_EQUAL(4, num->value);
 
-  num = (Number *)stackPop( dataStack );
-	TEST_ASSERT_NOT_NULL ( num );
-	TEST_ASSERT_EQUAL (	NUMBER_TOKEN, num->type);
-	TEST_ASSERT_EQUAL ( 2 , num->value );
-  num = (Number *)stackPop( dataStack );
-	TEST_ASSERT_NULL ( num );
+	num = (Number *)stackPop(dataStack);
+	TEST_ASSERT_NOT_NULL(num);
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN, num->type);
+	TEST_ASSERT_EQUAL(2, num->value);
+	num = (Number *)stackPop(dataStack);
+	TEST_ASSERT_NULL(num);
   
-	op = (Operator *)stackPop( operatorStack );
-	TEST_ASSERT_NOT_NULL ( op );
-	TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	TEST_ASSERT_EQUAL ( MUL_OP , op->info->id );
+	op = (Operator *)stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(op);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL(MUL_OP , op->info->id);
   
-	op = (Operator *)stackPop( operatorStack );
-	TEST_ASSERT_NOT_NULL ( op );
-	TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	TEST_ASSERT_EQUAL ( ADD_OP , op->info->id );  
+	op = (Operator *)stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(op);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL(ADD_OP , op->info->id);  
   
-	op = (Operator *)stackPop( operatorStack );
-	TEST_ASSERT_NULL ( op );
+	op = (Operator *)stackPop(operatorStack);
+	TEST_ASSERT_NULL(op);
 }
 
 
 
-void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_5_Plus_should_answer_the_token_twenty_two(void){
-
-
+void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_5_Plus_should_answer_the_token_twenty_two(void)
+{
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack 	 = stackNew(STACK_LENGTH);
 	Operator *Plus1		 = operatorNewByName("+");
@@ -122,34 +120,33 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_5_Plus_should_answer
 	Number *num;
 
 	//2+4*5+ same precedence
-	stackPush( dataStack , two );
-	stackPush( dataStack , four );
-	stackPush( dataStack , five );
-	stackPush( operatorStack , Plus1 );
-	stackPush( operatorStack , Multi );
+	stackPush(dataStack , two);
+	stackPush(dataStack , four);
+	stackPush(dataStack , five);
+	stackPush(operatorStack, Plus1);
+	stackPush(operatorStack, Multi);
   
-	tryToPushOperatorAndEvaluate(Plus2 , operatorStack, dataStack ); 
+	tryToPushOperatorAndEvaluate(Plus2, operatorStack, dataStack); 
 	
-	num = (Number *)stackPop( dataStack );
-	TEST_ASSERT_NOT_NULL ( num );
-	TEST_ASSERT_EQUAL (	NUMBER_TOKEN, num->type);
-	TEST_ASSERT_EQUAL ( 22 , num->value );
-	TEST_ASSERT_NULL ( (Number *)stackPop( dataStack ) );
+	num = (Number *)stackPop(dataStack);
+	TEST_ASSERT_NOT_NULL( num );
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN, num->type);
+	TEST_ASSERT_EQUAL(22 , num->value);
+	TEST_ASSERT_NULL((Number *)stackPop(dataStack));
 	
-	op = (Operator *)stackPop( operatorStack );
-	TEST_ASSERT_NOT_NULL ( op );
-  TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	TEST_ASSERT_EQUAL ( ADD_OP , op->info->id );
-  TEST_ASSERT_NULL ( (Operator *)stackPop( operatorStack ) );		
+	op = (Operator *)stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(op);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL(ADD_OP , op->info->id);
+	TEST_ASSERT_NULL((Operator *)stackPop(operatorStack));		
 }
 
-void test_tryToPushOperatorAndEvaluate_given_2_Plus_13_Multi_7_AND_should_answer_the_token_ninety_three(void){
-
-
+void test_tryToPushOperatorAndEvaluate_given_2_Plus_13_Multi_7_AND_should_answer_the_token_ninety_three(void)
+{
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack 	 = stackNew(STACK_LENGTH);
 	Operator *Plus		 = operatorNewByName("+");
-	Operator *BIT_AND   	 = operatorNewByName("&");
+	Operator *BIT_AND    = operatorNewByName("&");
 	Operator *Multi		 = operatorNewByName("*");
 	Operator *op;
 	Number *two       = numberNew(2);
@@ -158,29 +155,29 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_13_Multi_7_AND_should_answer
 	Number *num;
 
 	//2+13*7& same precedence
-	stackPush( dataStack , two );
-	stackPush( dataStack , thirteen );
-	stackPush( dataStack , seven );
-  stackPush( operatorStack , Plus );
-	stackPush( operatorStack , Multi );
+	stackPush(dataStack, two);
+	stackPush(dataStack, thirteen);
+	stackPush(dataStack, seven);
+	stackPush(operatorStack, Plus);
+	stackPush(operatorStack, Multi);
 	
-	tryToPushOperatorAndEvaluate( BIT_AND , operatorStack, dataStack ); 
+	tryToPushOperatorAndEvaluate(BIT_AND, operatorStack, dataStack); 
 	
-	num = (Number *)stackPop( dataStack );
-	TEST_ASSERT_NOT_NULL ( num );
-	TEST_ASSERT_EQUAL (	NUMBER_TOKEN, num->type);
-	TEST_ASSERT_EQUAL ( 2+(13*7) , num->value );
-	TEST_ASSERT_NULL ( (Number *)stackPop( dataStack ) );
+	num = (Number *)stackPop(dataStack);
+	TEST_ASSERT_NOT_NULL(num);
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN, num->type);
+	TEST_ASSERT_EQUAL(2+(13*7) , num->value);
+	TEST_ASSERT_NULL((Number *)stackPop(dataStack));
 	
-	op = (Operator *)stackPop( operatorStack );
-	TEST_ASSERT_NOT_NULL ( op );
-  TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	TEST_ASSERT_EQUAL ( BITWISE_AND_OP , op->info->id );
-  TEST_ASSERT_NULL ( (Operator *)stackPop( operatorStack ) );		
+	op = (Operator *)stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(op);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL(BITWISE_AND_OP, op->info->id);
+	TEST_ASSERT_NULL((Operator *)stackPop(operatorStack));		
 }
 
-void test_evaluate_given_token_2_plus_3_should_get_5(void){
-
+void test_evaluate_given_token_2_plus_3_should_get_5(void)
+{
 	int Result;
 	
 	Number *two = numberNew(2);
@@ -188,69 +185,89 @@ void test_evaluate_given_token_2_plus_3_should_get_5(void){
 	Operator *Plus = operatorNewByName("+"); 
 	String expression = {.string="2+3"};
 
-	getToken_ExpectAndReturn(&expression, (Token*)two	);  	//2
-	getToken_ExpectAndReturn(&expression, (Token*)Plus  );		//+
-  getToken_ExpectAndReturn(&expression, (Token*)three );		//3
-  getToken_ExpectAndReturn(&expression, NULL );	
+	getToken_ExpectAndReturn(&expression, (Token*)two);  	//2
+	getToken_ExpectAndReturn(&expression, (Token*)Plus);		//+
+	getToken_ExpectAndReturn(&expression, (Token*)three);		//3
+	getToken_ExpectAndReturn(&expression, NULL);	
 
 	Result = evaluate(&expression);
-	TEST_ASSERT_EQUAL( 5 , Result);
+	TEST_ASSERT_EQUAL(5, Result);
 }
 
-void test_evaluate_given_token_2_plus_3_Mutiple_5_plus_6_get_the_correct_result(void){
-
+void test_evaluate_given_token_2_plus_3_Mutiple_5_plus_6_get_the_correct_result(void)
+{
 	int Result;
-  Number *two   = numberNew(2);
+	Number *two   = numberNew(2);
 	Number *three = numberNew(3);
-  Number *five  = numberNew(5);
-  Number *six   = numberNew(6);
-	Operator *Plus1		 = operatorNewByName("+");
-  Operator *Plus2		 = operatorNewByName("+");
-	Operator *Multi		 = operatorNewByName("*");
+	Number *five  = numberNew(5);
+	Number *six   = numberNew(6);
+	Operator *Plus1 = operatorNewByName("+");
+	Operator *Plus2 = operatorNewByName("+");
+	Operator *Multi	= operatorNewByName("*");
 	String expression = {.string="2+3*5+6"};
    
-  getToken_ExpectAndReturn(&expression, (Token*)two	  );	//2
-	getToken_ExpectAndReturn(&expression, (Token*)Plus1 );	//+
-  getToken_ExpectAndReturn(&expression, (Token*)three );	//3
-	getToken_ExpectAndReturn(&expression, (Token*)Multi );	//*	
-	getToken_ExpectAndReturn(&expression, (Token*)five  );	//5
-  getToken_ExpectAndReturn(&expression, (Token*)Plus2 );	//+
-	getToken_ExpectAndReturn(&expression, (Token*)six   );	//6
-  getToken_ExpectAndReturn(&expression, NULL );	
+	getToken_ExpectAndReturn(&expression, (Token*)two);	//2
+	getToken_ExpectAndReturn(&expression, (Token*)Plus1);	//+
+	getToken_ExpectAndReturn(&expression, (Token*)three);	//3
+	getToken_ExpectAndReturn(&expression, (Token*)Multi);	//*	
+	getToken_ExpectAndReturn(&expression, (Token*)five);	//5
+	getToken_ExpectAndReturn(&expression, (Token*)Plus2);	//+
+	getToken_ExpectAndReturn(&expression, (Token*)six);	//6
+	getToken_ExpectAndReturn(&expression, NULL);	
 
 	Result = evaluate(&expression);
-  TEST_ASSERT_EQUAL( 2+3*5+6 , Result);
-
+	TEST_ASSERT_EQUAL( 2+3*5+6 , Result);
 }
 
 void test_evaluate_given_token_2_plus_3_Mutiple_5_or_26_should_get_the_correct_result(void){
 
 	int Result;
-  Number *two   = numberNew(2);
+	Number *two = numberNew(2);
 	Number *three = numberNew(3);
-  Number *five  = numberNew(5);
-  Number *twentySix   = numberNew(26);
-	Operator *plus		 = operatorNewByName("+");
-  Operator *or  		 = operatorNewByName("|");
-	Operator *multi		 = operatorNewByName("*");
+	Number *five = numberNew(5);
+	Number *twentySix = numberNew(26);
+	Operator *plus = operatorNewByName("+");
+	Operator *or = operatorNewByName("|");
+	Operator *multi = operatorNewByName("*");
 	String expression = {.string="2+3*5|26"};
   
-  tokenDump( (Token*) or);
+	tokenDump((Token*) or);
   
-  printf("Start\n");
-  getToken_ExpectAndReturn(&expression, (Token*)two	  );	//2
-	getToken_ExpectAndReturn(&expression, (Token*)plus );	//+
-  getToken_ExpectAndReturn(&expression, (Token*)three );	//3
-	getToken_ExpectAndReturn(&expression, (Token*)multi );	//*	
-	getToken_ExpectAndReturn(&expression, (Token*)five  );	//5
-  getToken_ExpectAndReturn(&expression, (Token*)or );	//|
-	getToken_ExpectAndReturn(&expression, (Token*)twentySix   );	//26
-  getToken_ExpectAndReturn(&expression, NULL );	
-  printf("end\n");
+	printf("Start\n");
+	getToken_ExpectAndReturn(&expression, (Token*)two);	//2
+	getToken_ExpectAndReturn(&expression, (Token*)plus);	//+
+	getToken_ExpectAndReturn(&expression, (Token*)three);	//3
+	getToken_ExpectAndReturn(&expression, (Token*)multi);	//*	
+	getToken_ExpectAndReturn(&expression, (Token*)five);	//5
+	getToken_ExpectAndReturn(&expression, (Token*)or);	//|
+	getToken_ExpectAndReturn(&expression, (Token*)twentySix);	//26
+	getToken_ExpectAndReturn(&expression, NULL);	
+	printf("end\n");
 
 	Result = evaluate(&expression);
-  TEST_ASSERT_EQUAL( 2+3*5|26 , Result);
-
+	TEST_ASSERT_EQUAL(2+3*5|26 , Result);
 }
 
-// void test_evaluate_
+void test_evaluate_whether_it_can_process_negative_2_plus_3_and_return_1(void)
+{
+	int result;
+	Number *two = numberNew(2);
+	Number *three = numberNew(3);
+	
+	Operator *subPrefix = operatorNewByName("-");
+	Operator *addOp = operatorNewByName("+");
+	String expression = {.string = "-2+3"};
+	
+	getToken_ExpectAndReturn(&expression, (Token *)subPrefix);
+	getToken_ExpectAndReturn(&expression, (Token *)two);
+	getToken_ExpectAndReturn(&expression, (Token *)addOp);
+	getToken_ExpectAndReturn(&expression, (Token *)three);
+	getToken_ExpectAndReturn(&expression, NULL);
+	
+	result = evaluate(&expression);
+	
+	
+}
+	
+	
+	

@@ -601,17 +601,47 @@ void test_executePrefixAdd_after_integer_3_is_pushed_in_it_should_return_3(void)
 	TEST_ASSERT_EQUAL(3, result->value);
 	stackDel(stack);
 }
-// void test_executeNot_after_integer_2_pushed_it_should_return_13(void)
-// {
-	// Stack *stack = stackNew(10);
-	// Number *result;
-	// Number *value1 = numberNew(2);
+
+void test_executeNot_after_integer_1_pushed_it_should_return_13(void)
+{
+	Stack *stack = stackNew(10);
+	int value;
+	Number *result;
+	Number *value1 = numberNew(1);
 	
-	// stackPush(stack, value1);
-	
-	// executeNot(stack);
-	// result = (Number *)stackPop(stack);
-	// printf("value: %d\n", result->value);
+	stackPush(stack, value1);
+
+	executeNot(stack);
+	result = (Number *)stackPop(stack);
+	printf("value: %d\n", result->value);
 	// TEST_ASSERT_EQUAL(0, result->value);
-	// stackDel(stack);
-// } 
+	stackDel(stack);
+} 
+
+void test_executeBitNot_after_integer_1_pushed_it_should_return_0(void)
+{
+	Stack *stack = stackNew(10);
+	Number *result;
+	Number *value1 = numberNew(1);
+	
+	stackPush(stack, value1);
+	
+	executeBitNot(stack);
+	result = (Number *)stackPop(stack);
+	TEST_ASSERT_EQUAL(0, result->value);
+	stackDel(stack);
+} 
+
+void test_executeBitNot_after_integer_0_pushed_it_should_return_1(void)
+{
+	Stack *stack = stackNew(10);
+	Number *result;
+	Number *value1 = numberNew(0);
+	
+	stackPush(stack, value1);
+	
+	executeBitNot(stack);
+	result = (Number *)stackPop(stack);
+	TEST_ASSERT_EQUAL(1, result->value);
+	stackDel(stack);
+} 

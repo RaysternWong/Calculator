@@ -234,10 +234,8 @@ void executeEqual(Stack *dataStack)
 void executeNot(Stack *dataStack)
 {
 	Number *num;
-	Number *answer;
-	int result;
 	
-	num = (Number *)stackPop(dataStack);
+	num = (Number *)stackPeep(dataStack);
 	tokenDump((Token *)num);
 	
 	if((Token *)num == NULL)
@@ -246,10 +244,23 @@ void executeNot(Stack *dataStack)
 	if(num->type != NUMBER_TOKEN)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 	
-	result = ~(num->value);
-	numberDel(num);
-	answer = numberNew(result);
-	stackPush(dataStack, answer);
+	num->value = ~num->value;
+}
+
+void executeBitNot(Stack *dataStack)
+{
+	Number *num;
+	
+	num = (Number *)stackPeep(dataStack);
+	tokenDump((Token *)num);
+	
+	if((Token *)num == NULL)
+		Throw(ERR_INCOMPLETE_NUMBER);
+	
+	if(num->type != NUMBER_TOKEN)
+		Throw(ERR_NOT_NUMBER_TOKEN);
+	
+	num->value = !(num->value);
 }
 
 void executePrefixSub(Stack *dataStack)
@@ -280,5 +291,5 @@ void executePrefixAdd(Stack *dataStack)
 	
 	if(num->type != NUMBER_TOKEN)
 		Throw(ERR_NOT_NUMBER_TOKEN);
-	
 }
+

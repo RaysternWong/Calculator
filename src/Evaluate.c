@@ -13,82 +13,88 @@
 #define STACK_LENGTH 100
 	
 
-void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *dataStack ){
-		
+void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *dataStack )
+{
 	Operator *ptrOpr;   // pointer to operator	
-
-
 	ptrOpr = (Operator *)stackPeep(operatorStack);
 
-	if( (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)  ) 
+	if((ptrOpr == NULL) || (opr->info->precedence > ptrOpr->info->precedence)) 
 	{	
 		stackPush( operatorStack , opr );
-  
-	}	else { 
-
-			while( ptrOpr != NULL)
-			{     
-		
-				if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
-					{ 
-						Operator *oprNew = stackPop( operatorStack);        
-						oprNew->info->execute( dataStack );    
-					}
+	}	
+	else 
+	{ 
+		while( ptrOpr != NULL)
+		{     
+			if (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
+			{ 
+				Operator *oprNew = stackPop( operatorStack);        
+				oprNew->info->execute( dataStack );    
+			}
 					
-				ptrOpr = (Operator *)stackPeep(operatorStack);
-			}		
-      stackPush( operatorStack , opr ); //while the operator stack is empty then push into the last operator
-
+			ptrOpr = (Operator *)stackPeep(operatorStack);
+		}		
+		stackPush( operatorStack , opr ); //while the operator stack is empty then push into the last operator
 	}
- 
 }
 
-void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
-  if(stackPop( operatorStack) != NULL) {
+void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) 
+{
+  if(stackPop( operatorStack) != NULL) 
+  {
     printf("Error: operatorStack is not empty\n");
     exit(EXIT_FAILURE);
   }
-  if(stackPop( dataStack) != NULL) {
+  
+  if(stackPop( dataStack) != NULL)
+  {
     printf("Error: dataStack is not empty\n");
     exit(EXIT_FAILURE);
   }
 }
 
-int evaluate(String *expression){
-
+int evaluate(String *expression)
+{
 	int Result;
 	Token *token;
+	Operator *operator;
 	Stack *dataStack     = stackNew(STACK_LENGTH);
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 
-  do {
-    token =getToken(expression);
+	do 
+	{
+		token =getToken(expression);
 
-    if ( token!=NULL)    
-    {
-        if ( token->type == NUMBER_TOKEN)
-        {
-          Number *num = (Number*)token;	
-          stackPush( dataStack   , num );
-        }  
-        else if ( token->type == OPERATOR_TOKEN)
-        {
-          Operator *opr = (Operator*)token;
-          tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
-        }		
-    }
-  } while (token != NULL);
+		if(token!=NULL)    
+		{
+			if (token->type == NUMBER_TOKEN)
+			{
+				Number *num = (Number*)token;	
+				stackPush( dataStack   , num );
+			}  
+			else if (token->type == OPERATOR_TOKEN)
+			{
+				Operator *opr = (Operator*)token;
+				tryToPushOperatorAndEvaluate(opr, operatorStack, dataStack);
+			}	
+			else if(token->type == OPERATOR_TOKEN && operator->info->id == SUB_OP)
+			{
+				OperatorInfo *info = getOperatorByID(SUB_OP);
+				Operator prefixSub = {.type = OPERATOR_TOKEN, info};
+				Operator *prefix = operatorTryConvertToPrefix(&prefixSub);
+			}
+		}
+	}while (token != NULL);
 
-  Operator *oprNew = stackPop( operatorStack);        
-  oprNew->info->execute( dataStack ); 
+	Operator *oprNew = stackPop( operatorStack);        
+	oprNew->info->execute( dataStack ); 
   
 	Number *ans = (Number *)stackPop( dataStack );
 	Result = ans->value;
 
-  verifyAllStacksAreEmpty(dataStack, operatorStack);
+	verifyAllStacksAreEmpty(dataStack, operatorStack);
   
 	return Result;
-
 }
 
 

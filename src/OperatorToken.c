@@ -8,8 +8,8 @@
  */
 OperatorInfo primaryOperatorTable[] = 
 {
-	{.name = "!", 	.id = NOT_OP,			.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX},
-	{.name = "~", 	.id = BITWISE_NOT_OP,	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX},
+	{.name = "!", 	.id = NOT_OP,			.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executeNot},
+	{.name = "~", 	.id = BITWISE_NOT_OP,	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executeBitNot},
 	{.name = "*", 	.id = MUL_OP, 			.precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeMul},
 	{.name = "%", 	.id = NPERCENT_OP, 		.precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeModulo},
 	{.name = "/", 	.id = DIV_OP, 			.precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeDiv},
@@ -33,8 +33,8 @@ OperatorInfo primaryOperatorTable[] =
  */
 OperatorInfo secondaryOperatorTable[] = 
 {
-	{.name = "+", 	.id = ADD_OP,			.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX},
-	{.name = "-", 	.id = SUB_OP,			.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX},
+	{.name = "+", .id = ADD_OP, .precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixAdd},
+	{.name = "-", .id = SUB_OP,	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixSub},
 	
 };
 

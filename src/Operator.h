@@ -25,5 +25,6 @@ void executeEqual(Stack *dataStack);
 void executePrefixSub(Stack *dataStack);
 void executePrefixAdd(Stack *dataStack);
 void executeNot(Stack *dataStack);
+void executeBitNot(Stack *dataStack);
 
 #endif // Operator_H

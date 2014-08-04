@@ -9,6 +9,7 @@
 #include "CException.h"
 #include "ErrorCode.h"
 
+
 void executeAdd(Stack *dataStack)
 {
 	Number *left;
@@ -17,7 +18,7 @@ void executeAdd(Stack *dataStack)
 	int result = 0;
 	
 	right = (Number *)stackPop(dataStack);
-	tokenDump((Token *)right);
+//	//  //  tokenDump((Token *)right);
 	
 	if((Token *)right == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -26,7 +27,7 @@ void executeAdd(Stack *dataStack)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 		
 	left = (Number *)stackPop(dataStack);
-	tokenDump((Token *)left);
+//	//  //  tokenDump((Token *)left);
 	
 	if((Token *)left == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -51,7 +52,7 @@ void executeSub(Stack *dataStack)
 	int result = 0;
 	
 	right = (Number *)stackPop(dataStack);
-	tokenDump((Token *)right);
+	//  //  tokenDump((Token *)right);
 	
 	if((Token *)right == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -60,7 +61,7 @@ void executeSub(Stack *dataStack)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 		
 	left = (Number *)stackPop(dataStack);
-	tokenDump((Token *)left);
+	//  //  tokenDump((Token *)left);
 	
 	if((Token *)left == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -85,7 +86,7 @@ void executeMul(Stack *dataStack)
 	int result = 0;
 	
 	right = (Number *)stackPop(dataStack);
-	tokenDump((Token *)right);
+	//  //  tokenDump((Token *)right);
 	
 	if((Token *)right == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -94,7 +95,7 @@ void executeMul(Stack *dataStack)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 		
 	left = (Number *)stackPop(dataStack);
-	tokenDump((Token *)left);
+	//  //  tokenDump((Token *)left);
 	
 	if((Token *)left == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -119,7 +120,7 @@ void executeModulo(Stack *dataStack)
 	int result = 0;
 	
 	right = (Number *)stackPop(dataStack);
-	tokenDump((Token *)right);
+	//  //  tokenDump((Token *)right);
 	
 	if((Token *)right == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -128,7 +129,7 @@ void executeModulo(Stack *dataStack)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 		
 	left = (Number *)stackPop(dataStack);
-	tokenDump((Token *)left);
+	//  //  tokenDump((Token *)left);
 	
 	if((Token *)left == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -153,7 +154,7 @@ void executeDiv(Stack *dataStack)
 	int result = 0;
 	
 	right = (Number *)stackPop(dataStack);
-	tokenDump((Token *)right);
+	//  //  tokenDump((Token *)right);
 	
 	if((Token *)right == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -162,7 +163,7 @@ void executeDiv(Stack *dataStack)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 		
 	left = (Number *)stackPop(dataStack);
-	tokenDump((Token *)left);
+	//  //  tokenDump((Token *)left);
 	
 	if((Token *)left == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -187,7 +188,7 @@ void executeOr(Stack *dataStack)
 	int result = 0;
 	
 	right = (Number *)stackPop(dataStack);
-	tokenDump((Token *)right);
+	//  //  tokenDump((Token *)right);
 	
 	if((Token *)right == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -196,7 +197,7 @@ void executeOr(Stack *dataStack)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 		
 	left = (Number *)stackPop(dataStack);
-	tokenDump((Token *)left);
+	//  //  tokenDump((Token *)left);
 	
 	if((Token *)left == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);

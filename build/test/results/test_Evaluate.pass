@@ -13,20 +13,25 @@
   :line: 49
   :message: ''
 - :test: test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_token_four
-  :line: 79
+  :line: 78
   :message: ''
 - :test: test_tryToPushOperatorAndEvaluate_given_2_Plus_4_BITWISE_AND_should_answer_the_token_four
-  :line: 110
+  :line: 108
+  :message: ''
+- :test: test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_5_Plus_should_answer_the_token_twenty_two
+  :line: 139
+  :message: ''
+- :test: test_tryToPushOperatorAndEvaluate_given_2_Multi_13_Plus_7_AND_should_answer_the_token_ninety_three
+  :line: 174
+  :message: ''
+- :test: test_tryToPushOperatorAndEvaluate_given_2_plus_4_plus_5__Multi_should_answer_the_token_five
+  :line: 209
   :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 5
-  :passed: 5
+  :total: 8
+  :passed: 8
   :failed: 0
   :ignored: 0
-:stdout:
-- Number Token = 4
-- Number Token = 2
-- Number Token = 4
-- Number Token = 2
+:stdout: []

@@ -55,19 +55,40 @@ void ChooseTheOperation(  Operator *opr, Stack *dataStack ){
 void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *dataStack ){
 		
 	Operator *ptrOpr;   // pointer to operator	
-	
+
+	// printf("opr1: ");
+  // tokenDump((Token *)opr);
 	ptrOpr = (Operator *)stackPeep(operatorStack);
-	if(  (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)  ) 
+	// printf("ptrOpr: ");
+  // tokenDump((Token *)ptrOpr); 
+    
+	if( (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)  ) 
 	{	
 		stackPush( operatorStack , opr );
+    // printf("opr2: ");
+    // tokenDump((Token *)opr); 
+	}	else { 
+
+			while( ptrOpr != NULL)
+			{     
+		
+				if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
+					{ 
+						Operator *oprNew = stackPop( operatorStack);
+            // printf("oprNew: ");
+            // tokenDump((Token *)oprNew);             
+						ChooseTheOperation(  oprNew , dataStack );    
+					}
+					
+				ptrOpr = (Operator *)stackPeep(operatorStack);
+			}		
+      stackPush( operatorStack , opr ); //while the operator stack is empty then push into the last operator
+
+ 
 	}
-	
-	else if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
-	{ 
-		Operator *oprNew = stackPop( operatorStack);
-		ChooseTheOperation(  oprNew , dataStack );    
-	}
+ 
 }
+
 
 int evaluate(String *expression){
 
@@ -94,11 +115,13 @@ int evaluate(String *expression){
 						Operator *opr = (Operator*)token;
 						tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
 					}
+					
+					
 					//token dump function
 			
 				}
-			} while (token !=NULL);
-
+			} while (token != NULL);
+	
 	Number *ans = (Number *)stackPop( dataStack );
 	Result = ans->value;
 
@@ -108,5 +131,9 @@ int evaluate(String *expression){
 
 
 
-
+	// else if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
+	// { 
+		// Operator *oprNew = stackPop( operatorStack);
+		// ChooseTheOperation(  oprNew , dataStack );    
+	// }
 

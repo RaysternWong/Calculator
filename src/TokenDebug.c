@@ -19,7 +19,8 @@ void tokenDump(Token *token)
 	}
 	else if(((Operator *)token)->type == OPERATOR_TOKEN)
 	{
-		printf("Operator Token = %s\n", (((Operator *)token)->info)->name);
+		printf("Operator Token = %s, precedence = %d\n", (((Operator *)token)->info)->name,
+                                            (((Operator *)token)->info)->precedence);
 	}
 
 }

@@ -86,8 +86,6 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_tok
 
 
 
-
-
  Stack *operatorStack = stackNew(100);
 
  Stack *dataStack = stackNew(100);
@@ -120,21 +118,21 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_tok
 
  num = (Number *)stackPop( dataStack );
 
- if ((((num)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)68);;};
+ if ((((num)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)67);;};
 
- UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((num->type)), (((void *)0)), (_U_UINT)69, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((num->type)), (((void *)0)), (_U_UINT)68, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((num->value)), (((void *)0)), (_U_UINT)70, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((num->value)), (((void *)0)), (_U_UINT)69, UNITY_DISPLAY_STYLE_INT);
 
 
 
  op = (Operator *)stackPop( operatorStack );
 
- if ((((op)) == ((void *)0))) {} else {UnityFail( (" Expected NULL"), (_U_UINT)(_U_UINT)(_U_UINT)73);;};
+ if ((((op)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)72);;};
 
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((op->type)), (((void *)0)), (_U_UINT)73, UNITY_DISPLAY_STYLE_INT);
 
-
-
+ UnityAssertEqualNumber((_U_SINT)((ADD_OP)), (_U_SINT)((op->info->id)), (((void *)0)), (_U_UINT)74, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -174,7 +172,7 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_to
 
  stackPush( operatorStack , Plus );
 
- tryToPushOperatorAndEvaluate(Multi , operatorStack, dataStack );
+ tryToPushOperatorAndEvaluate( Multi , operatorStack, dataStack );
 
 
 
@@ -182,25 +180,23 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_to
 
  num = (Number *)stackPop( dataStack );
 
- if ((((num)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)99);;};
+ if ((((num)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)98);;};
 
- UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((num->type)), (((void *)0)), (_U_UINT)100, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((num->type)), (((void *)0)), (_U_UINT)99, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((num->value)), (((void *)0)), (_U_UINT)101, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((num->value)), (((void *)0)), (_U_UINT)100, UNITY_DISPLAY_STYLE_INT);
 
 
 
  op = (Operator *)stackPop( operatorStack );
 
- if ((((op)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)104);;};
+ if ((((op)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)103);;};
 
- UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((op->type)), (((void *)0)), (_U_UINT)105, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((op->type)), (((void *)0)), (_U_UINT)104, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((MUL_OP)), (_U_SINT)((op->info->id)), (((void *)0)), (_U_UINT)106, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((MUL_OP)), (_U_SINT)((op->info->id)), (((void *)0)), (_U_UINT)105, UNITY_DISPLAY_STYLE_INT);
 
 }
-
-
 
 
 
@@ -244,17 +240,21 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_BITWISE_AND_should_answer_
 
  num = (Number *)stackPop( dataStack );
 
- if ((((num)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)130);;};
+ if ((((num)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)128);;};
 
- UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((num->type)), (((void *)0)), (_U_UINT)131, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((num->type)), (((void *)0)), (_U_UINT)129, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((num->value)), (((void *)0)), (_U_UINT)132, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((num->value)), (((void *)0)), (_U_UINT)130, UNITY_DISPLAY_STYLE_INT);
 
 
 
  op = (Operator *)stackPop( operatorStack );
 
- if ((((op)) == ((void *)0))) {} else {UnityFail( (" Expected NULL"), (_U_UINT)(_U_UINT)(_U_UINT)135);;};
+  if ((((op)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)133);;};
+
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((op->type)), (((void *)0)), (_U_UINT)134, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((BITWISE_AND_OP)), (_U_SINT)((op->info->id)), (((void *)0)), (_U_UINT)135, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -262,7 +262,7 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_BITWISE_AND_should_answer_
 
 
 
-void xtest_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_3_should_answer_the_token_fourteen(void){
+void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_5_Plus_should_answer_the_token_twenty_two(void){
 
 
 
@@ -272,15 +272,21 @@ void xtest_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_3_should_answer_the
 
  Stack *dataStack = stackNew(100);
 
- Operator *Plus = operatorNewByName("+");
+ Operator *Plus1 = operatorNewByName("+");
+
+ Operator *Plus2 = operatorNewByName("+");
 
  Operator *Multi = operatorNewByName("*");
+
+ Operator *op;
 
  Number *two = numberNew(2);
 
  Number *four = numberNew(4);
 
- Number *three = numberNew(3);
+ Number *five = numberNew(5);
+
+ Number *num;
 
 
 
@@ -290,15 +296,35 @@ void xtest_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_3_should_answer_the
 
  stackPush( dataStack , four );
 
- stackPush( operatorStack , Plus );
+ stackPush( dataStack , five );
 
- tryToPushOperatorAndEvaluate( Multi , operatorStack, dataStack );
+ stackPush( operatorStack , Plus1 );
+
+ stackPush( operatorStack , Multi );
 
 
 
- Number *ans = (Number *)stackPop( dataStack );
+ tryToPushOperatorAndEvaluate(Plus2 , operatorStack, dataStack );
 
- UnityAssertEqualNumber((_U_SINT)((14)), (_U_SINT)((ans->value)), (((void *)0)), (_U_UINT)157, UNITY_DISPLAY_STYLE_INT);
+
+
+ num = (Number *)stackPop( dataStack );
+
+ if ((((num)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)163);;};
+
+ UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((num->type)), (((void *)0)), (_U_UINT)164, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((22)), (_U_SINT)((num->value)), (((void *)0)), (_U_UINT)165, UNITY_DISPLAY_STYLE_INT);
+
+
+
+ op = (Operator *)stackPop( operatorStack );
+
+ if ((((op)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)168);;};
+
+  UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((op->type)), (((void *)0)), (_U_UINT)169, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((ADD_OP)), (_U_SINT)((op->info->id)), (((void *)0)), (_U_UINT)170, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -306,9 +332,7 @@ void xtest_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_3_should_answer_the
 
 
 
-
-
-void xtest_tryToPushOperatorAndEvaluate_given_2_multi_2_plus_2_should_answer_the_token_six(void){
+void test_tryToPushOperatorAndEvaluate_given_2_Multi_13_Plus_7_AND_should_answer_the_token_ninety_three(void){
 
 
 
@@ -320,29 +344,57 @@ void xtest_tryToPushOperatorAndEvaluate_given_2_multi_2_plus_2_should_answer_the
 
  Operator *Plus = operatorNewByName("+");
 
+ Operator *BIT_AND = operatorNewByName("&");
+
  Operator *Multi = operatorNewByName("*");
+
+ Operator *op;
 
  Number *two = numberNew(2);
 
+ Number *thirteen = numberNew(13);
+
+ Number *seven = numberNew(7);
+
+ Number *num;
+
+
+
 
 
  stackPush( dataStack , two );
 
- stackPush( dataStack , two );
+ stackPush( dataStack , thirteen );
 
- tryToPushOperatorAndEvaluate( Multi , operatorStack , dataStack );
+ stackPush( dataStack , seven );
 
- tryToPushOperatorAndEvaluate( Plus , operatorStack , dataStack );
+  stackPush( operatorStack , Plus );
 
- stackPush( dataStack , two );
-
-
+ stackPush( operatorStack , Multi );
 
 
 
- Number *ans = (Number *)stackPop( dataStack );
+ tryToPushOperatorAndEvaluate( BIT_AND , operatorStack, dataStack );
 
- UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((ans->value)), (((void *)0)), (_U_UINT)179, UNITY_DISPLAY_STYLE_INT);
+
+
+ num = (Number *)stackPop( dataStack );
+
+ if ((((num)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)198);;};
+
+ UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((num->type)), (((void *)0)), (_U_UINT)199, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((93)), (_U_SINT)((num->value)), (((void *)0)), (_U_UINT)200, UNITY_DISPLAY_STYLE_INT);
+
+
+
+ op = (Operator *)stackPop( operatorStack );
+
+ if ((((op)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)203);;};
+
+  UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((op->type)), (((void *)0)), (_U_UINT)204, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((BITWISE_AND_OP)), (_U_SINT)((op->info->id)), (((void *)0)), (_U_UINT)205, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -350,7 +402,75 @@ void xtest_tryToPushOperatorAndEvaluate_given_2_multi_2_plus_2_should_answer_the
 
 
 
-void test_evaluate_given_token_2_plus_3_should_get_5(void){
+void test_tryToPushOperatorAndEvaluate_given_2_plus_4_plus_5__Multi_should_answer_the_token_five(void){
+
+
+
+
+
+ Stack *operatorStack = stackNew(100);
+
+ Stack *dataStack = stackNew(100);
+
+ Operator *Plus1 = operatorNewByName("+");
+
+ Operator *Plus2 = operatorNewByName("+");
+
+ Operator *Multi = operatorNewByName("*");
+
+ Operator *op;
+
+ Number *two = numberNew(2);
+
+ Number *four = numberNew(4);
+
+ Number *five = numberNew(5);
+
+ Number *num;
+
+
+
+
+
+ stackPush( dataStack , two );
+
+ stackPush( dataStack , four );
+
+  stackPush( dataStack , five );
+
+  stackPush( operatorStack , Plus1 );
+
+ stackPush( operatorStack , Plus2 );
+
+ tryToPushOperatorAndEvaluate( Multi , operatorStack , dataStack );
+
+
+
+  num = (Number *)stackPop( dataStack );
+
+ if ((((num)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)232);;};
+
+ UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((num->type)), (((void *)0)), (_U_UINT)233, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((num->value)), (((void *)0)), (_U_UINT)234, UNITY_DISPLAY_STYLE_INT);
+
+
+
+ op = (Operator *)stackPop( operatorStack );
+
+ if ((((op)) != ((void *)0))) {} else {UnityFail( (" Expected Non-NULL"), (_U_UINT)(_U_UINT)(_U_UINT)237);;};
+
+  UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((op->type)), (((void *)0)), (_U_UINT)238, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((MUL_OP)), (_U_SINT)((op->info->id)), (((void *)0)), (_U_UINT)239, UNITY_DISPLAY_STYLE_INT);
+
+
+
+}
+
+
+
+void xtest_evaluate_given_token_2_plus_3_should_get_5(void){
 
 
 
@@ -368,19 +488,19 @@ void test_evaluate_given_token_2_plus_3_should_get_5(void){
 
 
 
- getToken_CMockExpectAndReturn(192, &expression, (Token*)two);
+ getToken_CMockExpectAndReturn(252, &expression, (Token*)two);
 
- getToken_CMockExpectAndReturn(193, &expression, (Token*)Plus);
+ getToken_CMockExpectAndReturn(253, &expression, (Token*)Plus);
 
-    getToken_CMockExpectAndReturn(194, &expression, (Token*)three);
+  getToken_CMockExpectAndReturn(254, &expression, (Token*)three);
 
-    getToken_CMockExpectAndReturn(195, &expression, ((void *)0));
+  getToken_CMockExpectAndReturn(255, &expression, ((void *)0));
 
 
 
  Result = evaluate(&expression);
 
- UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((Result)), (((void *)0)), (_U_UINT)198, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((Result)), (((void *)0)), (_U_UINT)258, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -410,19 +530,19 @@ void xtest_evaluate_given_token_2_plus_3_Mutiple_5_plus_6_should_get_23(void){
 
 
 
-    getToken_CMockExpectAndReturn(213, &expression, (Token*)&two);
+  getToken_CMockExpectAndReturn(273, &expression, (Token*)&two);
 
- getToken_CMockExpectAndReturn(214, &expression, (Token*)&Plus);
+ getToken_CMockExpectAndReturn(274, &expression, (Token*)&Plus);
 
-    getToken_CMockExpectAndReturn(215, &expression, (Token*)&three);
+  getToken_CMockExpectAndReturn(275, &expression, (Token*)&three);
 
- getToken_CMockExpectAndReturn(216, &expression, (Token*)&Multi);
+ getToken_CMockExpectAndReturn(276, &expression, (Token*)&Multi);
 
- getToken_CMockExpectAndReturn(217, &expression, (Token*)&five);
+ getToken_CMockExpectAndReturn(277, &expression, (Token*)&five);
 
-    getToken_CMockExpectAndReturn(218, &expression, (Token*)&Plus);
+  getToken_CMockExpectAndReturn(278, &expression, (Token*)&Plus);
 
- getToken_CMockExpectAndReturn(219, &expression, (Token*)&six);
+ getToken_CMockExpectAndReturn(279, &expression, (Token*)&six);
 
 
 

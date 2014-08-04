@@ -98,12 +98,13 @@ void operatorDel(Operator *op)
 OperatorInfo *getOperatorByID(OperatorID id)
 {
 	int i = 0;
-	OperatorInfo *info = NULL;
+	OperatorInfo *info;
 	for(i; i < PRIMARY_TABLE_SIZE; i++)
 	{		
 		if(primaryOperatorTable[i].id == id)
 			return &primaryOperatorTable[i];
 	}
+  return NULL;
 }
 
 OperatorInfo *getOperatorByName(char *name)

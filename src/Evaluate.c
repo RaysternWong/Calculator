@@ -13,44 +13,6 @@
 #define STACK_LENGTH 100
 	
 
-
-void ChooseTheOperation(  Operator *opr, Stack *dataStack ){
-
-	switch(opr->info->id)
-	{	
-		case  ADD_OP:
-		executeAdd(dataStack);
-		break;
-		
-		case  SUB_OP:
-		executeSub(dataStack);
-		break;
-		
-		case  MUL_OP:
-		executeMul(dataStack);
-		break;
-		
-		case  DIV_OP:
-		executeDiv(dataStack);
-		break;
-		
-		case  NPERCENT_OP:
-		executeModulo(dataStack);
-		break;
-		
-		case  OR_OP:
-    printf("or\n");
-		executeOr(dataStack);
-		break;
-		
-		default:
-		{
-			Throw(ERR_UNKNOWN_OPERATOR);
-		}
-		
-	}
-}
-
 void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *dataStack ){
 		
 	Operator *ptrOpr;   // pointer to operator	
@@ -70,7 +32,7 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 				if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
 					{ 
 						Operator *oprNew = stackPop( operatorStack);        
-						ChooseTheOperation(  oprNew , dataStack );    
+						oprNew->info->execute( dataStack );    
 					}
 					
 				ptrOpr = (Operator *)stackPeep(operatorStack);
@@ -118,7 +80,7 @@ int evaluate(String *expression){
   } while (token != NULL);
 
   Operator *oprNew = stackPop( operatorStack);        
-  ChooseTheOperation(  oprNew , dataStack );
+  oprNew->info->execute( dataStack ); 
   
 	Number *ans = (Number *)stackPop( dataStack );
 	Result = ans->value;

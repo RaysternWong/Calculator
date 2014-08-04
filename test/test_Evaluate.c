@@ -282,10 +282,7 @@ void test_evaluate_given_token_2_plus_3_Mutiple_5_or_26_should_get_the_correct_r
 }
 
 
-
-
-
-void xtest_evaluate_given_2_and_3_plus_4_multi_5_should_get_correct_result(void){
+void test_evaluate_given_2_and_3_plus_4_multi_5_should_get_correct_result(void){
 
 	int Result;
   Number *two   = numberNew(2);

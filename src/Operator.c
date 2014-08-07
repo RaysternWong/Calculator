@@ -70,7 +70,7 @@ void pushNewNumber(int result, Stack *dataStack)
 	This function will perform addition and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */	
-void executeAdd(Stack *dataStack)
+void executeAdd(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -81,7 +81,7 @@ void executeAdd(Stack *dataStack)
 	This function will perform subtraction and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeSub(Stack *dataStack)
+void executeSub(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -92,7 +92,7 @@ void executeSub(Stack *dataStack)
 	This function will perform multiplication and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeMul(Stack *dataStack)
+void executeMul(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -103,7 +103,7 @@ void executeMul(Stack *dataStack)
 	This function will perform modulation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeModulo(Stack *dataStack)
+void executeModulo(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -114,7 +114,7 @@ void executeModulo(Stack *dataStack)
 	This function will perform division and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeDiv(Stack *dataStack)
+void executeDiv(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -125,7 +125,7 @@ void executeDiv(Stack *dataStack)
 	This function will perform logical OR operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeOr(Stack *dataStack)
+void executeOr(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -136,7 +136,7 @@ void executeOr(Stack *dataStack)
 	This function will perform XOR operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeXor(Stack *dataStack)
+void executeXor(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -147,7 +147,7 @@ void executeXor(Stack *dataStack)
 	This function will perform logical AND operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeAnd(Stack *dataStack)
+void executeAnd(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -158,7 +158,7 @@ void executeAnd(Stack *dataStack)
 	This function will perform bitwise AND operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeBitAnd(Stack *dataStack)
+void executeBitAnd(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -169,7 +169,7 @@ void executeBitAnd(Stack *dataStack)
 	This function will perform bitwise OR operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeBitOr(Stack *dataStack)
+void executeBitOr(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -180,7 +180,7 @@ void executeBitOr(Stack *dataStack)
 	This function will perform shift left operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeShiftLeft(Stack *dataStack)
+void executeShiftLeft(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -191,7 +191,7 @@ void executeShiftLeft(Stack *dataStack)
 	This function will perform shift right operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeShiftRight(Stack *dataStack)
+void executeShiftRight(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -202,7 +202,7 @@ void executeShiftRight(Stack *dataStack)
 	This function will perform lesser operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeLesser(Stack *dataStack)
+void executeLesser(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -213,7 +213,7 @@ void executeLesser(Stack *dataStack)
 	This function will perform greater operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeGreater(Stack *dataStack)
+void executeGreater(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
@@ -224,9 +224,22 @@ void executeGreater(Stack *dataStack)
 	This function will perform equal operation and it will function call the 
 	getInfixValues and pushNewNumber function due to they work together.
 */
-void executeEqual(Stack *dataStack)
+void executeEqual(Stack *dataStack, Stack *operatorStack)
 {
 	int valueA, valueB;
 	getInfixValues(&valueA, &valueB, dataStack);
 	pushNewNumber(valueA == valueB, dataStack);
+}
+
+
+void  executeClosingBracket( Stack *dataStack, Stack *operatorStack)
+{
+  Number *num ;
+  Operator *ClosingBracket ;
+  Operator *OpenBracket    ;
+  
+  ClosingBracket = stackPop(operatorStack);
+  OpenBracket    = stackPop(operatorStack);
+          num    = stackPop(dataStack);
+
 }

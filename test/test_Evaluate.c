@@ -147,10 +147,10 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_13_Multi_7_AND_should_answer
 
 
 	Stack *operatorStack = stackNew(STACK_LENGTH);
-	Stack *dataStack 	 = stackNew(STACK_LENGTH);
-	Operator *Plus		 = operatorNewByName("+");
-	Operator *BIT_AND   	 = operatorNewByName("&");
-	Operator *Multi		 = operatorNewByName("*");
+	Stack *dataStack 	   = stackNew(STACK_LENGTH);
+	Operator *Plus		   = operatorNewByName("+");
+	Operator *BIT_AND    = operatorNewByName("&");
+	Operator *Multi		   = operatorNewByName("*");
 	Operator *op;
 	Number *two       = numberNew(2);
 	Number *thirteen  = numberNew(13);
@@ -305,5 +305,24 @@ void test_evaluate_given_2_and_3_plus_4_multi_5_should_get_correct_result(void){
 
 	Result = evaluate(&expression);
   TEST_ASSERT_EQUAL( 2&3+4*5 , Result);
+
+}
+
+void xtest_evaluate_postfix_given_bracket_2_should_get_result_of_2(void){
+
+  int Result;
+	Operator *bracket1	 = operatorNewByName("(");
+	Operator *bracket2	 = operatorNewByName(")");
+  Number *two  = numberNew(2);
+  String expression  = {.string="(2)"};
+ 
+  getToken_ExpectAndReturn(&expression, (Token*)bracket1	);	//(
+	getToken_ExpectAndReturn(&expression, (Token*)two       );	//2
+  getToken_ExpectAndReturn(&expression, (Token*)bracket2	);	//)
+  
+  // num = (Number *)stackPop( dataStack );
+	// TEST_ASSERT_NOT_NULL ( num );
+	// TEST_ASSERT_EQUAL (	NUMBER_TOKEN, num->type);
+	// TEST_ASSERT_EQUAL ( 2 , num->value );
 
 }

@@ -39,7 +39,7 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 				if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
 					{ 
 						Operator *oprNew = stackPop( operatorStack);        
-						oprNew->info->execute( dataStack );    
+						oprNew->info->execute( dataStack , operatorStack );    
 					}
 					
 				ptrOpr = (Operator *)stackPeep(operatorStack);
@@ -64,7 +64,7 @@ void doOperatorStackRewinding ( Stack *dataStack , Stack *operatorStack ){
   while( ptrOpr != NULL)
 			{     
 						Operator *oprNew = stackPop( operatorStack);        
-						oprNew->info->execute( dataStack );    
+						oprNew->info->execute( dataStack , operatorStack );    
 				  	ptrOpr = (Operator *)stackPeep(operatorStack);
 			}		
      
@@ -86,8 +86,6 @@ void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
     exit(EXIT_FAILURE);
   }
 }
-
-
 
 /* This function is the main module to do mathematicsmath calculation 
    Fist, it is taking the coming token from the string expression

@@ -8,23 +8,23 @@
  */
 OperatorInfo primaryOperatorTable[] = 
 {
-	{.name = "*", 	.id = MUL_OP, 			.precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeMul},
-	{.name = "%", 	.id = NPERCENT_OP, 		.precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeModulo},
-	{.name = "/", 	.id = DIV_OP, 			.precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeDiv},
-	{.name = "+", 	.id = ADD_OP, 			.precedence = 70, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeAdd},
-	{.name = "-", 	.id = SUB_OP, 			.precedence = 70, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeSub},
-	{.name = "<<", 	.id = BITWISE_SHIFT_LEFT_OP, 	.precedence = 68, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeShiftLeft},
-	{.name = ">>", 	.id = BITWISE_SHIFT_RIGHT_OP, 	.precedence = 68, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeShiftRight},
-	{.name = "<", 	.id = LESSER_OP,		.precedence = 66, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeLesser},
-	{.name = ">", 	.id = GREATER_OP, 		.precedence = 66, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeGreater},
-	{.name = "==", 	.id = EQUAL_OP, 		.precedence = 64, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeEqual},
-	{.name = "&", 	.id = BITWISE_AND_OP, 	.precedence = 60, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeBitAnd},
-	{.name = "^", 	.id = XOR_OP, 			.precedence = 50, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeXor},
-	{.name = "|", 	.id = BITWISE_OR_OP, 	.precedence = 40, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeBitOr},	
-	{.name = "&&", 	.id = AND_OP, 			.precedence = 30, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeAnd},
-	{.name = "||", 	.id = OR_OP, 			.precedence = 20, .associativity = LEFT_TO_RIGHT, .affix = INFIX, .execute = executeOr},
-	{.name = ")", 	.id = CLOSE_BRACKET, 	.precedence = 10, .associativity = LEFT_TO_RIGHT, .affix = POSTFIX},
-	{.name = "(", 	.id = OPEN_BRACKET, 	.precedence = 9,  .associativity = LEFT_TO_RIGHT, .affix = PREFIX}
+	{.name = "*", 	.id = MUL_OP, 			          .precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeMul},
+	{.name = "%", 	.id = NPERCENT_OP, 		        .precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeModulo},
+	{.name = "/", 	.id = DIV_OP, 		          	.precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeDiv},
+	{.name = "+", 	.id = ADD_OP, 		          	.precedence = 70, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeAdd},
+	{.name = "-", 	.id = SUB_OP, 			          .precedence = 70, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeSub},
+	{.name = "<<", 	.id = BITWISE_SHIFT_LEFT_OP, 	.precedence = 68, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeShiftLeft},
+	{.name = ">>", 	.id = BITWISE_SHIFT_RIGHT_OP, .precedence = 68, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeShiftRight},
+	{.name = "<", 	.id = LESSER_OP,		          .precedence = 66, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeLesser},
+	{.name = ">", 	.id = GREATER_OP, 		        .precedence = 66, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeGreater},
+	{.name = "==", 	.id = EQUAL_OP, 		          .precedence = 64, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeEqual},
+	{.name = "&", 	.id = BITWISE_AND_OP, 	      .precedence = 60, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeBitAnd},
+	{.name = "^", 	.id = XOR_OP, 			          .precedence = 50, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeXor},
+	{.name = "|", 	.id = BITWISE_OR_OP, 	        .precedence = 40, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeBitOr},	
+	{.name = "&&", 	.id = AND_OP, 			          .precedence = 30, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeAnd},
+	{.name = "||", 	.id = OR_OP, 			            .precedence = 20, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeOr},
+	{.name = ")", 	.id = CLOSE_BRACKET,        	.precedence = 10, .associativity = LEFT_TO_RIGHT, .affix = POSTFIX, .execute = executeClosingBracket },
+	{.name = "(", 	.id = OPEN_BRACKET, 	        .precedence = 9,  .associativity = LEFT_TO_RIGHT, .affix = PREFIX}
 };
 
 /* Operator Table contain prefix operator "+" and "-" information

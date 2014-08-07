@@ -69,6 +69,6 @@ OperatorInfo *getOperatorByID(OperatorID id);
 OperatorInfo *getOperatorByName(char *name);
 OperatorInfo *getOperatorByIDInSecondaryTable(OperatorID id);
 OperatorInfo *getOperatorByNameInSecondaryTable(char *name);
-Operator *operatorTryConvertToPrefix(Operator *operator);
+void operatorTryConvertToPrefix(Operator *operator);
 
 #endif // OperatorToken_H

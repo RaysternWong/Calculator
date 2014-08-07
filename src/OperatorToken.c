@@ -152,16 +152,11 @@ OperatorInfo *getOperatorByNameInSecondaryTable(char *name)
 	return NULL;
 }
 
-Operator *operatorTryConvertToPrefix(Operator *operator)
+void operatorTryConvertToPrefix(Operator *operator)
 {
 	OperatorInfo *secondaryInfo = getOperatorByIDInSecondaryTable(operator->info->id);
 	if(secondaryInfo == NULL)
 		Throw(ERR_NOT_PREFIX_OPERATOR);
 	
-	operator->type = OPERATOR_TOKEN;
 	operator->info = secondaryInfo;
-	return operator;
-	
-	
-
 }

@@ -1,15 +1,15 @@
 #include "unity.h"
 #include "Evaluate.h"
 #include "mock_Token.h"
-#include "mock_StringObject.h"
+#include "StringObject.h"
 #include <string.h>
 #include "Stack.h"
-#include "OperatorToken.h"
 #include "OperatorToken.h"
 #include "NumberToken.h"
 #include "Operator.h"
 #include "TokenDebug.h"
 #include "ErrorCode.h"
+#include "CException.h"
 
 
 #define STACK_LENGTH 100
@@ -219,8 +219,8 @@ void test_evaluate_given_token_2_plus_3_Mutiple_5_plus_6_get_the_correct_result(
 	TEST_ASSERT_EQUAL( 2+3*5+6 , Result);
 }
 
-void test_evaluate_given_token_2_plus_3_Mutiple_5_or_26_should_get_the_correct_result(void){
-
+void test_evaluate_given_token_2_plus_3_Mutiple_5_or_26_should_get_the_correct_result(void)
+{
 	int Result;
 	Number *two = numberNew(2);
 	Number *three = numberNew(3);
@@ -231,7 +231,7 @@ void test_evaluate_given_token_2_plus_3_Mutiple_5_or_26_should_get_the_correct_r
 	Operator *multi = operatorNewByName("*");
 	String expression = {.string="2+3*5|26"};
   
-	tokenDump((Token*) or);
+	// tokenDump((Token*) or);
   
 	printf("Start\n");
 	getToken_ExpectAndReturn(&expression, (Token*)two);	//2
@@ -248,25 +248,43 @@ void test_evaluate_given_token_2_plus_3_Mutiple_5_or_26_should_get_the_correct_r
 	TEST_ASSERT_EQUAL(2+3*5|26 , Result);
 }
 
-void test_evaluate_whether_it_can_process_negative_2_plus_3_and_return_1(void)
+void test_evaluate_given_an_expression_negative_2_plus_3_should_return_1(void)
 {
 	int result;
+	String expression = {.string = "-2+3"};
 	Number *two = numberNew(2);
 	Number *three = numberNew(3);
 	
-	Operator *subPrefix = operatorNewByName("-");
-	Operator *addOp = operatorNewByName("+");
-	String expression = {.string = "-2+3"};
+	Operator *minus = operatorNewByName("-");
+	Operator *add = operatorNewByName("+");
 	
-	getToken_ExpectAndReturn(&expression, (Token *)subPrefix);
+
+	getToken_ExpectAndReturn(&expression, (Token *)minus);
 	getToken_ExpectAndReturn(&expression, (Token *)two);
-	getToken_ExpectAndReturn(&expression, (Token *)addOp);
+	getToken_ExpectAndReturn(&expression, (Token *)add);
 	getToken_ExpectAndReturn(&expression, (Token *)three);
 	getToken_ExpectAndReturn(&expression, NULL);
-	
+
 	result = evaluate(&expression);
-	
-	
+	TEST_ASSERT_EQUAL(1, result);
+}
+
+void test_evaluate_given_minus_minus_2_should_return_2(void){
+  int result;
+  String expression = {.string = "--2"};
+  Number *two = numberNew(2);
+  
+  Operator *firstMinus = operatorNewByName("-");
+  Operator *secondMinus = operatorNewByName("-");
+  
+  getToken_ExpectAndReturn(&expression, (Token *)firstMinus);
+  getToken_ExpectAndReturn(&expression, (Token *)secondMinus);
+  getToken_ExpectAndReturn(&expression, (Token *)two);
+  
+  printf("start\n");
+  result = evaluate(&expression);
+  printf("end\n");
+  printf("result: %d\n", result);
 }
 	
 	

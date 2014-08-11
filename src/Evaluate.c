@@ -27,12 +27,13 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 		
 	Operator *ptrOpr;   // pointer to operator	
 	ptrOpr = (Operator *)stackPeep(operatorStack);
-
-	if( (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)  ) 
+	if( (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence) ||
+      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )  ) 
 	{	
 		stackPush( operatorStack , opr );
   
-	}	else { 
+	}
+	else { 
 
 			while( ptrOpr != NULL)
 			{     
@@ -96,7 +97,7 @@ void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
 int evaluate(String *expression){
 
 	int Result;
-	Token *token;
+	Token *token; 
 	Stack *dataStack     = stackNew(STACK_LENGTH);
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 
@@ -129,16 +130,19 @@ int evaluate(String *expression){
 }
 
 
-void evalauatePostfixesAndInfix(Token *token){
+void evalauatePostfixesAndInfix(Token *token, String *expression, Stack *operatorStack, Stack *dataStack ){
 
-        if ( token->type == NUMBER_TOKEN)
-        {
-            Throw (ERR_DONT_EXPECT_NUMBER);
-        }  
-         else if ( token->type == OPERATOR_TOKEN)
-         {
-          // Operator *opr = (Operator*)token; 
-          // tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
-         }	
+ while (token != NULL)
+ {
+  if ( token->type == NUMBER_TOKEN)
+    {  Throw (ERR_NOT_EXPECTING_NUMBER); }  
+ 
+  else if ( token->type == OPERATOR_TOKEN)
+    {
+      Operator *opr = (Operator*)token; 
+      tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
+    }
+    token = getToken (expression);
+  }
 }
 

@@ -683,12 +683,12 @@ void test_executeClosingBracket_given_empty_dataStack_should_throw_exception(voi
   Stack *dataStack     = stackNew(10);
   Stack *operatorStack = stackNew(100);
   Operator *openBracket = operatorNewByName("(");
-  Operator *CloseBracket= operatorNewByName(")");
+  Operator *closeBracket= operatorNewByName(")");
 	
  
   Try{  //()
         stackPush(operatorStack,openBracket);
-        stackPush(operatorStack,CloseBracket);
+        stackPush(operatorStack,closeBracket);
         executeClosingBracket( dataStack, operatorStack);
         TEST_FAIL_MESSAGE("should throw ERR_STACK_EMPTY exception");
    } Catch(err)

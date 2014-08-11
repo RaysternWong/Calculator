@@ -244,26 +244,12 @@ void  executeClosingBracket( Stack *dataStack, Stack *operatorStack)
   
   
   IsItClosingBracket  = stackPop(operatorStack);
-  if ( IsItClosingBracket == NULL || IsItClosingBracket->info->id != CLOSE_BRACKET ){
+  if ( IsItClosingBracket == NULL || IsItClosingBracket->info->id != CLOSE_BRACKET )
         Throw( ERR_NO_BRACKET);
+  else{
+        IsItOpenBracket = stackPop(operatorStack);
+          if(IsItOpenBracket == NULL)	
+           Throw(ERR_NO_BRACKET); 
   }
-  
-  
-  IsItOpenBracket = stackPeep(operatorStack);
-  if(IsItOpenBracket == NULL){	
-        Throw(ERR_NO_BRACKET);
-        
-   } else{
-          while( IsItOpenBracket->info->id != OPEN_BRACKET){
-             printf("dfsd");
-             Operator *oprNew = stackPop( operatorStack); 
-             oprNew->info->execute( dataStack , operatorStack );  
-             Operator *IsItOpenBracket = stackPeep( operatorStack);   
-             printf("dfsd");
-            }
             
-    }
-     
-  // stackPush(dataStack,num);
-
 }

@@ -8,6 +8,6 @@ typedef enum{ERR_NO_ERROR,
 			 ERR_STACK_FULL,
        ERR_UNKNOWN_OPERATOR,
        ERR_NO_BRACKET,
-       ERR_DONT_EXPECT_NUMBER} ErrorCode;
+       ERR_NOT_EXPECTING_NUMBER} ErrorCode;
 
 #endif // ErrorCode_H

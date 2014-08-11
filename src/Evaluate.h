@@ -9,7 +9,7 @@
 void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack);
 void tryToPushOperatorAndEvaluate(  Operator *opr, Stack *operatorStack, Stack *dataStack );
 void doOperatorStackRewinding ( Stack *dataStack , Stack *operatorStack );
-void evalauatePostfixesAndInfix(Token *token);
+void evalauatePostfixesAndInfix(Token *token, String *expression, Stack *operatorStack, Stack *dataStack );
 int evaluate(String *expression);
 
 

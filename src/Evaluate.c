@@ -8,6 +8,7 @@
 #include "NumberToken.h"
 #include "Operator.h"
 #include "ErrorCode.h"
+#include "CException.h"
 
 #define STACK_LENGTH 100
 
@@ -28,7 +29,8 @@ void tryToPushOperatorAndEvaluate(Operator *opr, Stack *operatorStack,  Stack *d
 			if (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
 			{ 
 				printf("there is operator in the stack\n");
-				Operator *oprNew = stackPop(operatorStack);  
+				Operator *oprNew = stackPop(operatorStack); 
+        printf("successfully pop operator out\n");
 				oprNew->info->execute( dataStack );    
 				printf("done executing\n");
 			}
@@ -38,6 +40,17 @@ void tryToPushOperatorAndEvaluate(Operator *opr, Stack *operatorStack,  Stack *d
 		stackPush( operatorStack , opr ); //while the operator stack is empty then push into the last operator
 	}
 }
+
+// void doOperatorStackRewinding(Stack *dataStack , Stack *operatorStack) {
+  // Operator *ptrOpr;   // pointer to operator	
+	// ptrOpr = (Operator *)stackPeep(operatorStack);
+
+  // while( ptrOpr != NULL) {     
+		// Operator *oprNew = stackPop( operatorStack);        
+		// oprNew->info->execute(dataStack , operatorStack);    
+		// ptrOpr = (Operator *)stackPeep(operatorStack);
+	// }		
+// }
 
 void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) 
 {
@@ -54,125 +67,45 @@ void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack)
   }
 }
 
-// int evaluate(String *expression)
-// {
-	// int Result;
-	// int firstOp = 1;
-	// Token *token;
-	// Operator *operator;
-	// Stack *dataStack     = stackNew(STACK_LENGTH);
-	// Stack *operatorStack = stackNew(STACK_LENGTH);
+Token *convertToPrefixIfNotAlready(Operator *op) {
+  if(op->info->affix == INFIX) {
+    operatorTryConvertToPrefix(op);
+    tokenDump((Token *)op);
+  } 
+  return (Token *)op;
+}
 
-	// do {
-		// token = getToken(expression); 
-		// printf("start cycle\n");
-		
-		// if(token!=NULL) {
-			// tokenDump(token);
-			// if(token->type == NUMBER_TOKEN) {
-				// Number *num = (Number*)token;
-				// printf("Number token\n");
-				// tokenDump(token);
-				// stackPush(dataStack, num);
-				// firstOp = 0; //clear firstOp if first token is NUMBER_TOKEN
-			// }  
-			
-			// do{
-        // if(token->type == OPERATOR_TOKEN) {
-            // Operator *opr = (Operator*)token;
-            // printf("operator\n");
-            // tokenDump(token);
-				
-          // if(firstOp) { //if first token is OPERATOR
-            // if(opr->info->affix == INFIX) {
-              // printf("infix\n");
-              // operatorTryConvertToPrefix(opr);
-              // tokenDump(token);
-              // tryToPushOperatorAndEvaluate(opr, operatorStack, dataStack);
-              // firstOp = 0;
-              // printf("done conversion\n");	
-            // } else if(opr->info->affix == PREFIX) {
-              // printf("prefix\n");
-              // tryToPushOperatorAndEvaluate(opr, operatorStack, dataStack);
-            // } else if(!firstOp) { //if OPERATOR is not first token
-              // printf("not first operator\n");
-              // tryToPushOperatorAndEvaluate(opr, operatorStack, dataStack);
-            // }	
-              // printf("done checking operator token\n");
-           // token = getToken(expression);
-        // }	
-      // }while(token->type == OPERATOR_TOKEN);
-		// }
-	// }while(token != NULL);
-	
-	// printf("no more token\n");
-	// Operator *oprNew = stackPop(operatorStack);        
-	// oprNew->info->execute(dataStack); 
-	
-	// Number *ans = (Number *)stackPop(dataStack);
-	// Result = ans->value;
-
-	// verifyAllStacksAreEmpty(dataStack, operatorStack);
+void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStack, Stack *operatorStack) {
+  while(token != NULL) {
+    if(token->type == OPERATOR_TOKEN) {
+      tokenDump(token);
+      Operator *operator = (Operator *)token;
+      token = convertToPrefixIfNotAlready(operator);
+      stackPush(operatorStack, (Operator *)token);
+    } else if(token->type == NUMBER_TOKEN) {
+        tokenDump(token);
+        Number *num = (Number *)token;
+        stackPush(dataStack, num);
+      } else 
+          Throw(ERR_IDENTIFIER_NOT_SUPPORT);
+          
+    token = getToken(expression);
+  }
   
-	// return Result;
-// }
+  if(dataStack->size == 0)
+    Throw(ERR_EXPECTING_NUMBER);
+}
 
-int evaluate(String *expression)
-{
-  int Result;
-  Token *token;
+int evaluate(String *expression) {
   Stack *dataStack     = stackNew(STACK_LENGTH);
 	Stack *operatorStack = stackNew(STACK_LENGTH);
-  
-  do{
+  Token *token;
+  while(token != NULL) {
     token = getToken(expression);
-    printf("start cycle\n");
-		
-		if(token!=NULL) {
-    //prefix convert operator token
-      if(token->type == OPERATOR_TOKEN) {
-        while(token->type == OPERATOR_TOKEN) {
-          Operator *opr = (Operator*)token;
-          printf("operator\n");
-          tokenDump(token);
-        
-          if(opr->info->affix == INFIX) {
-            printf("infix\n");
-            operatorTryConvertToPrefix(opr);
-            tokenDump(token);
-            tryToPushOperatorAndEvaluate(opr, operatorStack, dataStack);
-            printf("done conversion\n");
-          } else if(opr->info->affix == PREFIX) {
-              printf("prefix\n");
-              tryToPushOperatorAndEvaluate(opr, operatorStack, dataStack);
-            }
-          printf("done checking operator token\n");
-          token = getToken(expression);
-        }
-      }
-    // check whether it is number token
-      if(token->type != NUMBER_TOKEN)
-        Throw(ERR_NOT_NUMBER_TOKEN);
+    if(token == NULL) 
+      break;
       
-      if(token->type == NUMBER_TOKEN) {
-        Number *num = (Number*)token;
-				printf("Number token\n");
-				tokenDump(token);
-				stackPush(dataStack, num);
-      }
-    } 
-      
-  }while(token != NULL);
-  
-  // infix process
-  printf("no more token\n");
-	Operator *oprNew = stackPop(operatorStack);        
-	oprNew->info->execute(dataStack); 
-	
-	Number *ans = (Number *)stackPop(dataStack);
-	Result = ans->value;
-
-	verifyAllStacksAreEmpty(dataStack, operatorStack);
-  
-	return Result;
+    evaluatePrefixesAndNumber(token, expression, dataStack, operatorStack);
+  }
+  // doOperatorStackRewinding(dataStack, operatorStack);
 }

@@ -34,8 +34,7 @@ OperatorInfo primaryOperatorTable[] =
 OperatorInfo secondaryOperatorTable[] = 
 {
 	{.name = "+", .id = ADD_OP, .precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixAdd},
-	{.name = "-", .id = SUB_OP,	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixSub},
-	
+	{.name = "-", .id = SUB_OP,	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixSub}
 };
 
 /* Create new structure for operator (Identify by ID)

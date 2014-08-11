@@ -260,7 +260,7 @@ void executeBitNot(Stack *dataStack)
 	if(num->type != NUMBER_TOKEN)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 	
-	num->value = !(num->value);
+	num->value = !num->value;
 }
 
 void executePrefixSub(Stack *dataStack)
@@ -276,7 +276,7 @@ void executePrefixSub(Stack *dataStack)
 	if(num->type != NUMBER_TOKEN)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 	
-	num->value = -(num->value);
+	num->value = -num->value;
 }
 
 void executePrefixAdd(Stack *dataStack)

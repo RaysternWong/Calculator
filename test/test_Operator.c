@@ -611,6 +611,7 @@ void test_executeClosingBracket_given_bracket_2_bracket_should_get_result_of_2(v
   Operator *openBracket	 = operatorNewByName("(");
 	Operator *closeBracket = operatorNewByName(")");
  
+  //(2)
   stackPush(operatorStack,openBracket);
 	stackPush(operatorStack,closeBracket);
   stackPush(dataStack, two);
@@ -696,29 +697,5 @@ void test_executeClosingBracket_given_empty_dataStack_should_throw_exception(voi
 
 
 
-void xtest_executeClosingBracket_given_bracket_2_plus_1_should_get_result_of_2(void){
 
-  Stack *dataStack = stackNew(10);
-  Stack *operatorStack = stackNew(100);
-	Number *result;
-  Number *one = numberNew(1);
-	Number *two = numberNew(2);
-  Operator *openBracket	 = operatorNewByName("(");
-	Operator *closeBracket = operatorNewByName(")");
-  Operator *plus	       = operatorNewByName("+");
- 
-  //(2+1)
-  stackPush(operatorStack,openBracket);   //(
-  stackPush(dataStack, two);              //2
-  stackPush(operatorStack,plus);          //+
-  stackPush(dataStack, one);               //1
-  stackPush(operatorStack,closeBracket);  //)
-  
-  executeClosingBracket( dataStack, operatorStack);
-  result = (Number *)stackPop(dataStack);
-  TEST_ASSERT_EQUAL(3, result->value);
-	stackDel(dataStack);
-  
- 
-}
 

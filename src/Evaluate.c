@@ -129,3 +129,16 @@ int evaluate(String *expression){
 }
 
 
+void evalauatePostfixesAndInfix(Token *token){
+
+        if ( token->type == NUMBER_TOKEN)
+        {
+            Throw (ERR_DONT_EXPECT_NUMBER);
+        }  
+         else if ( token->type == OPERATOR_TOKEN)
+         {
+          // Operator *opr = (Operator*)token; 
+          // tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
+         }	
+}
+

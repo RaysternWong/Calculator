@@ -308,25 +308,21 @@ void test_evaluate_given_2_and_3_plus_4_multi_5_should_get_correct_result(void){
 
 }
 
-void xtest_evaluate_postfix_given_bracket_2_should_get_result_of_2(void){
+void test_evalauatePostfixesAndInfix_given_2_should_get_throw_exception(void){
 
-  int Result;
-	Operator *bracket1	 = operatorNewByName("(");
-	Operator *bracket2	 = operatorNewByName(")");
-  Number *two  = numberNew(2);
-  String expression  = {.string="(2)"};
- 
-  getToken_ExpectAndReturn(&expression, (Token*)bracket1	);	//(
-	getToken_ExpectAndReturn(&expression, (Token*)two       );	//2
-  getToken_ExpectAndReturn(&expression, (Token*)bracket2	);	//)
+
+  CEXCEPTION_T err;
+  Number *two   = numberNew(2);
   
 
-  
-  // num = (Number *)stackPop( dataStack );
-	// TEST_ASSERT_NOT_NULL ( num );
-	// TEST_ASSERT_EQUAL (	NUMBER_TOKEN, num->type);
-	// TEST_ASSERT_EQUAL ( 2 , num->value );
+  Try{
+        evalauatePostfixesAndInfix((Token*)two);
+         TEST_FAIL_MESSAGE("should throw ERR_DONT_EXPECT_NUMBER exception");
+  } Catch (err)
+  {    
+      TEST_ASSERT_EQUAL_MESSAGE( ERR_DONT_EXPECT_NUMBER , err , "Expected ERR_DONT_EXPECT_NUMBER exception"); }
+      
+      
+ }
 
-}
 
-//void test_evaluate_postfic_given_bracke=

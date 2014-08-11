@@ -21,7 +21,7 @@ void tearDown(void)
 void test_stackNew_should_setup_the_new_stack(void)
 {	
 	Stack *stack;
-    stack = stackNew(STACK_LENGTH);
+  stack = stackNew(STACK_LENGTH);
 	TEST_ASSERT_NOT_NULL(stack);
 	TEST_ASSERT_NOT_NULL(stack->buffer);
 	TEST_ASSERT_EQUAL(0 , stack->size);

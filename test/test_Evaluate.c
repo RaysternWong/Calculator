@@ -320,9 +320,13 @@ void xtest_evaluate_postfix_given_bracket_2_should_get_result_of_2(void){
 	getToken_ExpectAndReturn(&expression, (Token*)two       );	//2
   getToken_ExpectAndReturn(&expression, (Token*)bracket2	);	//)
   
+
+  
   // num = (Number *)stackPop( dataStack );
 	// TEST_ASSERT_NOT_NULL ( num );
 	// TEST_ASSERT_EQUAL (	NUMBER_TOKEN, num->type);
 	// TEST_ASSERT_EQUAL ( 2 , num->value );
 
 }
+
+//void test_evaluate_postfic_given_bracke=

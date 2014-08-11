@@ -73,8 +73,7 @@ void doOperatorStackRewinding ( Stack *dataStack , Stack *operatorStack ){
 
 /* This function is used to verify the two stacks isn"t empty after the evaluation
   input:
-  ~dataStack, ~operatorStack
-*/
+  ~dataStack, ~operatorStack*/
 void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
 
   if(stackPop( operatorStack) != NULL) {
@@ -87,7 +86,7 @@ void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
   }
 }
 
-/* This function is the main module to do mathematicsmath calculation 
+/* This function is the main module to do mathematics calculation 
    Fist, it is taking the coming token from the string expression
    if the token is number type then push into dataStack
    else if the token is operator type then push into operatorStack, and the operator will be arranged and execute by
@@ -113,7 +112,7 @@ int evaluate(String *expression){
         }  
         else if ( token->type == OPERATOR_TOKEN)
         {
-          Operator *opr = (Operator*)token;
+          Operator *opr = (Operator*)token; 
           tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
         }		
     }
@@ -123,7 +122,6 @@ int evaluate(String *expression){
   
 	Number *ans = (Number *)stackPop( dataStack );
 	Result = ans->value;
-
   verifyAllStacksAreEmpty(dataStack, operatorStack);
   
 	return Result;

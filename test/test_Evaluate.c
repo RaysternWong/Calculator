@@ -327,6 +327,39 @@ void test_evaluate_given_2_and_3_plus_4_multi_5_should_get_correct_result(void){
 
 }
 
+
+void test_evalauatePostfixesAndInfix_given_string_below_should_put_into_stack(void){
+  
+  int Result;
+  Stack *dataStack       = stackNew(STACK_LENGTH);
+	Stack *operatorStack   = stackNew(STACK_LENGTH);
+  Number *two            = numberNew(2);
+  Operator *openBracket  = operatorNewByName("(");
+  Operator *closeBracket = operatorNewByName(")");
+  Operator *op;
+  String expression  = {.string="(2    )"};
+    
+  stackPush(operatorStack,openBracket);
+  stackPush(dataStack    ,two);  
+  getToken_ExpectAndReturn(&expression, NULL  );
+  evalauatePostfixesAndInfix((Token*)closeBracket , &expression, operatorStack, dataStack);
+    
+  op = (Operator *)stackPop( operatorStack );
+  TEST_ASSERT_NOT_NULL ( op );
+  TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL ( CLOSE_BRACKET , op->info->id );
+  
+  op = (Operator *)stackPop( operatorStack );
+  TEST_ASSERT_NOT_NULL ( op );
+  TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL ( OPEN_BRACKET , op->info->id );
+
+  TEST_ASSERT_NULL ( stackPop( operatorStack ));
+ 
+}
+
+
+
 void test_evalauatePostfixesAndInfix_given_5_should_get_throw_exception(void){
 
   CEXCEPTION_T err;
@@ -350,6 +383,39 @@ void test_evalauatePostfixesAndInfix_given_5_should_get_throw_exception(void){
       
       
  }
+ 
+
+ void test_evalauatePostfixesAndInfix_given_1plus5_multi_should_put_into_stack(void){
+  
+  int Result;
+  Stack *dataStack       = stackNew(STACK_LENGTH);
+	Stack *operatorStack   = stackNew(STACK_LENGTH);
+  Number *one            = numberNew(1);
+  Number *five           = numberNew(5);
+  Operator *plus  = operatorNewByName("+");
+  Operator *multi = operatorNewByName("*");
+  Operator *op;
+  String expression  = {.string="1+5 *"};
+    
+  stackPush(dataStack    ,one);
+  stackPush(operatorStack,plus ); 
+  stackPush(dataStack    ,five);  
+
+  getToken_ExpectAndReturn(&expression, NULL  );
+  
+  evalauatePostfixesAndInfix((Token*)multi , &expression, operatorStack, dataStack);
+    
+  op = (Operator *)stackPop( operatorStack );
+  TEST_ASSERT_NOT_NULL ( op );
+  TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
+  TEST_ASSERT_EQUAL (	multi, op);
+  
+  Number *num = (Number *)stackPop( dataStack );
+  TEST_ASSERT_EQUAL (	5 , num->value); 
+  TEST_ASSERT_NOT_NULL ( stackPop( operatorStack ));
+ 
+}
+ 
 
 void test_evalauatePostfixesAndInfix_bracket_2_should_put_into_stack(void){
   
@@ -364,6 +430,7 @@ void test_evalauatePostfixesAndInfix_bracket_2_should_put_into_stack(void){
     
   stackPush(operatorStack,openBracket);
   stackPush(dataStack    ,two);  
+  
   getToken_ExpectAndReturn(&expression, NULL  );
   evalauatePostfixesAndInfix((Token*)closeBracket , &expression, operatorStack, dataStack);
     
@@ -446,27 +513,27 @@ void test_evalauatePostfixesAndInfix_given_bracket_bracket_2_bracket_bracket_min
   
   evalauatePostfixesAndInfix((Token*)closeBracket2, &expression, operatorStack, dataStack);
   
-  // op = (Operator *)stackPop( operatorStack );
-  // TEST_ASSERT_NOT_NULL ( op );
-  // TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	// TEST_ASSERT_EQUAL ( CLOSE_BRACKET , op->info->id );
+  op = (Operator *)stackPop( operatorStack );
+  TEST_ASSERT_NOT_NULL ( op );
+  TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL ( CLOSE_BRACKET , op->info->id );
   
-  // op = (Operator *)stackPop( operatorStack );
-  // TEST_ASSERT_NOT_NULL ( op );
-  // TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	// TEST_ASSERT_EQUAL ( CLOSE_BRACKET , op->info->id );
+  op = (Operator *)stackPop( operatorStack );
+  TEST_ASSERT_NOT_NULL ( op );
+  TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL ( CLOSE_BRACKET , op->info->id );
   
-  // op = (Operator *)stackPop( operatorStack );
-  // TEST_ASSERT_NOT_NULL ( op );
-  // TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	// TEST_ASSERT_EQUAL ( OPEN_BRACKET , op->info->id );
+  op = (Operator *)stackPop( operatorStack );
+  TEST_ASSERT_NOT_NULL ( op );
+  TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL ( OPEN_BRACKET , op->info->id );
   
-  // op = (Operator *)stackPop( operatorStack );
-  // TEST_ASSERT_NOT_NULL ( op );
-  // TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	// TEST_ASSERT_EQUAL ( OPEN_BRACKET , op->info->id );
+  op = (Operator *)stackPop( operatorStack );
+  TEST_ASSERT_NOT_NULL ( op );
+  TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
+	TEST_ASSERT_EQUAL ( OPEN_BRACKET , op->info->id );
   
-  // TEST_ASSERT_NULL ( stackPop( operatorStack ));
+  TEST_ASSERT_NULL ( stackPop( operatorStack ));
 
  
 }

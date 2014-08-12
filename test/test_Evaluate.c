@@ -327,7 +327,7 @@ void test_evaluate_given_2_and_3_plus_4_multi_5_should_get_correct_result(void){
 
 }
 
-void xtest_evalauatePostfixesAndInfix_given_2_should_get_throw_exception(void){
+void test_evalauatePostfixesAndInfix_given_5_should_get_throw_exception(void){
 
   CEXCEPTION_T err;
   Stack *dataStack     = stackNew(STACK_LENGTH);
@@ -336,9 +336,8 @@ void xtest_evalauatePostfixesAndInfix_given_2_should_get_throw_exception(void){
   Number *two    = numberNew(2);
   
   String expression  = {.string="2 5"};
- // getToken_ExpectAndReturn(&expression, (Token*)two	  );
-//  getToken_ExpectAndReturn(&expression, NULL );
-  
+  getToken_ExpectAndReturn(&expression, (Token*)two	  );
+  getToken_ExpectAndReturn(&expression, NULL );
   stackPush (dataStack, two); 
   
   
@@ -394,9 +393,7 @@ void test_evalauatePostfixesAndInfix_given_bracket_bracket_2_bracket_bracket_min
   stackPush(dataStack    ,two);
  
   getToken_ExpectAndReturn(&expression, (Token*)closeBracket2	  );
-  getToken_ExpectAndReturn(&expression, (Token*)closeBracket1	  );
   getToken_ExpectAndReturn(&expression, NULL  );
-  
   
   evalauatePostfixesAndInfix((Token*)closeBracket1, &expression, operatorStack, dataStack);
   Operator *op = (Operator *)stackPop( operatorStack );

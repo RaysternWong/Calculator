@@ -7,7 +7,9 @@ typedef enum{ERR_NO_ERROR,
 			 ERR_STACK_EMPTY,
 			 ERR_STACK_FULL,
        ERR_UNKNOWN_OPERATOR,
-       ERR_NO_BRACKET,
+       ERR_NO_OPEN_BRACKET,
+       ERR_NO_CLOSING_BRACKET,
+       ERR_UNBALANCE_BRACKET,
        ERR_NOT_EXPECTING_NUMBER} ErrorCode;
 
 #endif // ErrorCode_H

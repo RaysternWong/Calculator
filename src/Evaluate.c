@@ -31,10 +31,8 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
       (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )  ) 
 	{	
 		stackPush( operatorStack , opr );
-  
 	}
-	else { 
-
+	else {
 			while( ptrOpr != NULL)
 			{     
 				if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
@@ -46,9 +44,7 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 				ptrOpr = (Operator *)stackPeep(operatorStack);
 			}		
       stackPush( operatorStack , opr ); //while the operator stack is empty then push into the last operator
-
 	}
- 
 }
 
 /*

@@ -27,8 +27,9 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 		
 	Operator *ptrOpr;   // pointer to operator	
 	ptrOpr = (Operator *)stackPeep(operatorStack);
-	if( (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence) ||
-      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )  ) 
+	if( (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)                                     ||
+      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )   ||
+      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->id == CLOSE_BRACKET ) )         ) 
 	{	
 		stackPush( operatorStack , opr );
 	}

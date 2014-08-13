@@ -6,6 +6,7 @@
 #include "ErrorCode.h"
 
 void getInfixValues(int *left, int *right, Stack *dataStack);
+void rubbishForTesting(int *left, int *right, Stack *dataStack);
 void pushNewNumber(int result, Stack *dataStack);
 void wongTryToBeFunny();
 void executeAdd(Stack *dataStack, Stack *operatorStack);

@@ -231,7 +231,8 @@ void executeEqual(Stack *dataStack, Stack *operatorStack)
 	pushNewNumber(valueA == valueB, dataStack);
 }
 
-
+/* this function is used to execute closingBracket in multiple case
+*/
 void executeClosingBracket( Stack *dataStack, Stack *operatorStack)
 {
   Number *num ;
@@ -244,14 +245,19 @@ void executeClosingBracket( Stack *dataStack, Stack *operatorStack)
     { Throw (ERR_STACK_EMPTY); }
 
   IsItClosingBracket  = stackPeep(operatorStack);
-  if ( IsItClosingBracket == NULL || IsItClosingBracket->info->id != CLOSE_BRACKET )
-    {   Throw ( ERR_NO_CLOSING_BRACKET);  }
-  else {  
-         while ( IsItClosingBracket->info->id == CLOSE_BRACKET  ){  
-            Remove  = stackPop(operatorStack);
-            counter1 = counter1+1 ;
-            IsItClosingBracket  = stackPeep(operatorStack); 
-          } 
+   if ( IsItClosingBracket == NULL || IsItClosingBracket->info->id != CLOSE_BRACKET )
+     {   Throw ( ERR_NO_CLOSING_BRACKET);  }
+   else {  
+           
+           while (  IsItClosingBracket->info->id == CLOSE_BRACKET  ){  //to remove the closing bracket and ounting it      
+             Remove  = stackPop(operatorStack);
+             counter1 = counter1+1 ;
+             IsItClosingBracket  = stackPeep(operatorStack); 
+             
+             if( IsItClosingBracket  == NULL)     //if stackPeep is NULL, then means that is no open bracket
+               {   Throw( ERR_NO_OPEN_BRACKET); }
+           } 
+           
           
          IsItOpenBracket  = stackPeep(operatorStack);
            if ( IsItOpenBracket == NULL  )

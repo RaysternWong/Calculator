@@ -714,7 +714,7 @@ void test_executeClosingBracket_given_no_closing_bracket_should_throw_exception(
  
 }
 
-void xtest_executeClosingBracket_given_no_OPEN_bracket_should_throw_exception(void){
+void test_executeClosingBracket_given_no_OPEN_bracket_should_throw_exception(void){
 
   CEXCEPTION_T err;
   Stack *dataStack     = stackNew(10);

@@ -6,12 +6,19 @@
 #include "ErrorCode.h"
 
 void getInfixValues(int *left, int *right, Stack *dataStack);
+
+void executeAdd(Stack *dataStack, Stack *operatorStack);
+void executeSub(Stack *dataStack, Stack *operatorStack);
 void iAmBeingSilly();
+
 void executeMul(Stack *dataStack, Stack *operatorStack);
 void executeModulo(Stack *dataStack, Stack *operatorStack);
 void executeDiv(Stack *dataStack, Stack *operatorStack);
 void executeOr(Stack *dataStack, Stack *operatorStack);
 void executeXor(Stack *dataStack, Stack *operatorStack);
+void rubbishForTesting(int *left, int *right, Stack *dataStack);
+void pushNewNumber(int result, Stack *dataStack);
+void wongTryToBeFunny();
 void executeAnd(Stack *dataStack, Stack *operatorStack);
 void executeBitAnd(Stack *dataStack, Stack *operatorStack);
 void executeBitOr(Stack *dataStack, Stack *operatorStack);

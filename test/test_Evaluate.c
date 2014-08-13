@@ -415,7 +415,6 @@ void test_evalauatePostfixesAndInfix_given_5_should_get_throw_exception(void){
   TEST_ASSERT_NOT_NULL ( stackPop( operatorStack ));
  
 }
- 
 
 void test_evalauatePostfixesAndInfix_bracket_2_should_put_into_stack(void){
   

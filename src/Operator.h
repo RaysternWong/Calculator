@@ -7,6 +7,7 @@
 
 void getInfixValues(int *left, int *right, Stack *dataStack);
 void pushNewNumber(int result, Stack *dataStack);
+void wongTryToBeFunny();
 void executeAdd(Stack *dataStack, Stack *operatorStack);
 void executeSub(Stack *dataStack, Stack *operatorStack);
 void executeMul(Stack *dataStack, Stack *operatorStack);
@@ -19,6 +20,7 @@ void executeBitAnd(Stack *dataStack, Stack *operatorStack);
 void executeBitOr(Stack *dataStack, Stack *operatorStack);
 void executeShiftLeft(Stack *dataStack, Stack *operatorStack);
 void executeShiftRight(Stack *dataStack, Stack *operatorStack);
+void samTryToBeFunny();
 void executeLesser(Stack *dataStack, Stack *operatorStack);
 void executeGreater(Stack *dataStack, Stack *operatorStack);
 void executeEqual(Stack *dataStack, Stack *operatorStack);

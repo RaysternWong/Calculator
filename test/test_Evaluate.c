@@ -446,16 +446,283 @@ void test_convertToPrefixIfNotAlready_given_infix_minus_should_be_able_to_conver
 }
 
 // test given multiply should throw an exception due to multiply is not in secondaryOperatorTable
-// void test_convertToPrefixIfNotAlready_given_infix_multiply_should_throw_an_exception(void) {
-  // OperatorInfo *info = getOperatorByID(MUL_OP);
-  // Operator operator = {.type = OPERATOR_TOKEN, info};
-  // CEXCEPTION_T err;
+void test_convertToPrefixIfNotAlready_given_infix_multiply_should_throw_an_exception(void) {
+  OperatorInfo *info = getOperatorByID(MUL_OP);
+  Operator operator = {.type = OPERATOR_TOKEN, info};
+  CEXCEPTION_T err;
   
-  // Try {
-    // Token *token = convertToPrefixIfNotAlready(&operator);
-    // Operator *operate = (Operator *)token;
-    // TEST_FAIL_MESSAGE("Should throw an exception due to ERR_NOT_PREFIX_OPERATOR");
-  // } Catch(err) {
-      // TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_PREFIX_OPERATOR, err, "Expected ERR_NOT_PREFIX_OPERATOR");
-    // }
-// }
+  Try {
+    Token *token = convertToPrefixIfNotAlready(&operator);
+    Operator *operate = (Operator *)token;
+    TEST_FAIL_MESSAGE("Should throw an exception due to ERR_NOT_PREFIX_OPERATOR");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_PREFIX_OPERATOR, err, "Expected ERR_NOT_PREFIX_OPERATOR");
+    }
+}
+
+// test given prefix operator should do nothing
+void test_convertToPrefixIfNotAlready_given_prefix_should_do_nothing(void) {
+  OperatorInfo *info = getOperatorByID(NOT_OP);
+  Operator operator = {.type = OPERATOR_TOKEN, info};
+  
+  Token *token = convertToPrefixIfNotAlready(&operator);
+  Operator *operate = (Operator *)token;
+  TEST_ASSERT_EQUAL(PREFIX, operate->info->affix);
+}
+
+// test given number 2 should be able to pop out integer 2 from the dataStack
+void test_evaluatePrefixesAndNumber_given_integer_two_should_be_able_to_pop_out_integer_two_from_dataStack(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "2"};
+  Number *two = numberNew(2);
+  Number *dataResult;
+  
+  evaluatePrefixesAndNumber((Token *)two, &expression, dataStack, operatorStack);
+  dataResult = (Number *)stackPop(dataStack);
+  TEST_ASSERT_EQUAL(2, dataResult->value);
+  
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// Given logical NOT 3 should be able to push 3 into dataStack and logical NOT into operatorStack
+void test_evaluatePrefixesAndNumber_given_logical_NOT_3_should_place_logical_NOT_and_3_in_dataStack_and_operatorStack_respectively(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "!3"};  
+  Operator *not = operatorNewByName("!");  
+  Number *three = numberNew(3);
+  Number *dataResult;
+  Operator *operatorResult;
+  
+  getToken_ExpectAndReturn(&expression, (Token *)three);
+  
+  evaluatePrefixesAndNumber((Token *)not, &expression, dataStack, operatorStack);
+  dataResult = (Number *)stackPop(dataStack);
+  TEST_ASSERT_EQUAL(3, dataResult->value);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("!", operatorResult->info->name);
+  
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// test given minus and 4 should be able to push minus into operatorStack and 4 into dataStack
+void test_evaluatePrefixesAndNumber_given_minus_4_should_place_prefix_minus_and_4_into_dataStack_and_operatorStack_respectively(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "-4"};  
+  Operator *minus = operatorNewByName("-");  
+  Number *four = numberNew(4);
+  Number *dataResult;
+  Operator *operatorResult;
+  
+  getToken_ExpectAndReturn(&expression, (Token *)four);
+  
+  evaluatePrefixesAndNumber((Token *)minus, &expression, dataStack, operatorStack);
+  dataResult = (Number *)stackPop(dataStack);
+  TEST_ASSERT_EQUAL(4, dataResult->value);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("-", operatorResult->info->name);
+  TEST_ASSERT_EQUAL(PREFIX, operatorResult->info->affix);
+  
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// test given multiply operator should throw an error due to ERR_NOT_PREFIX_OPERATOR
+void test_evaluatePrefixesAndNumber_given_operator_multiply_should_throw_an_error(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "*5"};  
+  Operator *multiply = operatorNewByName("*");
+  CEXCEPTION_T err;
+  
+  Try {
+    evaluatePrefixesAndNumber((Token *)multiply, &expression, dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("Should throw an exception due to ERR_NOT_PREFIX_OPERATOR");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_PREFIX_OPERATOR, err, "Expected ERR_NOT_PREFIX_OPERATOR");
+    }
+    
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// test given minus minus and 6 should be able to push minus and minus into operatorStack and 6 to dataStack
+void test_evaluatePrefixesAndNumber_given_minus_minus_6_should_be_able_to_push_into_dataStack_and_operatorStack_respectively(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "--6"};  
+  Operator *firstMinus = operatorNewByName("-");  
+  Operator *secondMinus = operatorNewByName("-");  
+  Number *six = numberNew(6);
+  Number *dataResult;
+  Operator *operatorResult;
+  
+  getToken_ExpectAndReturn(&expression, (Token *)secondMinus);
+  getToken_ExpectAndReturn(&expression, (Token *)six);
+  
+  evaluatePrefixesAndNumber((Token *)firstMinus, &expression, dataStack, operatorStack);
+  dataResult = (Number *)stackPop(dataStack);
+  TEST_ASSERT_EQUAL(6, dataResult->value);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("-", operatorResult->info->name);
+  TEST_ASSERT_EQUAL(PREFIX, operatorResult->info->affix);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("-", operatorResult->info->name);
+  TEST_ASSERT_EQUAL(PREFIX, operatorResult->info->affix);
+
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// test given minus plus minus and 7 should be able to push minus plus minus into operatorStack and 7 to dataStack
+void test_evaluatePrefixesAndNumber_given_minus_plus_minus_and_7_should_be_able_to_push_into_dataStack_and_operatorStack_respectively(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "-+-7"};  
+  Operator *firstMinus = operatorNewByName("-");  
+  Operator *plus = operatorNewByName("+");
+  Operator *secondMinus = operatorNewByName("-");  
+  Number *seven = numberNew(7);
+  Number *dataResult;
+  Operator *operatorResult;
+  
+  getToken_ExpectAndReturn(&expression, (Token *)plus);
+  getToken_ExpectAndReturn(&expression, (Token *)secondMinus);
+  getToken_ExpectAndReturn(&expression, (Token *)seven);
+ 
+  evaluatePrefixesAndNumber((Token *)firstMinus, &expression, dataStack, operatorStack);
+  dataResult = (Number *)stackPop(dataStack);
+  TEST_ASSERT_EQUAL(7, dataResult->value);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("-", operatorResult->info->name);
+  TEST_ASSERT_EQUAL(PREFIX, operatorResult->info->affix);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("+", operatorResult->info->name);
+  TEST_ASSERT_EQUAL(PREFIX, operatorResult->info->affix);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("-", operatorResult->info->name);
+  TEST_ASSERT_EQUAL(PREFIX, operatorResult->info->affix);
+
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// test given open bracket and 8 should be able to push 8 into dataStack and open bracket into operatorStack
+void test_evaluatePrefixesAndNumber_given_openBracket_and_integer_two_should_be_able_to_push_into_dataStack_and_operatorStack(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "(8"};  
+  Operator *openBracket = operatorNewByName("(");   
+  Number *eight = numberNew(8);
+  Number *dataResult;
+  Operator *operatorResult;
+  
+  getToken_ExpectAndReturn(&expression, (Token *)eight);
+  
+  evaluatePrefixesAndNumber((Token *)openBracket, &expression, dataStack, operatorStack);
+  dataResult = (Number *)stackPop(dataStack);
+  TEST_ASSERT_EQUAL(8, dataResult->value);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("(", operatorResult->info->name);
+  TEST_ASSERT_EQUAL(PREFIX, operatorResult->info->affix);
+  
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// test given openBracket openBracket and 9 should be able to push 9 into dataStack and open bracket open bracket into operatorStack
+void test_evaluatePrefixesAndNumber_given_openBracket_openBracket_and_integer_two_should_be_able_to_push_into_dataStack_and_operatorStack(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "((9"};  
+  Operator *firstOpenBracket = operatorNewByName("(");   
+  Operator *secondOpenBracket = operatorNewByName("(");   
+  Number *nine = numberNew(9);
+  Number *dataResult;
+  Operator *operatorResult;
+  
+  getToken_ExpectAndReturn(&expression, (Token *)secondOpenBracket);
+  getToken_ExpectAndReturn(&expression, (Token *)nine);
+  
+  evaluatePrefixesAndNumber((Token *)firstOpenBracket, &expression, dataStack, operatorStack);
+  dataResult = (Number *)stackPop(dataStack);
+  TEST_ASSERT_EQUAL(9, dataResult->value);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("(", operatorResult->info->name);
+  TEST_ASSERT_EQUAL(PREFIX, operatorResult->info->affix);
+  operatorResult = (Operator *)stackPop(operatorStack);
+  TEST_ASSERT_EQUAL_STRING("(", operatorResult->info->name);
+  TEST_ASSERT_EQUAL(PREFIX, operatorResult->info->affix);
+  
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// test given minus only should throw an error due to ERR_EXPECTING_NUMBER
+void test_evaluatePrefixesAndNumber_given_minus_only_should_throw_an_error(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "-"};  
+  Operator *minus = operatorNewByName("-");
+  CEXCEPTION_T err;
+  
+  Try {
+    getToken_ExpectAndReturn(&expression, NULL);
+    evaluatePrefixesAndNumber((Token *)minus, &expression, dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("Should throw an error due to ERR_EXPECTING_NUMBER");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_EXPECTING_NUMBER, err, "Expected ERR_EXPECTING_NUMBER");
+    }
+    
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// test given minus and plus only should be able to throw an error due to ERR_EXPECTING_NUMBER
+void test_evaluatePrefixesAndNumber_given_minus_and_plus_should_throw_an_error(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "-+"};  
+  Operator *minus = operatorNewByName("-");
+  Operator *plus = operatorNewByName("+");
+  CEXCEPTION_T err;
+  
+  Try {
+    getToken_ExpectAndReturn(&expression, (Token *)plus);
+    getToken_ExpectAndReturn(&expression, NULL);
+    evaluatePrefixesAndNumber((Token *)minus, &expression, dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("Should throw an error due to ERR_EXPECTING_NUMBER");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_EXPECTING_NUMBER, err, "Expected ERR_EXPECTING_NUMBER");
+    }
+    
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}
+
+// test given minus plus and multiply should throw ana error due to ERR_NOT_PREFIX_OPERATOR
+void test_evaluatePrefixesAndNumber_given_minus_plus_and_multiply_should_throw_an_error(void) {
+  Stack *dataStack     = stackNew(100);
+	Stack *operatorStack = stackNew(100);  
+  String expression = {.string = "-+*"};  
+  Operator *minus = operatorNewByName("-");
+  Operator *plus = operatorNewByName("+");
+  Operator *multiply = operatorNewByName("*");
+  CEXCEPTION_T err;
+  
+  Try {
+    getToken_ExpectAndReturn(&expression, (Token *)plus);
+    getToken_ExpectAndReturn(&expression, (Token *)multiply);
+    evaluatePrefixesAndNumber((Token *)minus, &expression, dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("Should throw an error due to ERR_NOT_PREFIX_OPERATOR");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_PREFIX_OPERATOR, err, "Expected ERR_NOT_PREFIX_OPERATOR");
+    }
+    
+  stackDel(dataStack);
+  stackDel(operatorStack);
+}

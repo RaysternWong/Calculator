@@ -93,6 +93,30 @@ Token *convertToPrefixIfNotAlready(Operator *op) {
   return (Token *)op;
 }
 
+void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStack, Stack *operatorStack) {
+  if(token != NULL) {
+    while(1) {
+      if(token->type == NUMBER_TOKEN) {
+      Number *num = (Number *)token;
+      tokenDump(token);
+      stackPush(dataStack, num);
+      break;
+      } else if(token->type == OPERATOR_TOKEN) {
+        Operator *operator = (Operator *)token;
+        tokenDump(token);
+        token = convertToPrefixIfNotAlready(operator);
+        stackPush(operatorStack, (Operator *)token);
+      } else
+        Throw(ERR_IDENTIFIER_NOT_SUPPORT);
+      token = getToken(expression);
+      if(token == NULL) 
+        break;
+    }
+  }
+  if(dataStack->size == 0)
+    Throw(ERR_EXPECTING_NUMBER);
+}
+
 void evalauatePostfixesAndInfix(Token *token, String *expression, Stack *operatorStack, Stack *dataStack ){
 
  while (token != NULL)

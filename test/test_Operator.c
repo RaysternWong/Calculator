@@ -13,8 +13,6 @@ void setUp(void){}
 
 void tearDown(void){}
 
-
-
 void test_OperatorByID_should_print_out_ADD_OP_details_due_to_ADD_OP_parameter_is_passed_in(void)
 {
 	OperatorInfo *info = getOperatorByID(ADD_OP);
@@ -742,7 +740,7 @@ void test_executeClosingBracket_given_empty_dataStack_should_throw_exception(voi
   Operator *closeBracket= operatorNewByName(")");
 	
  
-  Try{  //()
+  Try{  
         stackPush(operatorStack,openBracket);
         stackPush(operatorStack,closeBracket);
         executeClosingBracket( dataStack, operatorStack);
@@ -751,6 +749,81 @@ void test_executeClosingBracket_given_empty_dataStack_should_throw_exception(voi
       { TEST_ASSERT_EQUAL_MESSAGE( ERR_STACK_EMPTY , err , "Expected ERR_STACK_EMPTY exception"); }
 }
 
+void test_executePrefixSub_after_integer_2_pushed_in_it_should_return_value_negative_2(void)
+{
+	Stack *dataStack = stackNew(10);
+  Stack *operatorStack = stackNew(100);
+	Number *result;
+	Number *value1 = numberNew(2);
+	
+	stackPush(dataStack, value1);
+
+	executePrefixSub(dataStack, operatorStack);
+	result = (Number *)stackPop(dataStack);
+	TEST_ASSERT_EQUAL(-2, result->value);
+	stackDel(dataStack);
+}
+
+void test_executePrefixAdd_after_integer_3_is_pushed_in_it_should_return_3(void)
+{
+	Stack *dataStack = stackNew(10);
+  Stack *operatorStack = stackNew(100);
+	Number *result;
+	Number *value1 = numberNew(3);
+	
+	stackPush(dataStack, value1);
+
+	executePrefixAdd(dataStack, operatorStack);
+	result = (Number *)stackPop(dataStack);
+	TEST_ASSERT_EQUAL(3, result->value);
+	stackDel(dataStack);
+}
+
+void test_executeNot_after_integer_1_pushed_it_should_return_negative_2(void)
+{
+	Stack *dataStack = stackNew(10);
+  Stack *operatorStack = stackNew(100);
+	int value;
+	Number *result;
+	Number *value1 = numberNew(1);
+	
+	stackPush(dataStack, value1);
+
+	executeNot(dataStack, operatorStack);
+	result = (Number *)stackPop(dataStack);
+	TEST_ASSERT_EQUAL(-2, result->value);
+	stackDel(dataStack);
+} 
+
+void test_executeBitNot_after_integer_1_pushed_it_should_return_0(void)
+{
+	Stack *dataStack = stackNew(10);
+  Stack *operatorStack = stackNew(100);
+	Number *result;
+	Number *value1 = numberNew(1);
+	
+	stackPush(dataStack, value1);
+	
+	executeBitNot(dataStack, operatorStack);
+	result = (Number *)stackPop(dataStack);
+	TEST_ASSERT_EQUAL(0, result->value);
+	stackDel(dataStack);
+}
+
+void test_executeBitNot_after_integer_0_pushed_it_should_return_1(void)
+{
+	Stack *dataStack = stackNew(10);
+  Stack *operatorStack = stackNew(100);
+	Number *result;
+	Number *value1 = numberNew(0);
+	
+	stackPush(dataStack, value1);
+	
+	executeBitNot(dataStack, operatorStack);
+	result = (Number *)stackPop(dataStack);
+	TEST_ASSERT_EQUAL(1, result->value);
+	stackDel(dataStack);
+}
 
 
 

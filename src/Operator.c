@@ -266,5 +266,66 @@ void executeClosingBracket( Stack *dataStack, Stack *operatorStack)
             if(counter1 != counter2 || counter2!=counter1)
             Throw ( ERR_UNBALANCE_BRACKET);
        }   
-   
+}
+
+void executePrefixSub(Stack *dataStack, Stack *operatorStack)
+{
+	Number *num;
+	
+	num = (Number *)stackPeep(dataStack);
+	tokenDump((Token *)num);
+	
+	if((Token *)num == NULL)
+		Throw(ERR_INCOMPLETE_NUMBER);
+	
+	if(num->type != NUMBER_TOKEN)
+		Throw(ERR_NOT_NUMBER_TOKEN);
+	
+	num->value = -num->value;
+}
+
+void executePrefixAdd(Stack *dataStack, Stack *operatorStack)
+{
+	Number *num;
+	
+	num = (Number *)stackPeep(dataStack);
+	tokenDump((Token *)num);
+	
+	if((Token *)num == NULL)
+		Throw(ERR_INCOMPLETE_NUMBER);
+	
+	if(num->type != NUMBER_TOKEN)
+		Throw(ERR_NOT_NUMBER_TOKEN);
+}
+
+void executeNot(Stack *dataStack, Stack *operatorStack)
+{
+	Number *num;
+	
+	num = (Number *)stackPeep(dataStack);
+	tokenDump((Token *)num);
+	
+	if((Token *)num == NULL)
+		Throw(ERR_INCOMPLETE_NUMBER);
+	
+	if(num->type != NUMBER_TOKEN)
+		Throw(ERR_NOT_NUMBER_TOKEN);
+	
+	num->value = ~num->value;
+}
+
+void executeBitNot(Stack *dataStack, Stack *operatorStack)
+{
+	Number *num;
+	
+	num = (Number *)stackPeep(dataStack);
+	tokenDump((Token *)num);
+	
+	if((Token *)num == NULL)
+		Throw(ERR_INCOMPLETE_NUMBER);
+	
+	if(num->type != NUMBER_TOKEN)
+		Throw(ERR_NOT_NUMBER_TOKEN);
+	
+	num->value = !num->value;
 }

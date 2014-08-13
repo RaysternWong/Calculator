@@ -53,7 +53,7 @@ typedef struct
 	int precedence;
 	AssocType associativity;
 	Affix affix;
-	void(*execute)( Stack *dataStack, Stack *operatorStack);
+	void(*execute)(Stack *dataStack, Stack *operatorStack);
 }OperatorInfo;
 
 typedef struct

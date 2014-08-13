@@ -5,11 +5,11 @@
 #include <string.h>
 #include "Stack.h"
 #include "OperatorToken.h"
-#include "OperatorToken.h"
 #include "NumberToken.h"
 #include "Operator.h"
 #include "TokenDebug.h"
 #include "ErrorCode.h"
+#include "CException.h"
 
 
 #define STACK_LENGTH 100
@@ -230,104 +230,6 @@ void test_doOperatorStackRewinding_given_2_and_3_plus_4_multi_5_should_get_corre
   TEST_ASSERT_NULL ( (Number *)stackPop( dataStack ) );
 }
 
-void test_evaluate_given_token_2_plus_3_should_get_5(void){
-
-	int Result;
-
-	Number *two = numberNew(2);
-	Number *three = numberNew(3);
-	Operator *Plus = operatorNewByName("+");
-	String expression = {.string="2+3"};
-
-	getToken_ExpectAndReturn(&expression, (Token*)two	);  	//2
-	getToken_ExpectAndReturn(&expression, (Token*)Plus  );		//+
-  getToken_ExpectAndReturn(&expression, (Token*)three );		//3
-  getToken_ExpectAndReturn(&expression, NULL );
-
-	Result = evaluate(&expression);
-	TEST_ASSERT_EQUAL( 5 , Result);
-}
-
-void test_evaluate_given_token_2_plus_3_Mutiple_5_plus_6_get_the_correct_result(void){
-
-	int Result;
-  Number *two   = numberNew(2);
-	Number *three = numberNew(3);
-  Number *five  = numberNew(5);
-  Number *six   = numberNew(6);
-	Operator *Plus1		 = operatorNewByName("+");
-  Operator *Plus2		 = operatorNewByName("+");
-	Operator *Multi		 = operatorNewByName("*");
-	String expression = {.string="2+3*5+6"};
-
-  getToken_ExpectAndReturn(&expression, (Token*)two	  );	//2
-	getToken_ExpectAndReturn(&expression, (Token*)Plus1 );	//+
-  getToken_ExpectAndReturn(&expression, (Token*)three );	//3
-	getToken_ExpectAndReturn(&expression, (Token*)Multi );	//*
-	getToken_ExpectAndReturn(&expression, (Token*)five  );	//5
-  getToken_ExpectAndReturn(&expression, (Token*)Plus2 );	//+
-	getToken_ExpectAndReturn(&expression, (Token*)six   );	//6
-  getToken_ExpectAndReturn(&expression, NULL );
-
-	Result = evaluate(&expression);
-  TEST_ASSERT_EQUAL( 2+3*5+6 , Result);
-
-}
-
-void test_evaluate_given_token_2_plus_3_Mutiple_5_or_26_should_get_the_correct_result(void){
-
-	int Result;
-  Number *two   = numberNew(2);
-	Number *three = numberNew(3);
-  Number *five  = numberNew(5);
-  Number *twentySix   = numberNew(26);
-	Operator *plus		 = operatorNewByName("+");
-  Operator *or  		 = operatorNewByName("|");
-	Operator *multi		 = operatorNewByName("*");
-	String expression = {.string="2+3*5|26"};
-
-  getToken_ExpectAndReturn(&expression, (Token*)two	       );	//2
-	getToken_ExpectAndReturn(&expression, (Token*)plus       );	//+
-  getToken_ExpectAndReturn(&expression, (Token*)three      );	//3
-	getToken_ExpectAndReturn(&expression, (Token*)multi      );	//*
-	getToken_ExpectAndReturn(&expression, (Token*)five       );	//5
-  getToken_ExpectAndReturn(&expression, (Token*)or         );	//|
-	getToken_ExpectAndReturn(&expression, (Token*)twentySix  );	//26
-  getToken_ExpectAndReturn(&expression, NULL );
-
-	Result = evaluate(&expression);
-  TEST_ASSERT_EQUAL( 2+3*5|26 , Result);
-
-}
-
-void test_evaluate_given_2_and_3_plus_4_multi_5_should_get_correct_result(void){
-
-	int Result;
-  Number *two   = numberNew(2);
-	Number *three = numberNew(3);
-  Number *four  = numberNew(4);
-  Number *five  = numberNew(5);
-	Operator *plus		 = operatorNewByName("+");
-  Operator *and 		 = operatorNewByName("&");
-	Operator *multi		 = operatorNewByName("*");
-	String expression  = {.string="2&3+4*5"};
-
-  getToken_ExpectAndReturn(&expression, (Token*)two	  );	//2
-	getToken_ExpectAndReturn(&expression, (Token*)and   );	//&
-  getToken_ExpectAndReturn(&expression, (Token*)three );	//3
-	getToken_ExpectAndReturn(&expression, (Token*)plus  );	//+
-	getToken_ExpectAndReturn(&expression, (Token*)four  );	//4
-  getToken_ExpectAndReturn(&expression, (Token*)multi );	//*
-	getToken_ExpectAndReturn(&expression, (Token*)five  );	//5
-  getToken_ExpectAndReturn(&expression, NULL );
-
-
-	Result = evaluate(&expression);
-  TEST_ASSERT_EQUAL( 2&3+4*5 , Result);
-
-}
-
-
 void test_evalauatePostfixesAndInfix_given_string_below_should_put_into_stack(void){
   
   int Result;
@@ -358,8 +260,6 @@ void test_evalauatePostfixesAndInfix_given_string_below_should_put_into_stack(vo
  
 }
 
-
-
 void test_evalauatePostfixesAndInfix_given_5_should_get_throw_exception(void){
 
   CEXCEPTION_T err;
@@ -384,7 +284,6 @@ void test_evalauatePostfixesAndInfix_given_5_should_get_throw_exception(void){
       
  }
  
-
  void test_evalauatePostfixesAndInfix_given_1plus5_multi_should_put_into_stack(void){
   
   int Result;
@@ -534,6 +433,29 @@ void test_evalauatePostfixesAndInfix_given_bracket_bracket_2_bracket_bracket_min
 	TEST_ASSERT_EQUAL ( OPEN_BRACKET , op->info->id );
   
   TEST_ASSERT_NULL ( stackPop( operatorStack ));
-
- 
 }
+
+// test whether the minus that is infix got change to prefix or not
+void test_convertToPrefixIfNotAlready_given_infix_minus_should_be_able_to_convert_to_prefix(void) {
+  OperatorInfo *info = getOperatorByID(SUB_OP);
+  Operator operator = {.type = OPERATOR_TOKEN, info};
+  
+  Token *token = convertToPrefixIfNotAlready(&operator);
+  Operator *operate = (Operator *)token;
+  TEST_ASSERT_EQUAL(PREFIX, operate->info->affix);
+}
+
+// test given multiply should throw an exception due to multiply is not in secondaryOperatorTable
+// void test_convertToPrefixIfNotAlready_given_infix_multiply_should_throw_an_exception(void) {
+  // OperatorInfo *info = getOperatorByID(MUL_OP);
+  // Operator operator = {.type = OPERATOR_TOKEN, info};
+  // CEXCEPTION_T err;
+  
+  // Try {
+    // Token *token = convertToPrefixIfNotAlready(&operator);
+    // Operator *operate = (Operator *)token;
+    // TEST_FAIL_MESSAGE("Should throw an exception due to ERR_NOT_PREFIX_OPERATOR");
+  // } Catch(err) {
+      // TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_PREFIX_OPERATOR, err, "Expected ERR_NOT_PREFIX_OPERATOR");
+    // }
+// }

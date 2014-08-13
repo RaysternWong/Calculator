@@ -18,14 +18,6 @@ void test_getOperatorByIDInSecondaryTable_after_ADD_OP_is_passed_in_it_should_re
 	OperatorInfo *info = getOperatorByIDInSecondaryTable(ADD_OP);
 	TEST_ASSERT_NOT_NULL(info);
 	TEST_ASSERT_EQUAL(ADD_OP, info->id);
-	TEST_ASSERT_EQUAL(100, info->precedence);
-}
-
-void test_getOperatorByIDInSecondaryTable_after_BITWISE_NOT_OP_is_passed_in_it_should_return_the_info_of_it(void)
-{
-	OperatorInfo *info = getOperatorByIDInSecondaryTable(BITWISE_NOT_OP);
-	TEST_ASSERT_NOT_NULL(info);
-	TEST_ASSERT_EQUAL(BITWISE_NOT_OP, info->id);
 	TEST_ASSERT_EQUAL(90, info->precedence);
 }
 
@@ -40,14 +32,6 @@ void test_getOperatorByNameInSecondaryTable_after_plus_is_passed_in_it_should_re
 	OperatorInfo *info = getOperatorByNameInSecondaryTable("+");
 	TEST_ASSERT_NOT_NULL(info);
 	TEST_ASSERT_EQUAL_STRING("+", info->name);
-	TEST_ASSERT_EQUAL(100, info->precedence);
-}
-
-void test_getOperatorByNameInSecondaryTable_after_Bitwise_NOT_is_passed_in_it_should_return_back_the_info_of_it(void)
-{
-	OperatorInfo *info = getOperatorByNameInSecondaryTable("~");
-	TEST_ASSERT_NOT_NULL(info);
-	TEST_ASSERT_EQUAL_STRING("~", info->name);
 	TEST_ASSERT_EQUAL(90, info->precedence);
 }
 
@@ -64,5 +48,5 @@ void test_operatorTryConvertToPrefix_will_convert_the_SUB_OP_to_prefix(void)
 	Operator *operator = operatorTryConvertToPrefix(&subOp);
 	TEST_ASSERT_NOT_NULL(operator);
 	TEST_ASSERT_EQUAL(SUB_OP, operator->info->id);
-	TEST_ASSERT_EQUAL(100, operator->info->precedence);
+	TEST_ASSERT_EQUAL(90, operator->info->precedence);
 }

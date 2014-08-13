@@ -3,6 +3,7 @@
 #include "Token.h"
 #include "Stack.h"
 #include "Operator.h"
+#include "ErrorCode.h"
 
 #define PRIMARY_TABLE_SIZE (sizeof(primaryOperatorTable)/sizeof(OperatorInfo))
 #define SECONDARY_TABLE_SIZE (sizeof(secondaryOperatorTable)/sizeof(OperatorInfo))
@@ -69,6 +70,6 @@ OperatorInfo *getOperatorByID(OperatorID id);
 OperatorInfo *getOperatorByName(char *name);
 OperatorInfo *getOperatorByIDInSecondaryTable(OperatorID id);
 OperatorInfo *getOperatorByNameInSecondaryTable(char *name);
-Operator *operatorTryConvertToPrefix(Operator *operator);
+void operatorTryConvertToPrefix(Operator *operator);
 
 #endif // OperatorToken_H

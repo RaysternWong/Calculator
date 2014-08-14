@@ -83,7 +83,8 @@ Keycode user_input_interface()
 		{
 			if(status == CODE_ENTER);
 			{
-				if ( status == CODE_ARROWDOWN || status == CODE_ARROWUP);
+				if ( status == CODE_ARROWDOWN || status == CODE_ARROWUP || status == CODE_PAGEDOWN1 || status == CODE_PAGEDOWN2 ||
+					 status == CODE_PAGEUP1   || status == CODE_PAGEUP2);
 				else
 					copystringtochararray(latest_input, "");
 			}

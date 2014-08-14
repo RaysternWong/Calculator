@@ -7,14 +7,7 @@
 
 void getInfixValues(int *left, int *right, Stack *dataStack);
 void pushNewNumber(int result, Stack *dataStack);
-void executeAdd(Stack *dataStack, Stack *operatorStack);
-void executeSub(Stack *dataStack, Stack *operatorStack);
-void executeMul(Stack *dataStack, Stack *operatorStack);
-void executeModulo(Stack *dataStack, Stack *operatorStack);
-void executeDiv(Stack *dataStack, Stack *operatorStack);
-void executeOr(Stack *dataStack, Stack *operatorStack);
-void executeXor(Stack *dataStack, Stack *operatorStack);
-void executeAnd(Stack *dataStack, Stack *operatorStack);
+void aa();
 void executeBitAnd(Stack *dataStack, Stack *operatorStack);
 void executeBitOr(Stack *dataStack, Stack *operatorStack);
 void executeShiftLeft(Stack *dataStack, Stack *operatorStack);
@@ -27,5 +20,13 @@ void executePrefixSub(Stack *dataStack, Stack *operatorStack);
 void executePrefixAdd(Stack *dataStack, Stack *operatorStack);
 void executeNot(Stack *dataStack, Stack *operatorStack);
 void executeBitNot(Stack *dataStack, Stack *operatorStack);
+void executeAdd(Stack *dataStack, Stack *operatorStack);
+void executeSub(Stack *dataStack, Stack *operatorStack);
+void executeMul(Stack *dataStack, Stack *operatorStack);
+void executeModulo(Stack *dataStack, Stack *operatorStack);
+void executeDiv(Stack *dataStack, Stack *operatorStack);
+void executeOr(Stack *dataStack, Stack *operatorStack);
+void executeXor(Stack *dataStack, Stack *operatorStack);
+void executeAnd(Stack *dataStack, Stack *operatorStack);
 
 #endif // Operator_H

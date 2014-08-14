@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include "ErrorCode.h"
 #include "Operator.h"
+#include "CException.h"
 #include <stdio.h>
 
 /* Operator Table contain all the operator information
@@ -48,15 +49,17 @@ Operator *operatorNewByID(OperatorID id)
 	int i = 0;
 	Operator *op = malloc(sizeof(Operator)); //*op = operator pointer
 	op->type	 = OPERATOR_TOKEN;
-	op->info = NULL;
 	
 	for(i ; i < PRIMARY_TABLE_SIZE ; i++)
 	{
 		if(primaryOperatorTable[i].id == id)
+		{
 			op->info = &primaryOperatorTable[i];
+			return op;
+		}
 	}
 	
-	return op;
+	Throw(ERR_UNKNOWN_OPERATOR);
 }
 
 /* Create new structure for operator (Identify by ID)
@@ -70,17 +73,20 @@ Operator *operatorNewByName(char *name)
 	int i = 0 , result;
 	Operator *op = malloc(sizeof(Operator)); //*op = operator pointer
 	op->type	 = OPERATOR_TOKEN;
-	op->info = NULL;
 	
 	for(i ; i < PRIMARY_TABLE_SIZE ; i++)
 	{
 		result = strcmp(primaryOperatorTable[i].name, name);
 		
 		if(result == 0)
+		{
 			op->info = &primaryOperatorTable[i];
+			return op;
+		}
+		
 	}
 	
-	return op;
+	Throw(ERR_UNKNOWN_OPERATOR);
 }
 
 /* Delete operator token

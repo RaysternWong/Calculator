@@ -61,6 +61,7 @@ typedef struct
 {
 	TokenType type;
 	OperatorInfo *info;
+	String *line;
 }Operator;
 
 Operator *operatorNewByID(OperatorID id);

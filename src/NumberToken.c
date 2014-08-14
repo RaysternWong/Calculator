@@ -26,10 +26,5 @@ Number *numberNew(int value)
 void numberDel(Number *num)
 {
 	if(num)
-	{
-		if(num->value)
-			num->value = 0;
-			
 		free(num);
-	}
 }

@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include "Stack.h"
 #include "Token.h"
+#include "StringObject.h"
 #include "NumberToken.h"
+#include "IdentifierToken.h"
 #include "OperatorToken.h"	
 #include "TokenDebug.h"
 #include "ErrorCode.h"

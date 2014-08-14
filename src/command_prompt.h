@@ -42,13 +42,15 @@
 
 
 typedef int Keycode;
-int cursor;
 HistoryBuffer *hb;
+int cursor;
+int arrow_left_right_home_status;
+int end_of_program;
+
 
 extern char user_input[MAX_BUFFER_SIZE];
 extern char latest_input[MAX_BUFFER_SIZE];
-extern int arrow_left_right_home_status;
-extern int end_of_program;
+
 
 /*
 \a (alert) Produces an audible or visible alert. The active

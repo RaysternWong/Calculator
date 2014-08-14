@@ -8,8 +8,7 @@
 
 char user_input[MAX_BUFFER_SIZE];
 char latest_input[MAX_BUFFER_SIZE];
-int arrow_left_right_home_status;
-int end_of_program;		//indicator for end of the program
+
 
 
 /*  To check for the input is special key or not

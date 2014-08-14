@@ -113,19 +113,8 @@ void test_movecursortoend_given_user_input_abcd_should_get_cursor_is_4()
 {
 	char string[] = "abcd";
 	
-	movecursortoend(string);
+	cursor = movecursortoend(string);
 	TEST_ASSERT_EQUAL(4, cursor);
-
-}
-
-
-
-void test_get_end_of_input_given_abcdef_should_return_6()
-{
-	char string[] = "abcdef";
-	
-	int end = get_end_of_input(string);
-	TEST_ASSERT_EQUAL(6, end);
 
 }
 

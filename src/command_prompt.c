@@ -212,7 +212,7 @@ void check_special_keys(int key_code)
 
 
 //adjust the cursor to the end of the user input
-void movecursortoend(char array[])
+int movecursortoend(char array[])
 {
 	int i=0;
 	
@@ -221,7 +221,7 @@ void movecursortoend(char array[])
 		i++;
 	}
 	
-	cursor = i;
+	return i;
 }
 
 
@@ -303,20 +303,6 @@ void movecharactersbackward(int endofinput)
 
 
 
-//get the index of the end of the input
-int get_end_of_input(char array[])
-{
-	int j=0,length=0;
-	
-	while ( array[j] != '\0')
-	{
-		length++;
-		j++;
-	}
-	return length;
-}
-
-
 
 
 
@@ -329,7 +315,7 @@ void handle_BACKSPACE()
 	
 	if(user_input[cursor] == '\0')
 	{
-		endofinput = get_end_of_input(user_input);
+		endofinput = movecursortoend(user_input);
 		user_input[endofinput-1] = '\0';
 		cursor--;
 	
@@ -404,7 +390,7 @@ void handle_ARROWUP()
 
 	char *temp = historyBufferReadPrevious(hb);
 	copystringtochararray(user_input, temp);
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 }
@@ -419,7 +405,7 @@ void handle_ARROWDOWN()
 {
 	char *temp = historyBufferReadNext(hb);
 	copystringtochararray(user_input, temp);
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 }
@@ -488,7 +474,7 @@ void handle_PAGEDOWN()
 		index = readjustIndex(hb , index-1);
 		copystringtochararray(user_input, hb->buffer[index]);
 	}
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 }
@@ -506,7 +492,7 @@ void handle_PAGEUP()
 		copystringtochararray(user_input, hb->buffer[index]);
 	}
 	previous_status = 1;
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 }
@@ -518,7 +504,7 @@ void handle_INSERT()
 {
 	int endofinput;
 	
-	endofinput = get_end_of_input(user_input);
+	endofinput = movecursortoend(user_input);
 	movecharactersbackward(endofinput);
 	copystringtochararray(latest_input , user_input);
 	consoleClearLine();
@@ -530,7 +516,7 @@ void handle_INSERT()
 
 void handle_END()
 {
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	printBufferTill(user_input,cursor);
 }
 

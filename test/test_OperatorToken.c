@@ -18,14 +18,6 @@ void test_getOperatorByIDInSecondaryTable_after_ADD_OP_is_passed_in_it_should_re
 	OperatorInfo *info = getOperatorByIDInSecondaryTable(ADD_OP);
 	TEST_ASSERT_NOT_NULL(info);
 	TEST_ASSERT_EQUAL(ADD_OP, info->id);
-	TEST_ASSERT_EQUAL(100, info->precedence);
-}
-
-void test_getOperatorByIDInSecondaryTable_after_BITWISE_NOT_OP_is_passed_in_it_should_return_the_info_of_it(void)
-{
-	OperatorInfo *info = getOperatorByIDInSecondaryTable(BITWISE_NOT_OP);
-	TEST_ASSERT_NOT_NULL(info);
-	TEST_ASSERT_EQUAL(BITWISE_NOT_OP, info->id);
 	TEST_ASSERT_EQUAL(90, info->precedence);
 }
 
@@ -40,14 +32,6 @@ void test_getOperatorByNameInSecondaryTable_after_plus_is_passed_in_it_should_re
 	OperatorInfo *info = getOperatorByNameInSecondaryTable("+");
 	TEST_ASSERT_NOT_NULL(info);
 	TEST_ASSERT_EQUAL_STRING("+", info->name);
-	TEST_ASSERT_EQUAL(100, info->precedence);
-}
-
-void test_getOperatorByNameInSecondaryTable_after_Bitwise_NOT_is_passed_in_it_should_return_back_the_info_of_it(void)
-{
-	OperatorInfo *info = getOperatorByNameInSecondaryTable("~");
-	TEST_ASSERT_NOT_NULL(info);
-	TEST_ASSERT_EQUAL_STRING("~", info->name);
 	TEST_ASSERT_EQUAL(90, info->precedence);
 }
 
@@ -61,8 +45,26 @@ void test_operatorTryConvertToPrefix_will_convert_the_SUB_OP_to_prefix(void)
 {
 	OperatorInfo *info = getOperatorByID(SUB_OP);
 	Operator subOp = {.type = OPERATOR_TOKEN, info};
-	Operator *operator = operatorTryConvertToPrefix(&subOp);
-	TEST_ASSERT_NOT_NULL(operator);
-	TEST_ASSERT_EQUAL(SUB_OP, operator->info->id);
-	TEST_ASSERT_EQUAL(100, operator->info->precedence);
+	operatorTryConvertToPrefix(&subOp);
+	TEST_ASSERT_NOT_NULL(&subOp);
+	TEST_ASSERT_EQUAL(SUB_OP, subOp.info->id);
+	TEST_ASSERT_EQUAL(90, subOp.info->precedence);
+}
+
+void test_operatorTryConvertToPrefix_will_throw_an_exception_due_to_the_operator_is_not_in_the_table(void)
+{
+	OperatorInfo *info = getOperatorByID(DIV_OP);
+	Operator divOp = {.type = OPERATOR_TOKEN, info};
+	CEXCEPTION_T err;
+	
+	Try
+	{
+		operatorTryConvertToPrefix(&divOp);
+		TEST_FAIL_MESSAGE("Should throw an exception due to ERR_NOT_PREFIX_OPERATOR");
+	}
+	Catch(err)
+	{
+		TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_PREFIX_OPERATOR, err, "Expected ERR_NOT_PREFIX_OPERATOR exception");
+    TEST_ASSERT_NOT_NULL(&divOp);
+	}
 }

@@ -8,6 +8,7 @@
 #include "NumberToken.h"
 #include "Operator.h"
 #include "ErrorCode.h"
+#include "CException.h"
 
 
 #define STACK_LENGTH 100
@@ -84,48 +85,37 @@ void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
   }
 }
 
-/* This function is the main module to do mathematics calculation 
-   Fist, it is taking the coming token from the string expression
-   if the token is number type then push into dataStack
-   else if the token is operator type then push into operatorStack, and the operator will be arranged and execute by
-   shunting algorithm
-   After the coming token is been taken until NULL
-   there is a function call doOperatorStackRewinding to double check the operation and all the elements was been perform*/
-int evaluate(String *expression){
-
-	int Result;
-	Token *token; 
-	Stack *dataStack     = stackNew(STACK_LENGTH);
-	Stack *operatorStack = stackNew(STACK_LENGTH);
-
-  do {
-    token =getToken(expression);
-
-    if ( token!=NULL)    
-    {
-        if ( token->type == NUMBER_TOKEN)
-        {
-          Number *num = (Number*)token;	
-          stackPush( dataStack   , num );
-        }  
-        else if ( token->type == OPERATOR_TOKEN)
-        {
-          Operator *opr = (Operator*)token; 
-          tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
-        }		
-    }
-  } while (token != NULL);
-
-  doOperatorStackRewinding ( dataStack , operatorStack );
-  
-	Number *ans = (Number *)stackPop( dataStack );
-	Result = ans->value;
-  verifyAllStacksAreEmpty(dataStack, operatorStack);
-  
-	return Result;
-
+Token *convertToPrefixIfNotAlready(Operator *op) {
+  if(op->info->affix == INFIX) {
+    operatorTryConvertToPrefix(op);
+    tokenDump((Token *)op);
+  } 
+  return (Token *)op;
 }
 
+void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStack, Stack *operatorStack) {
+  if(token != NULL) {
+    while(1) {
+      if(token->type == NUMBER_TOKEN) {
+      Number *num = (Number *)token;
+      tokenDump(token);
+      stackPush(dataStack, num);
+      break;
+      } else if(token->type == OPERATOR_TOKEN) {
+        Operator *operator = (Operator *)token;
+        tokenDump(token);
+        token = convertToPrefixIfNotAlready(operator);
+        stackPush(operatorStack, (Operator *)token);
+      } else
+        Throw(ERR_IDENTIFIER_NOT_SUPPORT);
+      token = getToken(expression);
+      if(token == NULL) 
+        break;
+    }
+  }
+  if(dataStack->size == 0)
+    Throw(ERR_EXPECTING_NUMBER);
+}
 
 void evalauatePostfixesAndInfix(Token *token, String *expression, Stack *operatorStack, Stack *dataStack ){
 

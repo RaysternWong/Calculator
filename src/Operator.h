@@ -23,5 +23,9 @@ void executeLesser(Stack *dataStack, Stack *operatorStack);
 void executeGreater(Stack *dataStack, Stack *operatorStack);
 void executeEqual(Stack *dataStack, Stack *operatorStack);
 void executeClosingBracket( Stack *dataStack, Stack *operatorStack);
+void executePrefixSub(Stack *dataStack, Stack *operatorStack);
+void executePrefixAdd(Stack *dataStack, Stack *operatorStack);
+void executeNot(Stack *dataStack, Stack *operatorStack);
+void executeBitNot(Stack *dataStack, Stack *operatorStack);
 
 #endif // Operator_H

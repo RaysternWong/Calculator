@@ -8,6 +8,8 @@
  */
 OperatorInfo primaryOperatorTable[] = 
 {
+  {.name = "!", 	.id = NOT_OP,		     	        .precedence = 90 ,  .associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executeNot},
+	{.name = "~", 	.id = BITWISE_NOT_OP,	        .precedence = 90 ,  .associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executeBitNot},
 	{.name = "*", 	.id = MUL_OP, 			          .precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeMul},
 	{.name = "%", 	.id = NPERCENT_OP, 		        .precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeModulo},
 	{.name = "/", 	.id = DIV_OP, 		          	.precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeDiv},
@@ -31,10 +33,8 @@ OperatorInfo primaryOperatorTable[] =
  */
 OperatorInfo secondaryOperatorTable[] = 
 {
-	{.name = "+", 	.id = ADD_OP,		    	.precedence = 100,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX},
-	{.name = "-", 	.id = SUB_OP,		    	.precedence = 100,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX},
-	{.name = "!", 	.id = NOT_OP,		     	.precedence = 90 ,  .associativity = RIGHT_TO_LEFT,	.affix = PREFIX},
-	{.name = "~", 	.id = BITWISE_NOT_OP,	.precedence = 90 ,  .associativity = RIGHT_TO_LEFT,	.affix = PREFIX}
+	{.name = "+", 	.id = ADD_OP,		    	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixAdd},
+	{.name = "-", 	.id = SUB_OP,		    	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixSub}
 };
 
 /* Create new structure for operator (Identify by ID)
@@ -151,17 +151,12 @@ OperatorInfo *getOperatorByNameInSecondaryTable(char *name)
 	return NULL;
 }
 
-Operator *operatorTryConvertToPrefix(Operator *operator)
+void operatorTryConvertToPrefix(Operator *operator)
 {
 	OperatorInfo *secondaryInfo = getOperatorByIDInSecondaryTable(operator->info->id);
-	printf("%d\n\n" , secondaryInfo->id);	
 	
-	if(secondaryInfo != NULL)
-	{
-		operator->type = OPERATOR_TOKEN;
-		operator->info = secondaryInfo;
-		return operator;
-	}
-	
-	return NULL;
+	if(secondaryInfo == NULL)
+    Throw(ERR_NOT_PREFIX_OPERATOR);
+    
+  operator->info = secondaryInfo;
 }

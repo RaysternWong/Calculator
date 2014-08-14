@@ -5,6 +5,7 @@ extern char *numSet;
 extern char *opSet;
 extern char *alphaNumericSet;
 extern char *alphaSet;
+
 typedef struct
 {
 	char *string;
@@ -12,11 +13,11 @@ typedef struct
 	int length;
 }String;
 
-String *stringNew();
+String *stringNew(char *charString);
 void stringTrimLeft(String *str);
-//void StringTrim(String *str, char StringChar[]);    // delete this
+void stringTrimRight(String *str);
 void stringTrim(String *str);
-String *stringRemoveWordContaining (String *str , char *ContainSet);
+String *stringRemoveWordContaining (String *str , char *containSet);
 String *stringRemoveWordNotContaining (String *str , char *notContainSet);
 int stringCharAt(String *str ,  int relativePos);
 int stringRemoveChar(String *str);
@@ -28,6 +29,4 @@ void subStringDel(char *subString);
 int stringCharAtInSet(String *str , int relativePos , char *containSet);
 String *stringSubString(String *str , int start , int length);
 String *stringRemoveOperator(String *str , char *containSet);
-//int StringCharAt(String *str ,  int relativePos);  // delete this
-
 #endif // StringObject_H

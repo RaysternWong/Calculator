@@ -16,5 +16,6 @@ typedef struct
 }Token;
 
 Token *getToken(String *expression);
+void tokenDisplay(Token *token);
 
 #endif // Token_H

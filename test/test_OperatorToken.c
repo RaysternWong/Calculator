@@ -24,7 +24,8 @@ void test_getOperatorByIDInSecondaryTable_after_ADD_OP_is_passed_in_it_should_re
 
 void test_getOperatorByIDInSecondaryTable_after_UNKNOWN_OP_is_passed_in_it_should_return_NULL(void)
 {
-	OperatorInfo *info = getOperatorByIDInSecondaryTable(UNKNOWN_OP);
+	OperatorInfo *info = NULL;
+  info = getOperatorByIDInSecondaryTable(UNKNOWN_OP);
 	TEST_ASSERT_NULL(info);
 }
 
@@ -39,7 +40,8 @@ void test_getOperatorByNameInSecondaryTable_after_plus_is_passed_in_it_should_re
 
 void test_getOperatorByNameInSecondaryTable_after_unknown_string_is_passed_in_it_should_return_back_NULL(void)
 {
-	OperatorInfo *info = getOperatorByNameInSecondaryTable("asd");
+	OperatorInfo *info = NULL;
+  info = getOperatorByNameInSecondaryTable("asd");
 	TEST_ASSERT_NULL(info);
 }
 
@@ -81,6 +83,7 @@ void test_operatorNewByID_given_operator_ID_ADD_OP_should_store_operator_info_in
 	operator = operatorNewByID(ADD_OP);
 	
 	TEST_ASSERT_EQUAL(OPERATOR_TOKEN , operator->type);
+	TEST_ASSERT_NOT_NULL(operator);
 	TEST_ASSERT_NOT_NULL(operator->info);
 	TEST_ASSERT_EQUAL(ADD_OP , operator->info->id);
 	operatorDel(operator);
@@ -117,6 +120,7 @@ void test_operatorNewByName_given_multiply_operator_name_should_store_multiply_o
 	Operator *operator;
 	operator = operatorNewByName("*");
 	
+	TEST_ASSERT_NOT_NULL(operator);
 	TEST_ASSERT_NOT_NULL(operator->info);
 	TEST_ASSERT_EQUAL_STRING("*" , operator->info->name);
 	TEST_ASSERT_EQUAL(MUL_OP , operator->info->id);
@@ -124,7 +128,7 @@ void test_operatorNewByName_given_multiply_operator_name_should_store_multiply_o
 	operatorDel(operator);
 }
 
-/*#3
+/*#4
  * Test create new operator token identify by the operator name, given operator name "-"
  * operator->info shouldn't be NULL and operator->info should contain operator information
  */
@@ -132,23 +136,23 @@ void test_operatorNewByName_given_minus_operator_name_should_store_minus_operato
 {
 	Operator *operator;
 	operator = operatorNewByName("-");
-	
-	TEST_ASSERT_NOT_NULL(operator->info);
+	TEST_ASSERT_NOT_NULL(operator);
+  TEST_ASSERT_NOT_NULL(operator->info);
 	TEST_ASSERT_EQUAL_STRING("-" , operator->info->name);
 	TEST_ASSERT_EQUAL(SUB_OP , operator->info->id);
 	TEST_ASSERT_EQUAL(70 , operator->info->precedence);
 	operatorDel(operator);
 }
 
-/*#4
+/*#5
  * Given "[" operator should throw an exception 
  * because this operator not contain in primary operator table
- */
+ */ 
 void test_operatorNewByName_given_square_bracket_name_should_store_nothing(void)
 {
 	CEXCEPTION_T err;
-	Operator *operator;	
-	
+	Operator *operator = NULL;	
+
 	Try
 	{
 		operator = operatorNewByName("[");
@@ -157,7 +161,8 @@ void test_operatorNewByName_given_square_bracket_name_should_store_nothing(void)
 	Catch(err)
 	{
 		TEST_ASSERT_EQUAL_MESSAGE(ERR_UNKNOWN_OPERATOR , err , "Expect ERR_UNKNOWN_OPERATOR exception");
-	}
+    TEST_ASSERT_NULL(operator);
+ 	}
 	
 	operatorDel(operator);
 }
@@ -165,16 +170,17 @@ void test_operatorNewByName_given_square_bracket_name_should_store_nothing(void)
 void test_operatorNewByName_given_curly_bracket_name_should_store_nothing(void)
 {
 	CEXCEPTION_T err;
-	Operator *operator;	
+	Operator *operator = NULL;
 	
 	Try
 	{
-		operator = operatorNewByName("{}");
+		operator = operatorNewByName("'_'");
 		TEST_FAIL_MESSAGE("Should throw ERR_UNKNOWN_OPERATOR exception");
 	}
 	Catch(err)
 	{
 		TEST_ASSERT_EQUAL_MESSAGE(ERR_UNKNOWN_OPERATOR , err , "Expect ERR_UNKNOWN_OPERATOR exception");
+    TEST_ASSERT_NULL(operator);
 	}
 	
 	operatorDel(operator);

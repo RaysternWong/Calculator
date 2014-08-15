@@ -73,19 +73,20 @@ Operator *operatorNewByName(char *name)
 	int i = 0 , result;
 	Operator *op = malloc(sizeof(Operator)); //*op = operator pointer
 	op->type	 = OPERATOR_TOKEN;
-	
+
 	for(i ; i < PRIMARY_TABLE_SIZE ; i++)
 	{
 		result = strcmp(primaryOperatorTable[i].name, name);
-		
+    
 		if(result == 0)
 		{
+      
 			op->info = &primaryOperatorTable[i];
 			return op;
 		}
 		
 	}
-	
+
 	Throw(ERR_UNKNOWN_OPERATOR);
 }
 

@@ -27,5 +27,6 @@ void executeDiv(Stack *dataStack, Stack *operatorStack);
 void executeOr(Stack *dataStack, Stack *operatorStack);
 void executeXor(Stack *dataStack, Stack *operatorStack);
 void executeAnd(Stack *dataStack, Stack *operatorStack);
+void executeOpeningBracket(Stack *dataStack, Stack *operatorStack);
 
 #endif // Operator_H

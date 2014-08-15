@@ -27,7 +27,7 @@ OperatorInfo primaryOperatorTable[] =
 	{.name = "&&", 	.id = AND_OP, 			          .precedence = 30, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeAnd},
 	{.name = "||", 	.id = OR_OP, 			            .precedence = 20, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeOr},
 	{.name = ")", 	.id = CLOSE_BRACKET,        	.precedence = 10, .associativity = LEFT_TO_RIGHT, .affix = POSTFIX, .execute = executeClosingBracket },
-	{.name = "(", 	.id = OPEN_BRACKET, 	        .precedence = 9,  .associativity = RIGHT_TO_LEFT, .affix = PREFIX}
+	{.name = "(", 	.id = OPEN_BRACKET, 	        .precedence = 9,  .associativity = RIGHT_TO_LEFT, .affix = PREFIX,  .execute = executeOpeningBracket}
 };
 
 /* Operator Table contain prefix operator "+" and "-" information

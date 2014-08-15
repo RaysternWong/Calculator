@@ -335,3 +335,7 @@ void executeBitNot(Stack *dataStack, Stack *operatorStack)
 	
 	num->value = !num->value;
 }
+
+void executeOpeningBracket(Stack *dataStack, Stack *operatorStack) {
+  Throw(ERR_NO_CLOSING_BRACKET);
+}

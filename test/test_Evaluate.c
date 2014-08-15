@@ -232,7 +232,7 @@ void test_doOperatorStackRewinding_given_2_and_3_plus_4_multi_5_should_get_corre
 }
 
 // test given two add three should be able to pop out the number 5 result from the dataStack and operatorStack is empty
-void test_given_2_add_3_should_pop_out_5_from_the_dataStack_and_operatorStack_is_empty(void) {
+void test_doOperatorStackRewinding_given_2_add_3_should_pop_out_5_from_the_dataStack_and_operatorStack_is_empty(void) {
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack 	   = stackNew(STACK_LENGTH);
   Number *two = numberNew(2);
@@ -253,7 +253,7 @@ void test_given_2_add_3_should_pop_out_5_from_the_dataStack_and_operatorStack_is
 }
 
 // test given 4 add 5 multiply 6 should be able to pop out the number 34 from the dataStack and operatorStack is empty
-void test_given_4_add_5_multiply_6_should_pop_out_34_from_the_dataStack_and_operatorStack_is_empty(void) {
+void test_doOperatorStackRewinding_given_4_add_5_multiply_6_should_pop_out_34_from_the_dataStack_and_operatorStack_is_empty(void) {
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack 	   = stackNew(STACK_LENGTH);
   Number *four = numberNew(4);
@@ -278,7 +278,7 @@ void test_given_4_add_5_multiply_6_should_pop_out_34_from_the_dataStack_and_oper
 }
 
 // test given 2 add should throw an error due to ERR_INCOMPLETE_NUMBER
-void test_given_2_and_add_should_throw_an_error_due_to_ERR_INCOMPLETE_NUMBER(void) {
+void test_doOperatorStackRewinding_given_2_and_add_should_throw_an_error_due_to_ERR_INCOMPLETE_NUMBER(void) {
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack 	   = stackNew(STACK_LENGTH);
   Number *two = numberNew(2);
@@ -296,7 +296,7 @@ void test_given_2_and_add_should_throw_an_error_due_to_ERR_INCOMPLETE_NUMBER(voi
 }
 
 // test given add should throw an error due to ERR_INCOMPLETE_NUMBER
-void test_given_add_should_throw_an_error_due_to_ERR_INCOMPLETE_NUMBER(void) {
+void test_doOperatorStackRewinding_given_add_should_throw_an_error_due_to_ERR_INCOMPLETE_NUMBER(void) {
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack 	   = stackNew(STACK_LENGTH);
   Operator *add = operatorNewByName("+");
@@ -311,6 +311,23 @@ void test_given_add_should_throw_an_error_due_to_ERR_INCOMPLETE_NUMBER(void) {
     }
 }
 
+// test given open bracket 2 should throw an error due to ERR_NO_CLOSING_BRACKET
+void test_doOperatorStackRewinding_given_open_bracket_2_should_throw_an_error_due_to_ERR_NO_CLOSING_BRACKET(void) {
+	Stack *operatorStack = stackNew(STACK_LENGTH);
+	Stack *dataStack 	   = stackNew(STACK_LENGTH);
+  Operator *openBracket = operatorNewByName("(");
+  Number *two = numberNew(2);
+  CEXCEPTION_T err;
+  
+  Try {
+    stackPush(operatorStack, openBracket);
+    stackPush(dataStack, two);
+    doOperatorStackRewinding(dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("Should throw an error due to ERR_NO_CLOSING_BRACKET");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_NO_CLOSING_BRACKET, err, "Expect ERR_NO_CLOSING_BRACKET");
+    }
+}
 // test given open bracket and 2 should throw an error due to ERR_NO_CLOSING_BRACKET
 // void test_given_open_bracket_and_2_should_throw_an_error_due_to_ERR_NO_CLOSING_BRACKET(void) {
 	// Stack *operatorStack = stackNew(STACK_LENGTH);

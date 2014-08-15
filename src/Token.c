@@ -95,14 +95,24 @@ void tokenDisplay(Token *token)
 	{
 		Operator *op = (Operator *)token;
 		printf("%s\n" , op->line->string);
-		printf("%*c\n" , op->line->startindex+1 , err_ptr);
+    printf("%*c" , op->line->startindex+1 , err_ptr);
+		
+		for(i ; i < op->line->length ; i++)
+			printf("%c" , err_ptr);
+			
+		printf("\n");
 	}
 	
 	else if(token->type == IDENTIFIER_TOKEN)
 	{
 		Identifier *iden = (Identifier *)token;
 		printf("%s\n" , iden->line->string);
-		printf("%*c\n" , iden->line->startindex+1 , err_ptr);
+		printf("%*c" , iden->line->startindex+1 , err_ptr);
+		
+		for(i ; i < iden->line->length ; i++)
+			printf("%c" , err_ptr);
+			
+		printf("\n");
 	}
 	
 }

@@ -355,6 +355,23 @@ void test_given_abc_1plus2_3minus4_when_handle_ENTER_is_called_should_go_into_bu
 
 
 
+//boundary test for handle_ENTER
+void test_handle_ENTER_given_empty_user_input_should_not_add_into_buffer()
+{
+	initialize_historybuffer(3);			//initialize history buffer
+	
+	//mock
+	get_character_ExpectAndReturn(KEY_ENTER);
+
+
+	//run
+	main_command_prompt();
+	TEST_ASSERT_EQUAL_STRING(NULL, hb->buffer[0]);
+}
+
+
+
+
 /* Given strings of abc  def  ghi  are already inside history buffer
  * Now arrow up key is pressed.
  * Expect:

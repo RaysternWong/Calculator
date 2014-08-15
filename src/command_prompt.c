@@ -375,7 +375,8 @@ void copystringtochararray(char array[] , char *string)
  */
 void handle_ENTER()
 {
-	historyBufferAdd(hb, user_input);
+	if(user_input[0] != '\0')				//if the user_input is empty, then dont add it into the historybuffer
+		historyBufferAdd(hb, user_input);
 	consoleClearLine();
 	copystringtochararray(user_input,"");
 	printBuffer(user_input);

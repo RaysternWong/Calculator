@@ -850,6 +850,22 @@ void test_executeBitNot_after_integer_0_pushed_it_should_return_1(void)
 	stackDel(dataStack);
 }
 
-
+// test given open bracket 2 should throw an error due to ERR_NO_CLOSING_BRACKET
+void test_given_open_bracket_2_should_throw_an_error_due_to_ERR_NO_CLOSING_BRACKET(void) {
+	Stack *dataStack = stackNew(10);
+  Stack *operatorStack = stackNew(100);
+  Number *two = numberNew(2);
+  Operator *openBracket = operatorNewByName("(");
+  CEXCEPTION_T err;
+  
+  Try { 
+    stackPush(operatorStack, openBracket);
+    stackPush(dataStack, two);
+    executeClosingBracket( dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("should throw ERR_NO_CLOSE_BRACKET exception");
+  } Catch(err) { 
+      TEST_ASSERT_EQUAL_MESSAGE( ERR_NO_OPEN_BRACKET , err , "Expected ERR_NO_CLOSE_BRACKET exception"); 
+    }
+}
 
 

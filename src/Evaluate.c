@@ -122,54 +122,27 @@ void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStac
 }
 
 
-void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *operatorStack, Stack *dataStack ){
+void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *dataStack ,Stack *operatorStack ){
 
- while (token != NULL)
- {
+  Operator *bracketOpr;  // declare for bracket operator purpose
+
   if ( token->type == NUMBER_TOKEN)
-    {  Throw (ERR_NOT_EXPECTING_NUMBER); }  
- 
-  else if ( token->type == OPERATOR_TOKEN)
-    {
-      Operator *opr = (Operator*)token; 
-      tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
+      Throw (ERR_NOT_EXPECTING_NUMBER);    
+  else {
+      while (token != NULL){
+          Operator *opr = (Operator*)token; 
+          tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
+          token = getToken (expression);
+          
+          if(token == NULL)
+          break;
+      }
+      bracketOpr = (Operator *)stackPeep(operatorStack);
+      if ( bracketOpr->info->id == CLOSE_BRACKET )
+        bracketOpr->info->execute( dataStack , operatorStack );      
     }
-    token = getToken (expression);
-  }
 }
 
-
-/* 
-void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *operatorStack, Stack *dataStack ){
-
- if ( token->type == NUMBER_TOKEN)
-  {  Throw (ERR_NOT_EXPECTING_NUMBER); }  
-  else if ( token->type == OPERATOR_TOKEN)
-  {
-      Operator *opr = (Operator*)token; 
-      tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
-   }
-
-    do {  token = getToken (expression);
-      
-        if(token !=NULL){
-             
-            if ( token->type == NUMBER_TOKEN)
-                {
-                  Number *num = (Number *)token;
-                  stackPush(dataStack, num);
-                }
-                      
-            else  if ( token->type == OPERATOR_TOKEN)
-                {
-                 Operator *opr = (Operator*)token; 
-                 tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
-                }
-            }
-    } while (token != NULL);
- 
- }
-*/ 
 int evaluate(String *expression)
 {
   int Result;
@@ -196,10 +169,8 @@ int evaluate(String *expression)
   
   
   doOperatorStackRewinding ( dataStack , operatorStack );
-
 	Number *ans = (Number *)stackPop(dataStack);
 	Result = ans->value;
-
 	verifyAllStacksAreEmpty(dataStack, operatorStack);
   
 	return Result;

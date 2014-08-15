@@ -231,6 +231,104 @@ void test_doOperatorStackRewinding_given_2_and_3_plus_4_multi_5_should_get_corre
   TEST_ASSERT_NULL ( (Number *)stackPop( dataStack ) );
 }
 
+// test given two add three should be able to pop out the number 5 result from the dataStack and operatorStack is empty
+void test_given_2_add_3_should_pop_out_5_from_the_dataStack_and_operatorStack_is_empty(void) {
+	Stack *operatorStack = stackNew(STACK_LENGTH);
+	Stack *dataStack 	   = stackNew(STACK_LENGTH);
+  Number *two = numberNew(2);
+  Number *three = numberNew(3);
+  Number *answer;
+  Operator *add = operatorNewByName("+");
+  
+  stackPush(dataStack, two);
+  stackPush(dataStack, three);
+  stackPush(operatorStack, add);
+  
+  doOperatorStackRewinding(dataStack, operatorStack);
+  
+  answer = (Number *)stackPop(dataStack);
+  TEST_ASSERT_NOT_NULL(answer);
+  TEST_ASSERT_EQUAL(5, answer->value);
+  TEST_ASSERT_NULL((Operator *)stackPop(operatorStack));
+}
+
+// test given 4 add 5 multiply 6 should be able to pop out the number 34 from the dataStack and operatorStack is empty
+void test_given_4_add_5_multiply_6_should_pop_out_34_from_the_dataStack_and_operatorStack_is_empty(void) {
+	Stack *operatorStack = stackNew(STACK_LENGTH);
+	Stack *dataStack 	   = stackNew(STACK_LENGTH);
+  Number *four = numberNew(4);
+  Number *five = numberNew(5);
+  Number *six = numberNew(6);
+  Operator *add = operatorNewByName("+");
+  Operator *multiply = operatorNewByName("*");
+  Number *answer;
+  
+  stackPush(dataStack, four);
+  stackPush(dataStack, five);
+  stackPush(dataStack, six);
+  stackPush(operatorStack, add);
+  stackPush(operatorStack, multiply);
+  
+  doOperatorStackRewinding(dataStack, operatorStack);
+  
+  answer = (Number *)stackPop(dataStack);
+  TEST_ASSERT_NOT_NULL(answer);
+  TEST_ASSERT_EQUAL(34, answer->value);
+  TEST_ASSERT_NULL((Operator *)stackPop(operatorStack));
+}
+
+// test given 2 add should throw an error due to ERR_INCOMPLETE_NUMBER
+void test_given_2_and_add_should_throw_an_error_due_to_ERR_INCOMPLETE_NUMBER(void) {
+	Stack *operatorStack = stackNew(STACK_LENGTH);
+	Stack *dataStack 	   = stackNew(STACK_LENGTH);
+  Number *two = numberNew(2);
+  Operator *add = operatorNewByName("+");
+  CEXCEPTION_T err;
+  
+  Try {
+    stackPush(dataStack, two);
+    stackPush(operatorStack, add);
+    doOperatorStackRewinding(dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("Should throw an error due to ERR_INCOMPLETE_NUMBER");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_INCOMPLETE_NUMBER, err, "Expect ERR_INCOMEPLETE_NUMBER");
+    }
+}
+
+// test given add should throw an error due to ERR_INCOMPLETE_NUMBER
+void test_given_add_should_throw_an_error_due_to_ERR_INCOMPLETE_NUMBER(void) {
+	Stack *operatorStack = stackNew(STACK_LENGTH);
+	Stack *dataStack 	   = stackNew(STACK_LENGTH);
+  Operator *add = operatorNewByName("+");
+  CEXCEPTION_T err;
+  
+  Try {
+    stackPush(operatorStack, add);
+    doOperatorStackRewinding(dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("Should throw an error due to ERR_INCOMPLETE_NUMBER");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_INCOMPLETE_NUMBER, err, "Expect ERR_INCOMEPLETE_NUMBER");
+    }
+}
+
+// test given open bracket and 2 should throw an error due to ERR_NO_CLOSING_BRACKET
+// void test_given_open_bracket_and_2_should_throw_an_error_due_to_ERR_NO_CLOSING_BRACKET(void) {
+	// Stack *operatorStack = stackNew(STACK_LENGTH);
+	// Stack *dataStack 	   = stackNew(STACK_LENGTH);
+  // Operator *openBracket = operatorNewByName("(");
+  // Number *two = numberNew(2);
+  // CEXCEPTION_T err;
+  
+  // Try {
+    // stackPush(dataStack, two);
+    // stackPush(operatorStack, openBracket);
+    // doOperatorStackRewinding(dataStack, operatorStack);
+    // TEST_FAIL_MESSAGE("Should throw an error due to ERR_NO_CLOSING_BRACKET");
+  // } Catch(err) {
+      // TEST_ASSERT_EQUAL_MESSAGE(ERR_NO_CLOSING_BRACKET, err, "Expect ERR_NO_CLOSING_BRACKET");
+    // }
+// }
+
 void test_evaluatePostfixesAndInfix_given_push_number_5_should_get_throw_exception(void){
 
   CEXCEPTION_T err;

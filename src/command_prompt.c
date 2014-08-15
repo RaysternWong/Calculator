@@ -8,8 +8,7 @@
 
 char user_input[MAX_BUFFER_SIZE];
 char latest_input[MAX_BUFFER_SIZE];
-int arrow_left_right_home_status;
-int end_of_program;		//indicator for end of the program
+
 
 
 /*  To check for the input is special key or not
@@ -19,7 +18,7 @@ int end_of_program;		//indicator for end of the program
  *			 modified key_code of the input will be return
  * 			 modified key_code will be in 2 bytes format
  */
-Keycode is_special_key(int key_code)
+Keycode IsSpecialKey(int key_code)
 {
 	int upper_byte , lower_byte;
 	
@@ -78,7 +77,7 @@ Keycode user_input_interface()
 	while(1)
 	{
 		key_code = get_key_press();
-		status = is_special_key(key_code);
+		status = IsSpecialKey(key_code);
 		if (status != 0)		// status !=0 means special character input	
 		{
 			if(status == CODE_ENTER);
@@ -90,23 +89,29 @@ Keycode user_input_interface()
 			}
 			return status;
 		}
-		if(user_input[cursor] == '\0')
-			user_input[cursor+1]='\0';
-			
+		
+		if(arrow_left_right_home_insert_status != 1 || user_input[cursor] == '\0')
+			user_input[cursor+1] = '\0';
+		
+		if(isInsert == 1)
+		{
+			int endofinput = movecursortoend(user_input);
+			movecharactersbackward(endofinput, user_input);
+		}
+		
 		user_input[cursor] = key_code;
-		put_character(user_input[cursor]);
-				
-		if(arrow_left_right_home_status != 1)	//if arrow left, arrow right and HOME are not press previously
+		if(isInsert == 1)
 		{
 			cursor++;
-			user_input[cursor] = '\0';
+			consoleClearLine();
+			printBuffer(user_input);
+			printBufferTill(user_input,cursor);
 		}
 		else
 		{
+			put_character(user_input[cursor]);
 			cursor++;
-			arrow_left_right_home_status=0;
 		}
-			
 		copystringtochararray(latest_input,user_input);
 	}
 }
@@ -127,6 +132,7 @@ void main_command_prompt()
 
 
 
+//check for which are the special key that entered by user
 void check_special_keys(int key_code)
 {
 	switch ( key_code)
@@ -212,7 +218,7 @@ void check_special_keys(int key_code)
 
 
 //adjust the cursor to the end of the user input
-void movecursortoend(char array[])
+int movecursortoend(char array[])
 {
 	int i=0;
 	
@@ -221,8 +227,9 @@ void movecursortoend(char array[])
 		i++;
 	}
 	
-	cursor = i;
+	return i;
 }
+
 
 
 
@@ -281,40 +288,21 @@ void movecharactersahead(int x, int y)
 
 
 
-
-void movecharactersbackward(int endofinput)
+//
+void movecharactersbackward(int endofinput, char buffer[])
 {
 	int y=0,x=1;
 	
 	while(1)
 	{
-		user_input[endofinput+x] = user_input[endofinput-y];
-		if(user_input[endofinput-y] == user_input[cursor])
-		{
-			user_input[cursor] = get_key_press();
-			if(user_input[cursor] != '\0')
-				cursor++;
+		buffer[endofinput+x] = buffer[endofinput-y];
+		if(	(endofinput-y) == cursor)
 			break;
-		}
 		x--;
 		y++;
 	}
 }
 
-
-
-//get the index of the end of the input
-int get_end_of_input(char array[])
-{
-	int j=0,length=0;
-	
-	while ( array[j] != '\0')
-	{
-		length++;
-		j++;
-	}
-	return length;
-}
 
 
 
@@ -329,12 +317,9 @@ void handle_BACKSPACE()
 	
 	if(user_input[cursor] == '\0')
 	{
-		endofinput = get_end_of_input(user_input);
+		endofinput = movecursortoend(user_input);
 		user_input[endofinput-1] = '\0';
 		cursor--;
-	
-		if(cursor < 0)
-			cursor=0;
 	}
 	else
 	{
@@ -342,11 +327,11 @@ void handle_BACKSPACE()
 		{
 			movecharactersahead(-1, 0);
 			cursor--;
-			if(cursor < 0)
-				cursor=0;
 		}
 	}
 	
+	if(cursor < 0)
+		cursor=0;
 	copystringtochararray(latest_input , user_input);
 	consoleClearLine();
 	printBuffer(user_input);
@@ -356,11 +341,14 @@ void handle_BACKSPACE()
 
 
 
+
+
 // To initialize for the historybuffer
 void initialize_historybuffer(int length_of_buffer)
 {
 	hb = historyBufferNew(length_of_buffer);
 }
+
 
 
 
@@ -380,6 +368,7 @@ void copystringtochararray(char array[] , char *string)
 
 
 
+
 /* To perform enter
  *
  */
@@ -389,9 +378,11 @@ void handle_ENTER()
 	consoleClearLine();
 	copystringtochararray(user_input,"");
 	printBuffer(user_input);
-	previous_status = 0;
+	previous_status = 0;		// to clear the previous status
+	arrow_left_right_home_insert_status = 0;
 	cursor = 0;		// has to reinitialize length of input to 0 to get new input correctly
 }
+
 
 
 
@@ -404,10 +395,11 @@ void handle_ARROWUP()
 
 	char *temp = historyBufferReadPrevious(hb);
 	copystringtochararray(user_input, temp);
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 }
+
 
 
 
@@ -419,50 +411,60 @@ void handle_ARROWDOWN()
 {
 	char *temp = historyBufferReadNext(hb);
 	copystringtochararray(user_input, temp);
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 }
 
 
 
-
+/* To perform arrow right
+ *
+ */
 void handle_ARROWRIGHT()
 {
-	arrow_left_right_home_status=1;
-	
 	if( user_input[cursor] != '\0')
 		cursor++;
-		
+	
+	arrow_left_right_home_insert_status=1;
 	printBufferTill(user_input,cursor);
 }
 
 
 
+
+/* To perform arrow left
+ *
+ */
 void handle_ARROWLEFT()
 {
-	arrow_left_right_home_status=1;
-	
 	if(cursor != 0)
 		cursor--;
-		
+	
+	arrow_left_right_home_insert_status=1;
 	printBufferTill(user_input,cursor);
 }
 
 
 
 
-
+/* To perform HOME key
+ *
+ */
 void handle_HOME()
 {
 	cursor = 0;
-	arrow_left_right_home_status = 1;
+	arrow_left_right_home_insert_status = 1;
 	printBufferTill(user_input,cursor);
 }
 
 
 
 
+
+/* To perform DEL key
+ *
+ */
 void handle_DEL()
 {
 	if(user_input[cursor+1] == '\0')
@@ -479,6 +481,9 @@ void handle_DEL()
 
 
 
+/* To perform PAGEDOWN key
+ *
+ */
 void handle_PAGEDOWN()
 {
 	if( hb->buffer[hb->startIndex] == NULL);
@@ -488,7 +493,7 @@ void handle_PAGEDOWN()
 		index = readjustIndex(hb , index-1);
 		copystringtochararray(user_input, hb->buffer[index]);
 	}
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 }
@@ -496,7 +501,9 @@ void handle_PAGEDOWN()
 
 
 
-
+/* To perform PAGEUP key
+ *
+ */
 void handle_PAGEUP()
 {
 	if( hb->buffer[hb->startIndex] == NULL);
@@ -506,36 +513,40 @@ void handle_PAGEUP()
 		copystringtochararray(user_input, hb->buffer[index]);
 	}
 	previous_status = 1;
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 }
 
 
 
-
+/* To perform INSERT key
+ *
+ */
 void handle_INSERT()
 {
-	int endofinput;
-	
-	endofinput = get_end_of_input(user_input);
-	movecharactersbackward(endofinput);
-	copystringtochararray(latest_input , user_input);
-	consoleClearLine();
-	printBuffer(user_input);
-	printBufferTill(user_input,cursor);
+	isInsert = !isInsert;
+	arrow_left_right_home_insert_status = 1;
 }
 
 
 
+
+/* To perform END key
+ *
+ */
 void handle_END()
 {
-	movecursortoend(user_input);
+	cursor = movecursortoend(user_input);
 	printBufferTill(user_input,cursor);
 }
 
 
 
+
+/* To perform ESCAPE key
+ *
+ */
 int handle_ESCAPE()
 {
 	end_of_program = 1;

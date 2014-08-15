@@ -9,11 +9,12 @@
 
 void setUp(void)
 {
-	cursor = 0;	// the length of input must be zero at first
+	cursor = 0;									
 	next_status = 0;
 	previous_status = 0;
-	arrow_left_right_home_status = 0;
+	arrow_left_right_home_insert_status = 0;
 	end_of_program = 0;
+	isInsert = 0;
 }
 
 void tearDown(void)
@@ -21,7 +22,10 @@ void tearDown(void)
 }
 
 
-// when press 1 will return 49 because 49 is the ascii code for number 1
+
+/* To test get_key_press
+ * when press 1 will return 49 because 49 is the ascii code for number 1
+ */
 void test_get_key_press_given_1_should_return_49()
 {
 	int return_value;  
@@ -36,27 +40,28 @@ void test_get_key_press_given_1_should_return_49()
 
 
 
-
-void test_is_special_key_given_escape_key_should_return_CODE_ESCAPE()
+//test for the special key without escape code
+void test_IsSpecialKey_given_escape_key_should_return_CODE_ESCAPE()
 {
 	int return_value;  		// to get the return from get_key_press function
-	int status;				// to get the return from is_special_key function
+	int status;				// to get the return from IsSpecialKey function
 		
 	//mock
 	get_character_ExpectAndReturn(KEY_ESCAPE);
 	
 	//run
 	return_value = get_key_press();
-	status = is_special_key(return_value);
+	status = IsSpecialKey(return_value);
 	TEST_ASSERT_EQUAL( CODE_ESCAPE , status);
 }
 
 
 
-void test_is_special_key_given_arrow_up_should_return_CODE_ARROWUP()
+//test for the special key with escape code
+void test_IsSpecialKey_given_arrow_up_should_return_CODE_ARROWUP()
 {
 	int return_value;  		// to get the return from get_key_press function
-	int status;				// to get the return from is_special_key function
+	int status;				// to get the return from IsSpecialKey function
 		
 	//mock
 	get_character_ExpectAndReturn(ESCAPECODE2);
@@ -64,24 +69,26 @@ void test_is_special_key_given_arrow_up_should_return_CODE_ARROWUP()
 	
 	//run
 	return_value = get_key_press();
-	status = is_special_key(return_value);
+	status = IsSpecialKey(return_value);
 	TEST_ASSERT_EQUAL( CODE_ARROWUP , status);
 }
 
 
 
-// b is not a special key so will return 0
-void test_is_special_key_given_b_should_return_0()
+/* test for non special key
+ * b is not a special key so will return 0
+ */
+void test_IsSpecialKey_given_b_should_return_0()
 {
 	int return_value;  		// to get the return from get_key_press function
-	int status;				// to get the return from is_special_key function
+	int status;				// to get the return from IsSpecialKey function
 		
 	//mock
 	get_character_ExpectAndReturn('b');
 	
 	//run
 	return_value = get_key_press();
-	status = is_special_key(return_value);
+	status = IsSpecialKey(return_value);
 	TEST_ASSERT_EQUAL( 0 , status);
 }
 
@@ -109,23 +116,13 @@ void test_user_input_interface_given_abc_and_enter_key_buffer_should_get_abc()
 
 
 
+
 void test_movecursortoend_given_user_input_abcd_should_get_cursor_is_4()
 {
 	char string[] = "abcd";
 	
-	movecursortoend(string);
+	cursor = movecursortoend(string);
 	TEST_ASSERT_EQUAL(4, cursor);
-
-}
-
-
-
-void test_get_end_of_input_given_abcdef_should_return_6()
-{
-	char string[] = "abcdef";
-	
-	int end = get_end_of_input(string);
-	TEST_ASSERT_EQUAL(6, end);
 
 }
 
@@ -185,7 +182,7 @@ void test_handle_BACKSPACE_twice_given_abcde_should_get_abc()
 
 
 
-// to test the handle backspace function when no more char should stay
+// to test the handle backspace function when no more char cursor should stay
 void test_handle_BACKSPACE_given_1plus2_when_backspace_four_times_should_get_cursor_is_0()
 {
 	
@@ -278,6 +275,7 @@ void test_handle_BACKSPACE_given_abc_cursor_at_b_backspace_should_get_bc()
 	TEST_ASSERT_EQUAL(1, cursor);
 	main_command_prompt();
 	TEST_ASSERT_EQUAL(0, cursor);
+	TEST_ASSERT_EQUAL('b', user_input[cursor]);
 	TEST_ASSERT_EQUAL_STRING("bc", user_input);
 
 }
@@ -292,7 +290,7 @@ void test_initialize_historybuffer_given_length_of_buffer_is_5_should_allocate_l
 
 
 
-//when user type string of abc and press enter, abc should go into buffer
+//when user type string of abc and press enter, abc should go into buffer[0]
 void test_given_abc_when_handle_ENTER_is_called_should_go_into_buffer()
 {
 	initialize_historybuffer(3);			//initialize history buffer
@@ -313,10 +311,11 @@ void test_given_abc_when_handle_ENTER_is_called_should_go_into_buffer()
 
 
 
-/* Given strings of abc  1+2  3-4  and each of it is insert into history buffer
+/* Given strings of abc  1+2  3-4  and each of it are insert into history buffer
  * when enter is press
- * Expect : latest = abc
- * 			end    = abc
+ * Expect : buffer[0]	=	abc
+ * 			buffer[1]	=	1+2
+ *			buffer[2]	=	3-4
  */
 void test_given_abc_1plus2_3minus4_when_handle_ENTER_is_called_should_go_into_buffer_respectively()
 {
@@ -352,8 +351,6 @@ void test_given_abc_1plus2_3minus4_when_handle_ENTER_is_called_should_go_into_bu
 	TEST_ASSERT_EQUAL_STRING("abc", hb->buffer[0]);
 	TEST_ASSERT_EQUAL_STRING("1+2", hb->buffer[1]);
 	TEST_ASSERT_EQUAL_STRING("3-4", hb->buffer[2]);
-	TEST_ASSERT_EQUAL_STRING("abc", hb->buffer[0]);
-	TEST_ASSERT_EQUAL_STRING("abc", hb->buffer[0]);
 }	
 
 
@@ -364,7 +361,7 @@ void test_given_abc_1plus2_3minus4_when_handle_ENTER_is_called_should_go_into_bu
  *			ghi		return and stored into user_input
  * 			
  */
-void test_given_abc_def_ghi_are_inside_history_buffer_when_arrow_up_is_pressed_ghi_should_return_to_user_input()
+void test_handle_ARROWUP_given_abc_def_ghi_are_inside_history_buffer_when_arrow_up_is_pressed_ghi_should_return_to_user_input()
 {
 	initialize_historybuffer(3);			//initialize history buffer
 	
@@ -410,7 +407,7 @@ void test_given_abc_def_ghi_are_inside_history_buffer_when_arrow_up_is_pressed_g
  *			def	return and stored into user_input
  * 			
  */
-void test_given_abc_def_ghi_are_inside_history_buffer_when_arrow_up_is_pressed_twice_def_should_return_to_user_input()
+void test_handle_ARROWUP_given_abc_def_ghi_are_inside_history_buffer_when_arrow_up_is_pressed_twice_def_should_return_to_user_input()
 {
 	initialize_historybuffer(3);			//initialize history buffer
 		
@@ -452,8 +449,8 @@ void test_given_abc_def_ghi_are_inside_history_buffer_when_arrow_up_is_pressed_t
 
 
 
-
-/* Given strings of abc  def  ghi  are already inside history buffer
+/* Test when already reached the oldest input should return the same input
+ * Given strings of abc  def  ghi  are already inside history buffer
  * Now arrow up key is pressed four times
  * Expect:
  *			abc is returned
@@ -518,7 +515,7 @@ void test_given_abc_def_ghi_are_inside_history_buffer_when_arrow_up_is_pressed_f
  *			ghi return and store in user_input
  * 			
  */
-void test_given_abc_def_ghi_are_inside_history_buffer_when_arrow_up_is_pressed_twice_arrow_down_press_once_ghi_should_store_in_user_input()
+void test_handle_ARROWDOWN_given_abc_def_ghi_are_inside_history_buffer_when_arrow_up_is_pressed_twice_arrow_down_press_once_ghi_should_store_in_user_input()
 {
 	initialize_historybuffer(3);			//initialize history buffer
 		
@@ -673,7 +670,7 @@ void test_handle_PAGEUP_given_123_456_789_000_when_pageup_is_pressed_should_get_
 
 
 
-void test_handle_PAGEUP_given_123_456_789_000_when_pagedown_is_pressed_should_get_000()
+void test_handle_PAGEDOWN_given_123_456_789_000_when_pagedown_is_pressed_should_get_000()
 {
 	initialize_historybuffer(5);			//initialize history buffer
 		
@@ -721,7 +718,7 @@ void test_handle_PAGEUP_given_123_456_789_000_when_pagedown_is_pressed_should_ge
 
 
 
-void test_handle_arrow_left_given_123_call_once_should_point_at_2()
+void test_handle_arrow_left_given_123_call_once_should_point_at_3()
 {
 	initialize_historybuffer(5);			//initialize history buffer
 		
@@ -744,7 +741,7 @@ void test_handle_arrow_left_given_123_call_once_should_point_at_2()
 
 
 
-void test_handle_arrow_left_given_123_call_twice_should_point_at_1()
+void test_handle_arrow_left_given_123_call_twice_should_point_at_2()
 {
 	initialize_historybuffer(5);			//initialize history buffer
 		
@@ -800,7 +797,8 @@ void test_handle_arrow_left_given_123_call_twice_and_enter_char_d_should_get_1d3
 
 
 // boundary test for handle_ARROWLEFT
-void test_handle_arrow_left_given_123_call_thrice_should_point_at_0()
+// The cursor should stay when it is already at first character
+void test_handle_arrow_left_given_123_call_thrice_should_point_at_1()
 {
 	initialize_historybuffer(5);			//initialize history buffer
 		
@@ -858,7 +856,7 @@ void test_handle_arrow_right_given_string_of_123_cursor_pointed_at_1_call_once_s
 
 
 // boundary test for handle_ARROWRIGHT
-void test_handle_arrow_right_given_string_of_123_cursor_pointed_at_3_call_once_should_point_at_next_input()
+void test_handle_arrow_right_given_string_of_123_cursor_pointed_at_3_call_twice_should_stay_the_same()
 {
 	initialize_historybuffer(3);			//initialize history buffer
 		
@@ -873,9 +871,14 @@ void test_handle_arrow_right_given_string_of_123_cursor_pointed_at_3_call_once_s
 	get_character_ExpectAndReturn(ARROW_LEFT);
 	get_character_ExpectAndReturn(ESCAPECODE2);
 	get_character_ExpectAndReturn(ARROW_RIGHT);
+	get_character_ExpectAndReturn(ESCAPECODE2);
+	get_character_ExpectAndReturn(ARROW_RIGHT);
 
 	//run
 	main_command_prompt();
+	main_command_prompt();
+	TEST_ASSERT_EQUAL(3 , cursor);
+	TEST_ASSERT_EQUAL('\0', user_input[cursor]);
 	main_command_prompt();
 	TEST_ASSERT_EQUAL(3 , cursor);
 	TEST_ASSERT_EQUAL('\0', user_input[cursor]);
@@ -939,6 +942,7 @@ void test_handle_END_given_123_cursor_is_at_2_when_END_is_press_should_get_curso
 	TEST_ASSERT_EQUAL(1 , cursor);
 	TEST_ASSERT_EQUAL('2', user_input[cursor]);
 	main_command_prompt();
+	TEST_ASSERT_EQUAL(3 , cursor);
 	TEST_ASSERT_EQUAL('\0', user_input[cursor]);
 }
 
@@ -1038,8 +1042,38 @@ void test_handle_DEL_given_abcde_cursor_at_b_del_is_press_should_get_acde()
 
 
 
+void test_handle_INSERT_given_isInsert_should_toggle_when_called()
+{
 
-void test_handle_INSERT_given_abcdef_cursor_at_c_enter_z_should_get_abzcdef()
+	isInsert = 0;
+	handle_INSERT();
+	TEST_ASSERT_EQUAL(1, isInsert);
+	handle_INSERT();
+	TEST_ASSERT_EQUAL(0, isInsert);
+	handle_INSERT();
+	TEST_ASSERT_EQUAL(1, isInsert);
+	handle_INSERT();
+	TEST_ASSERT_EQUAL(0, isInsert);
+}
+
+
+
+
+void test_movecharactersbackward_given_abcdef_cursor_pointed_at_c_should_get_abccdef()
+{
+	char buffer[20] = "abcdef";
+	cursor = 2;
+	
+	int endofinput = movecursortoend(buffer);
+	TEST_ASSERT_EQUAL(6,endofinput);
+	movecharactersbackward(endofinput, buffer);
+	TEST_ASSERT_EQUAL_STRING("abccdef",buffer);
+}
+
+
+
+
+void test_handle_INSERT_given_abc_cursor_at_b_enter_xyz_should_get_axyzbc()
 {
 	initialize_historybuffer(3);			//initialize history buffer
 		
@@ -1050,35 +1084,33 @@ void test_handle_INSERT_given_abcdef_cursor_at_c_enter_z_should_get_abzcdef()
 	put_character_Expect('b');
 	get_character_ExpectAndReturn('c');
 	put_character_Expect('c');
-	get_character_ExpectAndReturn('d');
-	put_character_Expect('d');
-	get_character_ExpectAndReturn('e');
-	put_character_Expect('e');
-	get_character_ExpectAndReturn('f');
-	put_character_Expect('f');
-	get_character_ExpectAndReturn(ESCAPECODE2);
-	get_character_ExpectAndReturn(ARROW_LEFT);
-	get_character_ExpectAndReturn(ESCAPECODE2);
-	get_character_ExpectAndReturn(ARROW_LEFT);
 	get_character_ExpectAndReturn(ESCAPECODE2);
 	get_character_ExpectAndReturn(ARROW_LEFT);
 	get_character_ExpectAndReturn(ESCAPECODE2);
 	get_character_ExpectAndReturn(ARROW_LEFT);
 	get_character_ExpectAndReturn(ESCAPECODE2);
 	get_character_ExpectAndReturn(KEY_INSERT);
+	get_character_ExpectAndReturn('x');
+	get_character_ExpectAndReturn('y');
 	get_character_ExpectAndReturn('z');
+	get_character_ExpectAndReturn(ESCAPECODE2);
+	get_character_ExpectAndReturn(ARROW_LEFT);	//this key is just to get out from the program loop
 
+	
 	//run
 	main_command_prompt();
 	main_command_prompt();
+	TEST_ASSERT_EQUAL(1 , cursor);
+	TEST_ASSERT_EQUAL('b', user_input[cursor]);
 	main_command_prompt();
+	TEST_ASSERT_EQUAL_STRING("abc", user_input);
+	TEST_ASSERT_EQUAL(1, isInsert);
+	TEST_ASSERT_EQUAL(1 , arrow_left_right_home_insert_status);
 	main_command_prompt();
-	TEST_ASSERT_EQUAL(2 , cursor);
-	TEST_ASSERT_EQUAL('c', user_input[cursor]);
-	main_command_prompt();
-	TEST_ASSERT_EQUAL(3 , cursor); 
-	TEST_ASSERT_EQUAL('c', user_input[cursor]);
-	TEST_ASSERT_EQUAL_STRING("abzcdef", user_input);
+	TEST_ASSERT_EQUAL(3 , cursor); 	//this is 3 instead of 4 because of the arrow left
+	TEST_ASSERT_EQUAL('z', user_input[cursor]);
+	TEST_ASSERT_EQUAL_STRING("axyzbc", user_input);
+	
 }
 
 
@@ -1105,11 +1137,15 @@ void test_handle_INSERT_given_abcdef_cursor_at_behind_f_enter_z_should_get_abcde
 	get_character_ExpectAndReturn(ESCAPECODE2);
 	get_character_ExpectAndReturn(KEY_INSERT);
 	get_character_ExpectAndReturn('z');
+	get_character_ExpectAndReturn(ESCAPECODE2);
+	get_character_ExpectAndReturn(ARROW_LEFT);	//this key is just to get out from the program loop
+	
 
 	//run
 	main_command_prompt();
-	TEST_ASSERT_EQUAL(7 , cursor); 
-	TEST_ASSERT_EQUAL('\0', user_input[cursor]);
+	main_command_prompt();
+	TEST_ASSERT_EQUAL(6 , cursor); 
+	TEST_ASSERT_EQUAL('z', user_input[cursor]);
 	TEST_ASSERT_EQUAL_STRING("abcdefz", user_input);
 }
 

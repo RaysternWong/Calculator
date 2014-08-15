@@ -42,13 +42,17 @@
 
 
 typedef int Keycode;
-int cursor;
-HistoryBuffer *hb;
 
-extern char user_input[MAX_BUFFER_SIZE];
-extern char latest_input[MAX_BUFFER_SIZE];
-extern int arrow_left_right_home_status;
-extern int end_of_program;
+HistoryBuffer *hb;								//pointer which is pointed to the historybuffer structure
+int cursor;										//global variable for cursor,keep track where the cursor is
+int arrow_left_right_home_insert_status;		//the status for arrow left,right, HOME key and INSERT key, set to 1 means these keys are pressed
+int end_of_program;								//indicator for the end of the program, when escape key is press will set to 1, else is 0
+int isInsert;									//indicator for INSERT key, if INSERT key is press will set this to 1
+
+
+extern char user_input[MAX_BUFFER_SIZE];		//the char array use to store the user_input
+extern char latest_input[MAX_BUFFER_SIZE];		//the char array for the latest input
+
 
 /*
 \a (alert) Produces an audible or visible alert. The active
@@ -83,8 +87,8 @@ extern int end_of_program;
 
 
 
-Keycode get_key_press();  				   // get key press 
-Keycode is_special_key(int key_code);	   // check whether input is special key or not
+Keycode get_key_press();  				   						// get key press 
+Keycode IsSpecialKey(int key_code);	   							// check whether input is special key or not
 Keycode user_input_interface();
 void copystringtochararray(char array[] , char *string);
 void mockspecialkeys(int key_code);
@@ -104,10 +108,9 @@ void handle_ENTER();
 int handle_ESCAPE();
 void initialize_historybuffer(int length_of_buffer);
 void main_command_prompt();
-void movecursortoend(char array[]);
+int movecursortoend(char array[]);
 void movecharactersahead(int x, int y);
-void movecharactersbackward(int endofinput);
-int get_end_of_input(char array[]);
+void movecharactersbackward(int endofinput, char buffer[]);
 void consoleClearLine();
 void printBuffer(char buffer[]);  
 void printBufferTill(char buffer[], int length);

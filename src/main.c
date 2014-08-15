@@ -9,9 +9,12 @@ int main()
 	
 	initialize_historybuffer(length_of_historybuffer);
 	 
+	
 	while(end_of_program != 1)
 	{
 		main_command_prompt();
 	}
+	
+	historyBufferDel(hb);
 }
 

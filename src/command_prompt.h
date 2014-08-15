@@ -42,15 +42,16 @@
 
 
 typedef int Keycode;
-HistoryBuffer *hb;
-int cursor;
-int arrow_left_right_home_insert_status;
-int end_of_program;
-int isInsert;
+
+HistoryBuffer *hb;								//pointer which is pointed to the historybuffer structure
+int cursor;										//global variable for cursor,keep track where the cursor is
+int arrow_left_right_home_insert_status;		//the status for arrow left,right, HOME key and INSERT key, set to 1 means these keys are pressed
+int end_of_program;								//indicator for the end of the program, when escape key is press will set to 1, else is 0
+int isInsert;									//indicator for INSERT key, if INSERT key is press will set this to 1
 
 
-extern char user_input[MAX_BUFFER_SIZE];
-extern char latest_input[MAX_BUFFER_SIZE];
+extern char user_input[MAX_BUFFER_SIZE];		//the char array use to store the user_input
+extern char latest_input[MAX_BUFFER_SIZE];		//the char array for the latest input
 
 
 /*
@@ -86,8 +87,8 @@ extern char latest_input[MAX_BUFFER_SIZE];
 
 
 
-Keycode get_key_press();  				   // get key press 
-Keycode getCodeForSpecialKey(int key_code);	   // check whether input is special key or not
+Keycode get_key_press();  				   						// get key press 
+Keycode IsSpecialKey(int key_code);	   							// check whether input is special key or not
 Keycode user_input_interface();
 void copystringtochararray(char array[] , char *string);
 void mockspecialkeys(int key_code);

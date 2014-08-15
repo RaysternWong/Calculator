@@ -5,13 +5,14 @@ char latest_input[1024];
 
 void setUp(void)
 {
-	previous_status = 0;
+	previous_status = 0;	
 	next_status = 0;
 }
 
 void tearDown(void)
 {
 }
+
 
 void test_HistoryBufferNew_given_3_should_allocate_HistoryBuffer_object_with_a_buffer_of_3(void)
 {
@@ -24,6 +25,7 @@ void test_HistoryBufferNew_given_3_should_allocate_HistoryBuffer_object_with_a_b
 }
 
 
+
 void test_readjustIndex_when_index_is_equal_or_greater_than_length_should_return_0()
 {
 	int index = 3;
@@ -34,6 +36,7 @@ void test_readjustIndex_when_index_is_equal_or_greater_than_length_should_return
 }
 
 
+
 void test_readjustIndex_when_index_is_neg_1_should_return_length_minus_1()
 {
 	int index = -1;
@@ -42,6 +45,7 @@ void test_readjustIndex_when_index_is_neg_1_should_return_length_minus_1()
 	index = readjustIndex(hb , index);
 	TEST_ASSERT_EQUAL( hb->length-1 ,index);
 }
+
 
 
 void test_historyBufferAdd_given_123_latestIndex_should_get_1_startIndex_is_0()

@@ -18,7 +18,7 @@ char latest_input[MAX_BUFFER_SIZE];
  *			 modified key_code of the input will be return
  * 			 modified key_code will be in 2 bytes format
  */
-Keycode getCodeForSpecialKey(int key_code)
+Keycode IsSpecialKey(int key_code)
 {
 	int upper_byte , lower_byte;
 	
@@ -77,7 +77,7 @@ Keycode user_input_interface()
 	while(1)
 	{
 		key_code = get_key_press();
-		status = getCodeForSpecialKey(key_code);
+		status = IsSpecialKey(key_code);
 		if (status != 0)		// status !=0 means special character input	
 		{
 			if(status == CODE_ENTER);
@@ -288,7 +288,7 @@ void movecharactersahead(int x, int y)
 
 
 
-
+//
 void movecharactersbackward(int endofinput, char buffer[])
 {
 	int y=0,x=1;
@@ -378,7 +378,7 @@ void handle_ENTER()
 	consoleClearLine();
 	copystringtochararray(user_input,"");
 	printBuffer(user_input);
-	previous_status = 0;
+	previous_status = 0;		// to clear the previous status
 	arrow_left_right_home_insert_status = 0;
 	cursor = 0;		// has to reinitialize length of input to 0 to get new input correctly
 }

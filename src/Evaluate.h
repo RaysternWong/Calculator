@@ -12,7 +12,7 @@ void tryToPushOperatorAndEvaluate(  Operator *opr, Stack *operatorStack, Stack *
 void doOperatorStackRewinding ( Stack *dataStack , Stack *operatorStack );
 Token *convertToPrefixIfNotAlready(Operator *op);
 void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStack, Stack *operatorStack);
-void evalauatePostfixesAndInfix(Token *token, String *expression, Stack *operatorStack, Stack *dataStack );
+void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *operatorStack, Stack *dataStack );
 int evaluate(String *expression);
 
 

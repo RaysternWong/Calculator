@@ -250,7 +250,7 @@ void consoleClearLine()
 
 void printBuffer(char buffer[])
 {
-	printf("%s", buffer);
+	printf(">>%s", buffer);
 }
 
 
@@ -261,6 +261,7 @@ void printBufferTill(char buffer[], int length)
 	int i;
 	
 	printf("\r");
+	printf(">>");
 	
 	for(i=0; i<length;i++)
 	{
@@ -380,6 +381,7 @@ void handle_ENTER()
 	printBuffer(user_input);
 	previous_status = 0;		// to clear the previous status
 	arrow_left_right_home_insert_status = 0;
+	isInsert = 0;
 	cursor = 0;		// has to reinitialize length of input to 0 to get new input correctly
 }
 

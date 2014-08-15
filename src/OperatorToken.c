@@ -34,8 +34,8 @@ OperatorInfo primaryOperatorTable[] =
  */
 OperatorInfo secondaryOperatorTable[] = 
 {
-	{.name = "+", 	.id = ADD_OP,		    	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixAdd},
-	{.name = "-", 	.id = SUB_OP,		    	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixSub}
+	{.name = "+", 	.id = PLUS_OP,		    	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixAdd},
+	{.name = "-", 	.id = MINUS_OP,		    	.precedence = 90,	.associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executePrefixSub}
 };
 
 /* Create new structure for operator (Identify by ID)
@@ -159,7 +159,7 @@ OperatorInfo *getOperatorByNameInSecondaryTable(char *name)
 
 void operatorTryConvertToPrefix(Operator *operator)
 {
-	OperatorInfo *secondaryInfo = getOperatorByIDInSecondaryTable(operator->info->id);
+	OperatorInfo *secondaryInfo = getOperatorByNameInSecondaryTable(operator->info->name);
 	
 	if(secondaryInfo == NULL)
     Throw(ERR_NOT_PREFIX_OPERATOR);

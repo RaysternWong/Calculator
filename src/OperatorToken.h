@@ -44,7 +44,9 @@ typedef enum
 	GREATER_OP, // ">"
 	EQUAL_OP, // "=="
 	OPEN_BRACKET, // "("
-	CLOSE_BRACKET // ")"
+	CLOSE_BRACKET, // ")"
+  PLUS_OP,
+  MINUS_OP
 }OperatorID;
 
 typedef struct

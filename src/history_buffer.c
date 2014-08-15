@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 
-char latest_input[1024];
+char latest_input[1024];	
+
 
 /*
  * Initialize the historybuffer
@@ -37,6 +38,7 @@ void historyBufferDel(HistoryBuffer *hb)
 
 
 
+
 /*
  * Add a new value into the history buffer
  *
@@ -47,8 +49,8 @@ void historyBufferDel(HistoryBuffer *hb)
  */
 void historyBufferAdd(HistoryBuffer *hb, char stringtoadd[])
 {
-	if ( hb->buffer[hb->latestIndex] != NULL)
-		free(hb->buffer[hb->latestIndex]);
+	if ( hb->buffer[hb->latestIndex] != NULL)	//check the buffer is empty or not, if it is not 
+		free(hb->buffer[hb->latestIndex]);		//empty, clear the buffer
 	
 	if( hb->latestIndex == hb->startIndex)
 	{
@@ -61,7 +63,7 @@ void historyBufferAdd(HistoryBuffer *hb, char stringtoadd[])
 	
 	hb->buffer[hb->latestIndex++] = strdup(stringtoadd);
 	hb->latestIndex = readjustIndex(hb , hb->latestIndex);
-	hb->currentIndex = hb->latestIndex;
+	hb->currentIndex = hb->latestIndex;			//always point the currentIndex to the latestIndex
 }
 
 
@@ -114,10 +116,10 @@ char *historyBufferReadPrevious(HistoryBuffer *hb)
 	
 	hb->currentIndex = readjustIndex(hb , hb->currentIndex);
 	
-	if ( hb->currentIndex != latest)	// if the currentIndex is not pointed to latest, then reset the next status to 0
+	if ( hb->currentIndex != latest)	// if the currentIndex is not pointed to latest, then reset the next_status to 0
 		next_status = 0;
 	else	
-		next_status = 1;
+		next_status = 1;				//else set next_status to 1
 	
 	if( hb->currentIndex == hb->startIndex)
 		previous_status = 1;

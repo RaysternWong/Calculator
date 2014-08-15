@@ -13,8 +13,8 @@ typedef struct
 }HistoryBuffer;
 
 
-int previous_status;
-int next_status;
+int previous_status;	// to indicate has already reached the oldest value in the history buffer
+int next_status;		// to indicate has already pointed to the latest value in the history buffer
 
 
 int readjustIndex(HistoryBuffer *hb , int index); 

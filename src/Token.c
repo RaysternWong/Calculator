@@ -44,8 +44,7 @@ Token *getToken(String *expression)
 		int integer = subStringToInteger(numSubString); //Convert substring to integer
 		num = numberNew(integer); //get integer from subStringToInteger and create a new Number Token
 		num->line = stringSubString(expression , tempStart , tempLength);
-
-		return (Token*)num;
+		return (Token *)num;
 	}
 	
 	//if character start with A~Z/a~z or '_' it is identifier token
@@ -58,7 +57,7 @@ Token *getToken(String *expression)
 		iden = identifierNew(idenSubString); //create a new identifier token
 		iden->line = stringSubString(expression , tempStart , tempLength);
 		
-		return (Token*)iden;
+		return (Token *)iden;
 	}
 	
 	// if character not start with A~Z/a~z , '_' or numbers it is operator token
@@ -71,8 +70,33 @@ Token *getToken(String *expression)
 		op = operatorNewByName(opSubString);
 		op->line = stringSubString(expression , tempStart , tempLength);
 		
-		return (Token*)op;
+		return (Token *)op;
+	}		
+}
+
+void tokenDisplay(Token *token)
+{
+	char err_ptr = '^';
+	
+	if(token->type == NUMBER_TOKEN)
+	{
+		Number *num = (Number *)token;
+		printf("%s\n" , num->line->string);
+		printf("%*c\n" , num->line->startindex+1 , err_ptr);
 	}
 	
+	else if(token->type == OPERATOR_TOKEN)
+	{
+		Operator *op = (Operator *)token;
+		printf("%s\n" , op->line->string);
+		printf("%*c\n" , op->line->startindex+1 , err_ptr);
+	}
+	
+	else if(token->type == IDENTIFIER_TOKEN)
+	{
+		Identifier *iden = (Identifier *)token;
+		printf("%s\n" , iden->line->string);
+		printf("%*c\n" , iden->line->startindex+1 , err_ptr);
+	}
 	
 }

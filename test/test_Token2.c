@@ -31,7 +31,7 @@ void test_getToken_given_2_should_get_2_and_pass_to_number_token(void)
 	TEST_ASSERT_EQUAL(2 , num->value);
 	TEST_ASSERT_EQUAL(0 , num->line->startindex);
 	TEST_ASSERT_EQUAL(1 , num->line->length);
-	
+	tokenDisplay((Token *)num);
 	numberDel(num);
 	stringDel(str);
 }
@@ -67,6 +67,7 @@ void test_getToken_given__ABC_iden_line_should_contain_the_idenToken_location(vo
 	TEST_ASSERT_EQUAL_STRING("_ABC" , iden->name);
 	TEST_ASSERT_EQUAL(0 , iden->line->startindex);
 	TEST_ASSERT_EQUAL(4 , iden->line->length);
+	tokenDisplay((Token *)iden);
 	
 	identifierDel(iden);
 	stringDel(str);
@@ -116,6 +117,7 @@ void test_getToken_given_minusx3_4_op_line_should_contain_the_OperatorToken_loca
 	TEST_ASSERT_EQUAL(4321 , num->value);
 	TEST_ASSERT_EQUAL(3 , num->line->startindex);
 	TEST_ASSERT_EQUAL(4 , num->line->length);
+	tokenDisplay((Token *)num);
 	
 	numberDel(num);
 	stringDel(str);
@@ -138,6 +140,7 @@ void test_getToken_given_4_logical_AND_8_and_getToken_2times_should_get_NumberTo
 	TEST_ASSERT_EQUAL(4 , num->value);
 	TEST_ASSERT_EQUAL(0 , num->line->startindex);
 	TEST_ASSERT_EQUAL(1 , num->line->length);
+	tokenDisplay((Token *)num);
 	numberDel(num);
 	
 	op = (Operator*)getToken(str);
@@ -149,6 +152,33 @@ void test_getToken_given_4_logical_AND_8_and_getToken_2times_should_get_NumberTo
 	TEST_ASSERT_EQUAL(30 , op->info->precedence);
 	TEST_ASSERT_EQUAL(2 , op->line->startindex);
 	TEST_ASSERT_EQUAL(2 , op->line->length);
+	tokenDisplay((Token *)op);	
+	operatorDel(op);
+	
+	stringDel(str);
+}
+
+/* 
+ * Given "({56})" and getToken 2times
+ * should throw an exception
+ */
+void test_getToken_given_open_bracket_square_bracket_56_close_bracket_square_bracket_getTokenx2_should_throw_an_exception(void)
+{
+	CEXCEPTION_T err;
+	String *str = stringNew("({56})");
+	Number *num;
+	Operator *op;
+	
+	Try
+	{
+		operatorDel((Operator*)getToken(str));
+		op = (Operator*)getToken(str);
+		TEST_FAIL_MESSAGE("Should throw ERR_UNKNOWN_OPERATOR exception");
+	}
+	Catch(err)
+	{
+		TEST_ASSERT_EQUAL_MESSAGE(ERR_UNKNOWN_OPERATOR , err , "Expect ERR_UNKNOWN_OPERATOR exception");
+	}
 	
 	operatorDel(op);
 	stringDel(str);
@@ -215,6 +245,7 @@ void test_getToken_given_minus_18_BITWISE_OR_432_should_get_numToken_and_Operato
 	TEST_ASSERT_EQUAL(1 , op->line->length);	
 	TEST_ASSERT_EQUAL(1 , str->startindex);	
 	TEST_ASSERT_EQUAL(10 , str->length);
+	tokenDisplay((Token *)op);
 	operatorDel(op);	
 	
 	num = (Number*)getToken(str);
@@ -225,7 +256,41 @@ void test_getToken_given_minus_18_BITWISE_OR_432_should_get_numToken_and_Operato
 	TEST_ASSERT_EQUAL(2 , num->line->length);
 	TEST_ASSERT_EQUAL(4 , str->startindex);	
 	TEST_ASSERT_EQUAL(7 , str->length);
+	tokenDisplay((Token *)num);
 	numberDel(num);
 	
 	stringDel(str);
+}
+
+void test_tokenDisplay_given_1_plus_2_should_display_and_pointing_1(void)
+{
+	String *expression = stringNew("1+2");
+	Number *num = numberNew(1);
+	num->line = stringSubString(expression , 0 , 1);
+	tokenDisplay((Token *)num);
+	
+	numberDel(num);
+	stringDel(expression);
+}
+
+void test_tokenDisplay_given_negative_43_times_50_should_display_and_pointing_50(void)
+{
+	String *expression = stringNew("-43 * 50");
+	Number *num = numberNew(50);
+	num->line = stringSubString(expression , 6 , 2);
+	tokenDisplay((Token *)num);
+	
+	numberDel(num);
+	stringDel(expression);
+}
+
+void test_tokenDisplay_given_plus_99_logical_AND_should_display_1_plus_2(void)
+{
+	String *expression = stringNew("+ 99 &&");
+	Operator *op = operatorNewByName("&&");
+	op->line = stringSubString(expression , 5 , 2);
+	tokenDisplay((Token *)op);
+	
+	operatorDel(op);
+	stringDel(expression);
 }

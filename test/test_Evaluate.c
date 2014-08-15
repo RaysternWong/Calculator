@@ -689,37 +689,87 @@ void test_evaluatePrefixesAndNumber_given_minus_plus_and_multiply_should_throw_a
   stackDel(operatorStack);
 }
 
-// void test_evalaute_given_2_should_return_ans_1(void){
+// test given 2 should be able to return the result 2
+void test_evaluate_given_2_should_return_ans_2(void){
 
-   // int result;
-   // String expression = {.string = "2"};
-   // Number *two = numberNew(2);
+   int result;
+   String expression = {.string = "2"};
+   Number *two = numberNew(2);
 
-   // getToken_ExpectAndReturn(&expression, (Token *)two);
-   // getToken_ExpectAndReturn(&expression, NULL);
+   getToken_ExpectAndReturn(&expression, (Token *)two);
+   getToken_ExpectAndReturn(&expression, NULL);
 
-   // result = evaluate ( &expression );
-   // TEST_ASSERT_EQUAL(2 , result);
+   result = evaluate ( &expression );
+   TEST_ASSERT_EQUAL(2 , result);
 
-// }
+}
 
-// void test_evalaute_2_plus_1_should_return_ans_3(void){
-  // int result;
-  // CEXCEPTION_T err;
-  // String expression = {.string = "2+1"};
-  // Number *two = numberNew(2);
-  // Number *one = numberNew(1);
-  // Operator *plus = operatorNewByName("+");
+// test given minus 3 should be able to return the result -3
+void test_evaluate_given_minus_3_should_be_able_to_return_the_result_negative_3(void){
+  int result;
+  String expression = {.string = "-3"};
+  Number *three = numberNew(3);
+  Operator *minus = operatorNewByName("-");
+  
+  getToken_ExpectAndReturn(&expression, (Token *)minus);
+  getToken_ExpectAndReturn(&expression, (Token *)three);
+  getToken_ExpectAndReturn(&expression, NULL);
+  
+  result = evaluate(&expression);
+  TEST_ASSERT_EQUAL(-3, result);
+}
 
-  // getToken_ExpectAndReturn(&expression, (Token *)two);
-  // getToken_ExpectAndReturn(&expression, (Token *)plus);
-  // getToken_ExpectAndReturn(&expression, (Token *)one);
-  // getToken_ExpectAndReturn(&expression, NULL);
+// test given minus plus 4 should be able to return the result -4
+void test_evaluate_given_minus_plus_4_should_be_able_to_return_the_result_negative_4(void){
+  int result;
+  String expression = {.string = "-+4"};
+  Number *four = numberNew(4);
+  Operator *minus = operatorNewByName("-");
+  Operator *plus = operatorNewByName("+");
+  
+  getToken_ExpectAndReturn(&expression, (Token *)minus);
+  getToken_ExpectAndReturn(&expression, (Token *)plus);
+  getToken_ExpectAndReturn(&expression, (Token *)four);
+  getToken_ExpectAndReturn(&expression, NULL);
+  
+  result = evaluate(&expression);
+  TEST_ASSERT_EQUAL(-4, result);
+}
 
-  // Try {
-    // result = evaluate ( &expression );
-    // TEST_ASSERT_EQUAL(3 , result);
-  // } Catch(err) {
-    // TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_PREFIX_OPERATOR, err, "Expected ERR_NOT_PREFIX_OPERATOR");
-  // }
-// }
+// test given plus minus and multiply 234 should throw an error due to ERR_NOT_PREFIX_OPERATOR
+void test_evaluate_given_plus_minus_multiply_234_should_throw_an_error_due_to_ERR_NOT_PREFIX_OPERATOR(void){
+  int result;
+  String expression = {.string = "+-*234"};
+  Number *num = numberNew(234);
+  Operator *plus = operatorNewByName("+");
+  Operator *minus = operatorNewByName("-");
+  Operator *multiply = operatorNewByName("*");
+  CEXCEPTION_T err;
+  
+  Try {
+    getToken_ExpectAndReturn(&expression, (Token *)plus);
+    getToken_ExpectAndReturn(&expression, (Token *)minus);
+    getToken_ExpectAndReturn(&expression, (Token *)multiply);
+    result = evaluate(&expression);
+    TEST_FAIL_MESSAGE("Should throw an error due to ERR_NOT_PREFIX_OPERATOR");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_PREFIX_OPERATOR, err, "Expect ERR_NOT_PREFIX_OPERATOR");
+    }
+}
+
+// test given minus only should throw an error due to ERR_EXPECT_NUMBER
+void test_evaluate_given_minus_should_throw_an_error_due_to_ERR_EXPECT_NUMBER(void) {
+  int result;
+  String expression = {.string = "-"};
+  Operator *minus = operatorNewByName("-");
+  CEXCEPTION_T err;
+  
+  Try {
+    getToken_ExpectAndReturn(&expression, (Token *)minus);
+    getToken_ExpectAndReturn(&expression, NULL);
+    result = evaluate(&expression);
+    TEST_FAIL_MESSAGE("Should throw an error due to ERR_EXPECTING_NUMBER");
+  } Catch(err) {
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_EXPECTING_NUMBER, err, "Expect ERR_EXPECTING_NUMBER");
+    }
+}

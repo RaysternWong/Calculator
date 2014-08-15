@@ -123,55 +123,45 @@ void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStac
 
 
 void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *dataStack ,Stack *operatorStack ){
-
   Operator *bracketOpr;  // declare for bracket operator purpose
-
-  if ( token->type == NUMBER_TOKEN)
-      Throw (ERR_NOT_EXPECTING_NUMBER);    
-  else {
-      while (token != NULL){
-          Operator *opr = (Operator*)token; 
-          tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
-          token = getToken (expression);
-          
-          if(token == NULL)
-          break;
-      }
-      bracketOpr = (Operator *)stackPeep(operatorStack);
-      if ( bracketOpr->info->id == CLOSE_BRACKET )
-        bracketOpr->info->execute( dataStack , operatorStack );      
+  while(token != NULL) {
+    if(token->type == NUMBER_TOKEN) {
+    Throw(ERR_NOT_EXPECTING_NUMBER);
+    } else if(token->type == OPERATOR_TOKEN) {
+      Operator *opr = (Operator *)token;
+      tryToPushOperatorAndEvaluate(opr, operatorStack, dataStack);
     }
+    token = getToken(expression);
+  }
+  bracketOpr = (Operator *)stackPeep(operatorStack);
+  if ( bracketOpr->info->id == CLOSE_BRACKET )
+    bracketOpr->info->execute( dataStack , operatorStack );   
 }
 
-int evaluate(String *expression)
-{
+int evaluate(String *expression) {
   int Result;
   Token *token;
   Stack *dataStack     = stackNew(STACK_LENGTH);
 	Stack *operatorStack = stackNew(STACK_LENGTH);
-  
-  do{
-    token = getToken(expression);
 
-		if(token!=NULL) {
-        
-        evaluatePrefixesAndNumber(token, expression, dataStack, operatorStack);
-        
-        if(token == NULL)
-          break;
   
-        token = getToken(expression);
-        evaluatePostfixesAndInfix(token, expression, operatorStack, dataStack);
-        
-    } 
+  token = getToken(expression);
+  
+  while(token != NULL) {
+    evaluatePrefixesAndNumber(token, expression, dataStack, operatorStack);
+    token = getToken(expression);
+    
+    if(token == NULL)
+      break;
       
-  }while(token != NULL);
-  
+    evaluatePostfixesAndInfix(token, expression, dataStack, operatorStack);
+    token = getToken(expression);
+  }
   
   doOperatorStackRewinding ( dataStack , operatorStack );
-	Number *ans = (Number *)stackPop(dataStack);
+  Number *ans = (Number *)stackPop(dataStack);
 	Result = ans->value;
-	verifyAllStacksAreEmpty(dataStack, operatorStack);
+  verifyAllStacksAreEmpty(dataStack, operatorStack);
   
 	return Result;
 }

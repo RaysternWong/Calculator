@@ -33,18 +33,20 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
   //Opr is the operator coming from the string expressoin
   //ptrOpr is the operator that coming from the operator stack
   
-	if( (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)                                     ||
-      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )   ||
-      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->id == CLOSE_BRACKET ) )         ) 
+	if( 
+      (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)                                     ||
+      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )  // ||
+    //  (    opr->info->id == CLOSE_BRACKET  )         
+    ) 
 	{	
 		stackPush( operatorStack , opr );   
     bracketOpr = (Operator *)stackPeep(operatorStack);  
-       if ( bracketOpr->info->id == CLOSE_BRACKET ){
+     if ( bracketOpr->info->id == CLOSE_BRACKET )//{
           // bracketOpr = (Operator *)stackPop(operatorStack);
           // doOperatorStackRewinding ( dataStack , operatorStack );
           // stackPush( operatorStack , bracketOpr );
-          bracketOpr->info->execute( dataStack , operatorStack );
-     }       
+        bracketOpr->info->execute( dataStack , operatorStack );
+     // }       
 	}
 	else {
 			while( ptrOpr != NULL)
@@ -147,10 +149,16 @@ void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *dataStac
        tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );
        
        token = getToken(expression); 
-       while (token != NULL) {                      
-           Operator *opr = (Operator*)token;                
-           tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );            
-           token = getToken (expression);                                   
+       while (token != NULL) {  
+          if( token->type == NUMBER_TOKEN)   //if it is number token then break
+           break;
+           
+          Operator *opr = (Operator*)token;   
+          if( opr->info->affix == PREFIX )  //if the operator token is prefix then break
+           break;
+           
+          tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack  );            
+          token = getToken (expression);                       
       } 
   }  
 }

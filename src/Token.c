@@ -77,12 +77,18 @@ Token *getToken(String *expression)
 void tokenDisplay(Token *token)
 {
 	char err_ptr = '^';
+	int i = 1;
 	
 	if(token->type == NUMBER_TOKEN)
 	{
 		Number *num = (Number *)token;
 		printf("%s\n" , num->line->string);
-		printf("%*c\n" , num->line->startindex+1 , err_ptr);
+		printf("%*c" , num->line->startindex+1 , err_ptr);
+		
+		for(i ; i < num->line->length ; i++)
+			printf("%c" , err_ptr);
+			
+		printf("\n");
 	}
 	
 	else if(token->type == OPERATOR_TOKEN)

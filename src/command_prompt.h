@@ -44,8 +44,9 @@
 typedef int Keycode;
 HistoryBuffer *hb;
 int cursor;
-int arrow_left_right_home_status;
+int arrow_left_right_home_insert_status;
 int end_of_program;
+int isInsert;
 
 
 extern char user_input[MAX_BUFFER_SIZE];
@@ -86,7 +87,7 @@ extern char latest_input[MAX_BUFFER_SIZE];
 
 
 Keycode get_key_press();  				   // get key press 
-Keycode is_special_key(int key_code);	   // check whether input is special key or not
+Keycode getCodeForSpecialKey(int key_code);	   // check whether input is special key or not
 Keycode user_input_interface();
 void copystringtochararray(char array[] , char *string);
 void mockspecialkeys(int key_code);
@@ -108,7 +109,7 @@ void initialize_historybuffer(int length_of_buffer);
 void main_command_prompt();
 int movecursortoend(char array[]);
 void movecharactersahead(int x, int y);
-void movecharactersbackward(int endofinput);
+void movecharactersbackward(int endofinput, char buffer[]);
 void consoleClearLine();
 void printBuffer(char buffer[]);  
 void printBufferTill(char buffer[], int length);

@@ -12,8 +12,9 @@ void setUp(void)
 	cursor = 0;	// the length of input must be zero at first
 	next_status = 0;
 	previous_status = 0;
-	arrow_left_right_home_status = 0;
+	arrow_left_right_home_insert_status = 0;
 	end_of_program = 0;
+	isInsert = 0;
 }
 
 void tearDown(void)
@@ -37,26 +38,26 @@ void test_get_key_press_given_1_should_return_49()
 
 
 
-void test_is_special_key_given_escape_key_should_return_CODE_ESCAPE()
+void test_getCodeForSpecialKey_given_escape_key_should_return_CODE_ESCAPE()
 {
 	int return_value;  		// to get the return from get_key_press function
-	int status;				// to get the return from is_special_key function
+	int status;				// to get the return from getCodeForSpecialKey function
 		
 	//mock
 	get_character_ExpectAndReturn(KEY_ESCAPE);
 	
 	//run
 	return_value = get_key_press();
-	status = is_special_key(return_value);
+	status = getCodeForSpecialKey(return_value);
 	TEST_ASSERT_EQUAL( CODE_ESCAPE , status);
 }
 
 
 
-void test_is_special_key_given_arrow_up_should_return_CODE_ARROWUP()
+void test_getCodeForSpecialKey_given_arrow_up_should_return_CODE_ARROWUP()
 {
 	int return_value;  		// to get the return from get_key_press function
-	int status;				// to get the return from is_special_key function
+	int status;				// to get the return from getCodeForSpecialKey function
 		
 	//mock
 	get_character_ExpectAndReturn(ESCAPECODE2);
@@ -64,24 +65,24 @@ void test_is_special_key_given_arrow_up_should_return_CODE_ARROWUP()
 	
 	//run
 	return_value = get_key_press();
-	status = is_special_key(return_value);
+	status = getCodeForSpecialKey(return_value);
 	TEST_ASSERT_EQUAL( CODE_ARROWUP , status);
 }
 
 
 
 // b is not a special key so will return 0
-void test_is_special_key_given_b_should_return_0()
+void test_getCodeForSpecialKey_given_b_should_return_0()
 {
 	int return_value;  		// to get the return from get_key_press function
-	int status;				// to get the return from is_special_key function
+	int status;				// to get the return from getCodeForSpecialKey function
 		
 	//mock
 	get_character_ExpectAndReturn('b');
 	
 	//run
 	return_value = get_key_press();
-	status = is_special_key(return_value);
+	status = getCodeForSpecialKey(return_value);
 	TEST_ASSERT_EQUAL( 0 , status);
 }
 
@@ -1027,8 +1028,38 @@ void test_handle_DEL_given_abcde_cursor_at_b_del_is_press_should_get_acde()
 
 
 
+void test_handle_INSERT_given_isInsert_should_toggle_when_called()
+{
 
-void test_handle_INSERT_given_abcdef_cursor_at_c_enter_z_should_get_abzcdef()
+	isInsert = 0;
+	handle_INSERT();
+	TEST_ASSERT_EQUAL(1, isInsert);
+	handle_INSERT();
+	TEST_ASSERT_EQUAL(0, isInsert);
+	handle_INSERT();
+	TEST_ASSERT_EQUAL(1, isInsert);
+	handle_INSERT();
+	TEST_ASSERT_EQUAL(0, isInsert);
+}
+
+
+
+
+void test_movecharactersbackward_given_abcdef_cursor_pointed_at_c_should_get_abccdef()
+{
+	char buffer[20] = "abcdef";
+	cursor = 2;
+	
+	int endofinput = movecursortoend(buffer);
+	TEST_ASSERT_EQUAL(6,endofinput);
+	movecharactersbackward(endofinput, buffer);
+	TEST_ASSERT_EQUAL_STRING("abccdef",buffer);
+}
+
+
+
+
+void test_handle_INSERT_given_abc_cursor_at_b_enter_xyz_should_get_axyzbc()
 {
 	initialize_historybuffer(3);			//initialize history buffer
 		
@@ -1039,35 +1070,33 @@ void test_handle_INSERT_given_abcdef_cursor_at_c_enter_z_should_get_abzcdef()
 	put_character_Expect('b');
 	get_character_ExpectAndReturn('c');
 	put_character_Expect('c');
-	get_character_ExpectAndReturn('d');
-	put_character_Expect('d');
-	get_character_ExpectAndReturn('e');
-	put_character_Expect('e');
-	get_character_ExpectAndReturn('f');
-	put_character_Expect('f');
-	get_character_ExpectAndReturn(ESCAPECODE2);
-	get_character_ExpectAndReturn(ARROW_LEFT);
-	get_character_ExpectAndReturn(ESCAPECODE2);
-	get_character_ExpectAndReturn(ARROW_LEFT);
 	get_character_ExpectAndReturn(ESCAPECODE2);
 	get_character_ExpectAndReturn(ARROW_LEFT);
 	get_character_ExpectAndReturn(ESCAPECODE2);
 	get_character_ExpectAndReturn(ARROW_LEFT);
 	get_character_ExpectAndReturn(ESCAPECODE2);
 	get_character_ExpectAndReturn(KEY_INSERT);
+	get_character_ExpectAndReturn('x');
+	get_character_ExpectAndReturn('y');
 	get_character_ExpectAndReturn('z');
+	get_character_ExpectAndReturn(ESCAPECODE2);
+	get_character_ExpectAndReturn(ARROW_LEFT);	//this key is just to get out from the program loop
 
+	
 	//run
 	main_command_prompt();
 	main_command_prompt();
+	TEST_ASSERT_EQUAL(1 , cursor);
+	TEST_ASSERT_EQUAL('b', user_input[cursor]);
 	main_command_prompt();
+	TEST_ASSERT_EQUAL_STRING("abc", user_input);
+	TEST_ASSERT_EQUAL(1, isInsert);
+	TEST_ASSERT_EQUAL(1 , arrow_left_right_home_insert_status);
 	main_command_prompt();
-	TEST_ASSERT_EQUAL(2 , cursor);
-	TEST_ASSERT_EQUAL('c', user_input[cursor]);
-	main_command_prompt();
-	TEST_ASSERT_EQUAL(3 , cursor); 
-	TEST_ASSERT_EQUAL('c', user_input[cursor]);
-	TEST_ASSERT_EQUAL_STRING("abzcdef", user_input);
+	TEST_ASSERT_EQUAL(3 , cursor); 	//this is 3 instead of 4 because of the arrow left
+	TEST_ASSERT_EQUAL('z', user_input[cursor]);
+	TEST_ASSERT_EQUAL_STRING("axyzbc", user_input);
+	
 }
 
 
@@ -1094,11 +1123,15 @@ void test_handle_INSERT_given_abcdef_cursor_at_behind_f_enter_z_should_get_abcde
 	get_character_ExpectAndReturn(ESCAPECODE2);
 	get_character_ExpectAndReturn(KEY_INSERT);
 	get_character_ExpectAndReturn('z');
+	get_character_ExpectAndReturn(ESCAPECODE2);
+	get_character_ExpectAndReturn(ARROW_LEFT);	//this key is just to get out from the program loop
+	
 
 	//run
 	main_command_prompt();
-	TEST_ASSERT_EQUAL(7 , cursor); 
-	TEST_ASSERT_EQUAL('\0', user_input[cursor]);
+	main_command_prompt();
+	TEST_ASSERT_EQUAL(6 , cursor); 
+	TEST_ASSERT_EQUAL('z', user_input[cursor]);
 	TEST_ASSERT_EQUAL_STRING("abcdefz", user_input);
 }
 

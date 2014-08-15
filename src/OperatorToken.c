@@ -8,7 +8,7 @@
 /* Operator Table contain all the operator information
  */
 OperatorInfo primaryOperatorTable[] = 
-{
+{ {.name = "$", 	.id = DOLLAR_OP,		     	    .precedence = 40 ,.associativity = RIGHT_TO_LEFT,	.affix = PREFIX         },
   {.name = "!", 	.id = NOT_OP,		     	        .precedence = 90 ,  .associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executeNot},
 	{.name = "~", 	.id = BITWISE_NOT_OP,	        .precedence = 90 ,  .associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executeBitNot},
 	{.name = "*", 	.id = MUL_OP, 			          .precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeMul},

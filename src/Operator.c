@@ -249,7 +249,7 @@ void executeClosingBracket( Stack *dataStack, Stack *operatorStack)
      {   Throw ( ERR_NO_CLOSING_BRACKET);  }
    else {  
            
-           while (  IsItClosingBracket->info->id == CLOSE_BRACKET  ){  //to remove the closing bracket and ounting it      
+           if (  IsItClosingBracket->info->id == CLOSE_BRACKET  ){  //to remove the closing bracket and ounting it      
              Remove  = stackPop(operatorStack);
              counter1 = counter1+1 ;
              IsItClosingBracket  = stackPeep(operatorStack); 
@@ -263,16 +263,16 @@ void executeClosingBracket( Stack *dataStack, Stack *operatorStack)
            if ( IsItOpenBracket == NULL  )
              {      Throw( ERR_NO_OPEN_BRACKET); }
             else {
-               while (  (IsItOpenBracket != NULL)){
+               //while (  (IsItOpenBracket != NULL)){
                 Remove  = stackPop(operatorStack);
                 counter2 = counter2+1 ;
                 IsItOpenBracket  = stackPeep(operatorStack);
-              }  
+             // }  
              } 
-            if(counter1 != counter2 || counter2!=counter1)
-            Throw ( ERR_UNBALANCE_BRACKET);
+            // if(counter1 != counter2 || counter2!=counter1)
+            // Throw ( ERR_UNBALANCE_BRACKET);
        }   
-}
+} 
 
 void executePrefixSub(Stack *dataStack, Stack *operatorStack)
 {

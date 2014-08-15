@@ -35,17 +35,17 @@ void test_tryToPushOperatorAndEvaluate_given_plus_should_push_to_stack(void){
 	TEST_ASSERT_NULL ( (Number *)stackPop( dataStack ) );
 }
 
-//   before:           after:
-//   |  |   |  |       |  |   |   |
-//   |  |   |  |       | 6|   | + | (infix)
-//   +--+   +--+       +--+   +---+
-//    ds     os         ds     os
+//   before:             after:
+//   | 4 |   |   |       |   |   |   |
+//   | 2 |   | + |       | 6 |   | - | (infix)
+//   +---+   +---+       +---+   +---+
+//    ds     os           ds     os
 void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_token_six(void){
 
 	Stack *operatorStack = stackNew(STACK_LENGTH);
 	Stack *dataStack 	 = stackNew(STACK_LENGTH);
 	Operator *Plus1		 = operatorNewByName("+");
-	Operator *Plus2		 = operatorNewByName("+");
+	Operator *minus		 = operatorNewByName("-");
 	Operator *op;
 	Number *two = numberNew(2);
 	Number *four = numberNew(4);
@@ -55,7 +55,7 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_tok
 	stackPush( dataStack , two );
 	stackPush( dataStack , four );
 	stackPush( operatorStack , Plus1 );
-	tryToPushOperatorAndEvaluate( Plus2 , operatorStack, dataStack );
+	tryToPushOperatorAndEvaluate( minus , operatorStack, dataStack );
 
 	num = (Number *)stackPop( dataStack );
 	TEST_ASSERT_NOT_NULL ( num );
@@ -66,16 +66,16 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Plus_should_answer_the_tok
 	op = (Operator *)stackPop( operatorStack );
 	TEST_ASSERT_NOT_NULL ( op );
 	TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
-	TEST_ASSERT_EQUAL ( ADD_OP , op->info->id );
+	TEST_ASSERT_EQUAL ( SUB_OP , op->info->id );
 	TEST_ASSERT_NULL ( (Operator *)stackPop( operatorStack ) );
 }
 
 //   before:           after:
-//   |  |   |  |       |   |   |   |
-//   |  |   |  |       |  4|   | * |
-//   |  |   |  |       | 2 |   | + | (infix)
-//   +--+   +--+       +--+   +---+
-//    ds     os         ds     os
+//   |   |   |   |       |   |   |   |
+//   | 4 |   |   |       | 4 |   | * |
+//   | 2 |   | + |       | 2 |   | + | (infix)
+//   +---+   +---+       +---+   +---+
+//     ds     os          ds      os
 void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_token_four(void){
 
 	Stack *operatorStack = stackNew(STACK_LENGTH);
@@ -120,10 +120,10 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_should_answer_the_to
 }
 
 //   before:           after:
-//   |  |   |  |       |   |   |   |
-//   |  |   |  |       |  |   | ( |
-//   |  |   |  |       |  |   | ( | (prefix)
-//   +--+   +--+       +--+   +---+
+//   |  |   |   |       |  |   |   |
+//   |  |   |   |       |  |   | ( |
+//   |  |   | ( |       |  |   | ( | (prefix)
+//   +--+   +---+       +--+   +---+
 //    ds     os         ds     os
 void test_tryToPushOperatorAndEvaluate_given_bracket_bracket_put_into_stack(void){
 
@@ -144,14 +144,15 @@ void test_tryToPushOperatorAndEvaluate_given_bracket_bracket_put_into_stack(void
 	TEST_ASSERT_NOT_NULL ( op );
   TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
 	TEST_ASSERT_EQUAL ( OPEN_BRACKET , op->info->id );
+  TEST_ASSERT_NULL ( (Operator *)stackPop( operatorStack ) );
 }
 
-//   before:           after:
-//   |  |   |  |       |   |   |   |
-//   |  |   |  |       |   |   |    |
-//   |  |   |  |       |22 |   | + | (infix)
-//   +--+   +--+       +--+   +---+
-//    ds     os         ds     os
+//   before:      +   intermediate: +      after:
+//   | 5 |   |   |    |   |   |   |        |   |   |   |
+//   | 4 |   | * |    |20 |   |   |        |   |   |   |
+//   | 2 |   | + |    | 2 |   | + |        |22 |   | + | (infix)
+//   +---+   +---+    +---+   +---+        +---+   +---+
+//     ds     os        ds     os          ds     os
 void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_5_Plus_should_answer_the_token_twenty_two(void){
 
 	Stack *operatorStack = stackNew(STACK_LENGTH);
@@ -188,12 +189,12 @@ void test_tryToPushOperatorAndEvaluate_given_2_Plus_4_Multi_5_Plus_should_answer
   TEST_ASSERT_NULL ( (Operator *)stackPop( operatorStack ) );
 }
 
-//   before:           after:
-//   |  |   |  |       |   |   |   |
-//   |  |   |  |       |   |   |    |
-//   |  |   |  |       |93 |   | &| (infix)
-//   +--+   +--+       +--+   +---+
-//    ds     os         ds     os
+//   before: &        intermediate: &      after:
+//   | 7 |   |   |    |   |   |   |       |   |   |   |
+//   |13 |   | * |    |91 |   |   |       |   |   |   |
+//   | 2 |   | + |    | 2 |   | + |       |93 |   | & | (infix)
+//   +---+   +---+    +---+   +---+      +---+   +---+
+//     ds     os        ds     os         ds     os
 void test_tryToPushOperatorAndEvaluate_given_2_Plus_13_Multi_7_AND_should_answer_the_token_ninety_three(void){
 
 
@@ -443,7 +444,6 @@ void test_evaluatePostfixesAndInfix_given_2_and_pass_in_NULL_should_return_only_
 
 
   stackPush(dataStack    ,two);
-  getToken_ExpectAndReturn(&expression, NULL  );
 
   evaluatePostfixesAndInfix( NULL , &expression, dataStack, operatorStack);
   Number *num = (Number *)stackPop( dataStack );
@@ -452,6 +452,31 @@ void test_evaluatePostfixesAndInfix_given_2_and_pass_in_NULL_should_return_only_
   TEST_ASSERT_NULL  ( stackPop(operatorStack) );
 }
 
+void test_evaluatePostfixesAndInfix_given_2_and_pass_in_bracket_should_throw_exception(void){
+
+  int Result;
+  CEXCEPTION_T err;
+  Stack *dataStack       = stackNew(STACK_LENGTH);
+	Stack *operatorStack   = stackNew(STACK_LENGTH);
+  Number *two            = numberNew(2);
+  Operator *op;
+  Operator *openBracket  = operatorNewByName("(");
+  String expression      = {.string="2   ("};
+
+  Try{ 
+      stackPush(dataStack    ,two);
+      evaluatePostfixesAndInfix( (Token*)openBracket , &expression, dataStack, operatorStack);
+      TEST_FAIL_MESSAGE("should throw ERR_NOT_EXPECTING_PREFIX_OPERATOR exception");
+      
+  } Catch (err)
+     { TEST_ASSERT_EQUAL_MESSAGE( ERR_NOT_EXPECTING_PREFIX_OPERATOR , err , "Expected ERR_NOT_EXPECTING_PREFIX_OPERATOR exception"); }     
+  
+  
+  Number *num = (Number *)stackPop( dataStack );
+  TEST_ASSERT_EQUAL (	2 , num->value);
+
+  TEST_ASSERT_NULL  ( stackPop(operatorStack) );
+}
 
 void test_evaluatePostfixesAndInfix_given_bracket_2_and_pass_in_NULL_should_only_return_2(void){
 
@@ -465,7 +490,6 @@ void test_evaluatePostfixesAndInfix_given_bracket_2_and_pass_in_NULL_should_only
 
   stackPush(operatorStack,openBracket);
   stackPush(dataStack    ,two);
-  getToken_ExpectAndReturn(&expression, NULL  );
 
   evaluatePostfixesAndInfix( NULL , &expression, dataStack, operatorStack);
   Number *num = (Number *)stackPop( dataStack );
@@ -486,10 +510,8 @@ void test_evaluatePostfixesAndInfix_given_2_plus_should_put_plus_into_stack(void
 	Stack *operatorStack   = stackNew(STACK_LENGTH);
   Number *two            = numberNew(2);
   Operator *plus		     = operatorNewByName("+");
-
   Operator *op;
   String expression  = {.string="2    +"};
-
 
   stackPush(dataStack    ,two);
   getToken_ExpectAndReturn(&expression, NULL  );
@@ -550,6 +572,7 @@ void test_evaluatePostfixesAndInfix_bracket_2_should_only_ans_2(void){
   stackPush(dataStack    ,two         );
   
   getToken_ExpectAndReturn( &expression, NULL  );
+  printf("testing");
   evaluatePostfixesAndInfix( (Token*)closeBracket , &expression, dataStack, operatorStack);
 
   Number *num = (Number *)stackPop(dataStack);

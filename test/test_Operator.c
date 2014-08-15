@@ -652,11 +652,11 @@ void test_executeClosingBracket_given__double_bracket_2_bracket_should_get_resul
   result = (Number *)stackPop(dataStack);
   TEST_ASSERT_EQUAL(2, result->value);
 	stackDel(dataStack);
-  TEST_ASSERT_NULL ((Operator *)stackPeep(operatorStack));
+  TEST_ASSERT_NULL ((Operator *)stackPop(operatorStack));
 
 }
 
-void test_executeClosingBracket_given_unbalance_bracket_should_throw_exception(void){
+void test_executeClosingBracket_given_unbalance_bracket__of_closing_should_throw_exception(void){
 
   CEXCEPTION_T err;
   Stack *dataStack     = stackNew(10);
@@ -667,10 +667,33 @@ void test_executeClosingBracket_given_unbalance_bracket_should_throw_exception(v
   Operator *closeBracket = operatorNewByName(")");
 	
  
-  Try{ //((2
+  Try{ //((2)
       stackPush(operatorStack,openBracket1);
       stackPush(operatorStack,openBracket2);
       stackPush(operatorStack,closeBracket);
+      stackPush(dataStack, two);
+      executeClosingBracket( dataStack, operatorStack);
+      TEST_FAIL_MESSAGE("should throw ERR_UNBALANCE_BRACKET exception");
+  } Catch(err)
+      { TEST_ASSERT_EQUAL_MESSAGE( ERR_UNBALANCE_BRACKET , err , "Expected ERR_UNBALANCE_BRACKET exception"); }
+ 
+}
+
+
+void test_executeClosingBracket_given_unbalance_bracket__of_opening_should_throw_exception(void){
+
+  CEXCEPTION_T err;
+  Stack *dataStack     = stackNew(10);
+  Stack *operatorStack = stackNew(100);
+  Number *two          = numberNew(2);
+  Operator *openBracket= operatorNewByName("(");
+  Operator *closeBracket1 = operatorNewByName(")");
+	Operator *closeBracket2 = operatorNewByName(")");
+ 
+  Try{ //(2))
+      stackPush(operatorStack,openBracket);
+      stackPush(operatorStack,closeBracket1);
+      stackPush(operatorStack,closeBracket2);
       stackPush(dataStack, two);
       executeClosingBracket( dataStack, operatorStack);
       TEST_FAIL_MESSAGE("should throw ERR_UNBALANCE_BRACKET exception");
@@ -742,7 +765,7 @@ void test_executeClosingBracket_given_empty_dataStack_should_throw_exception(voi
   Operator *closeBracket= operatorNewByName(")");
 	
  
-  Try{  
+  Try{ // ()
         stackPush(operatorStack,openBracket);
         stackPush(operatorStack,closeBracket);
         executeClosingBracket( dataStack, operatorStack);

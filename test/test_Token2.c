@@ -23,16 +23,25 @@ void tearDown(void)
  */
 void test_getToken_given_2_should_get_2_and_pass_to_number_token(void)
 {
-	String *str = stringNew("2");
+	String *str = stringNew(" 22  ");
 	Number *num = (Number*)getToken(str);
 
 	TEST_ASSERT_NOT_NULL(num);
 	TEST_ASSERT_EQUAL(NUMBER_TOKEN , num->type);
-	TEST_ASSERT_EQUAL(2 , num->value);
-	TEST_ASSERT_EQUAL(0 , num->line->startindex);
-	TEST_ASSERT_EQUAL(1 , num->line->length);
+	TEST_ASSERT_EQUAL(22 , num->value);
+	TEST_ASSERT_EQUAL(1 , num->line->startindex);
+	TEST_ASSERT_EQUAL(2 , num->line->length);
+	TEST_ASSERT_EQUAL(3 , str->startindex);
+	TEST_ASSERT_EQUAL(2 , str->length);
 	tokenDisplay((Token *)num);
 	numberDel(num);
+	
+	num = (Number*)getToken(str);
+	TEST_ASSERT_NULL(num);
+	TEST_ASSERT_EQUAL(5 , str->startindex);
+	TEST_ASSERT_EQUAL(0 , str->length);
+	numberDel(num);
+	
 	stringDel(str);
 }
 
@@ -124,12 +133,12 @@ void test_getToken_given_minusx3_4_op_line_should_contain_the_OperatorToken_loca
 }
 
 /* 
- * Given "4 && 8" and getToken 2times
+ * Given "4 &&  " and getToken 2times
  * should get numToken 4 and operatorToken &&
  */
 void test_getToken_given_4_logical_AND_8_and_getToken_2times_should_get_NumberToken_and_OperatorToken(void)
 {
-	String *str = stringNew("4 && 8");
+	String *str = stringNew(" 4 &&  ");
 	Number *num;
 	Operator *op;
 	
@@ -138,7 +147,7 @@ void test_getToken_given_4_logical_AND_8_and_getToken_2times_should_get_NumberTo
 	TEST_ASSERT_NOT_NULL(num);
 	TEST_ASSERT_EQUAL(NUMBER_TOKEN , num->type);
 	TEST_ASSERT_EQUAL(4 , num->value);
-	TEST_ASSERT_EQUAL(0 , num->line->startindex);
+	TEST_ASSERT_EQUAL(1 , num->line->startindex);
 	TEST_ASSERT_EQUAL(1 , num->line->length);
 	tokenDisplay((Token *)num);
 	numberDel(num);
@@ -149,12 +158,17 @@ void test_getToken_given_4_logical_AND_8_and_getToken_2times_should_get_NumberTo
 	TEST_ASSERT_EQUAL(OPERATOR_TOKEN , op->type);
 	TEST_ASSERT_EQUAL_STRING("&&" , op->info->name);
 	TEST_ASSERT_EQUAL(AND_OP , op->info->id);
-	TEST_ASSERT_EQUAL(30 , op->info->precedence);
-	TEST_ASSERT_EQUAL(2 , op->line->startindex);
+	TEST_ASSERT_EQUAL(3 , op->line->startindex);
 	TEST_ASSERT_EQUAL(2 , op->line->length);
 	tokenDisplay((Token *)op);	
 	operatorDel(op);
 	
+	op = (Operator*)getToken(str);
+	TEST_ASSERT_NULL(op);
+	TEST_ASSERT_EQUAL(7 , str->startindex);
+	TEST_ASSERT_EQUAL(0 , str->length);
+	
+	operatorDel(op);
 	stringDel(str);
 }
 

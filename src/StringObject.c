@@ -37,6 +37,9 @@ void stringTrimLeft(String *str)
 	{
 		str->startindex++;
 		str->length--;
+		
+		if(str->string[str->startindex] == 0)
+			str->length = 0;
 	}
 }
 
@@ -54,9 +57,12 @@ void stringTrimRight(String *str)
 		i--;
 		
 	while(isspace(str->string[i]))
-	{		
+	{
+		if(str->length == 0)
+		break;
+		
 		i--;
-		str->length--;	
+		str->length--;
 	}
 }
 

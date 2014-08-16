@@ -26,27 +26,24 @@
     ~the returned number token and it is pushed into data stack, final return the data stack to the main function  */
 void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *dataStack ){
 		
-	Operator *ptrOpr;   
+	Operator *ptrOpr; 
 	ptrOpr = (Operator *)stackPeep(operatorStack);
   
   //Opr is the operator coming from the string expressoin
   //ptrOpr is the operator that coming from the operator stack
   
-	if( (ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence)                                     ||
-      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )   ||
-      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->id == CLOSE_BRACKET ) )         ) 
-	{	
-		stackPush( operatorStack , opr );
-	}
+	if( 
+      (   ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence) ||
+      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )   
+    ) 
+    {printf("here");
+		stackPush( operatorStack , opr );}  
 	else {
-			while( ptrOpr != NULL)
-			{     
-				if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL )
-					{ 
+			while( ptrOpr != NULL){     
+				if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL ){ 
 						Operator *oprNew = stackPop( operatorStack);        
 						oprNew->info->execute( dataStack , operatorStack );    
-					}
-					
+				}					
 				ptrOpr = (Operator *)stackPeep(operatorStack);
 			}		
       stackPush( operatorStack , opr ); //while the operator stack is empty then push the opr into the last operator stack
@@ -64,12 +61,12 @@ void doOperatorStackRewinding ( Stack *dataStack , Stack *operatorStack ){
   Operator *ptrOpr;   // pointer to operator	
 	ptrOpr = (Operator *)stackPeep(operatorStack);
 
-  while( ptrOpr != NULL)
-			{     
-						Operator *oprNew = stackPop( operatorStack);        
-						oprNew->info->execute( dataStack , operatorStack );    
-				  	ptrOpr = (Operator *)stackPeep(operatorStack);
-			}		
+  while( ptrOpr != NULL)	{     
+		Operator *oprNew = stackPop( operatorStack);        
+		oprNew->info->execute( dataStack , operatorStack );    
+		ptrOpr = (Operator *)stackPeep(operatorStack);
+
+	}		
      
 }
 
@@ -121,22 +118,81 @@ void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStac
     Throw(ERR_EXPECTING_NUMBER);
 }
 
-
+/* This function is evaluate evaluatePostfixesAndInfix for bracket execution
+	 the function will stop until the coming operator is infix, it will push the infix operator to operatorStack, then break
+	 if the first passing token is number or  prefix operator then will throw exception
+	 
+	 For the case ( 2 ), the operation run as below shown 
+	 current			coming operator
+	 ------				---------------
+	 (2   				)
+	 (2)     			 +
+	  2     	  	 
+	 
+	 For the case ( 2 )+, the operation run as below shown 
+	 current			coming operator
+	 ------				---------------
+	 (2   				)+
+	 (2)     			 +
+	  2     	  	 +
+	  2+
+	 
+	 For the case like (2+5)+, because there is a execution inside the bracket, so before I fed in the closingBracket, 
+	 the 2+5 should execute first,then the operation will run as below shown
+	 current			coming operator
+	 ------				---------------
+	 (2+5    			 )+
+	 (7       		 )+
+	 (7)      		 +
+	  7						 +
+	 7+
+*/ 
 void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *dataStack ,Stack *operatorStack ){
-  Operator *bracketOpr;  // declare for bracket operator purpose
-  while(token != NULL) {
-    if(token->type == NUMBER_TOKEN) {
-    Throw(ERR_NOT_EXPECTING_NUMBER);
-    } else if(token->type == OPERATOR_TOKEN) {
-      Operator *opr = (Operator *)token;
-      tryToPushOperatorAndEvaluate(opr, operatorStack, dataStack);
-    }
-    token = getToken(expression);
-  }
-  bracketOpr = (Operator *)stackPeep(operatorStack);
-  if ( bracketOpr->info->id == CLOSE_BRACKET )
-    bracketOpr->info->execute( dataStack , operatorStack );   
+
+  Operator *opr;
+  Operator *closingBracket ;
+	Operator *oprForExecute ;
+  Stack *tempStack   = stackNew(STACK_LENGTH);
+  
+  if( token == NULL)
+    return;
+  if ( token->type == NUMBER_TOKEN)
+    Throw (ERR_NOT_EXPECTING_NUMBER);           
+  else if ( token->type == OPERATOR_TOKEN){
+    Operator *opr = (Operator*)token; 
+    if( opr->info->affix == PREFIX )
+      Throw( ERR_NOT_EXPECTING_PREFIX_OPERATOR);
+    else if( opr->info->affix == POSTFIX ) {
+		 oprForExecute = stackPeep( operatorStack);     
+				if(( oprForExecute != NULL) && (oprForExecute->info->id!=OPEN_BRACKET) ){        //this process is used to execute the execution inside the bracket
+					oprForExecute = stackPop( operatorStack);																			 //if the operator is not openingBracket, then will do execution 
+					oprForExecute->info->execute( dataStack , operatorStack ); 
+				}	
+       tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack ); 
+       closingBracket = stackPop( operatorStack);        
+			 closingBracket->info->execute( dataStack , operatorStack );  
+      
+       token = getToken(expression);
+			 if(token != NULL){
+				while (token != NULL) {
+           opr = (Operator*)token;
+            if( opr->info->affix == POSTFIX ){            						
+							 tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack );
+							 closingBracket = stackPop( operatorStack);              
+							 closingBracket->info->execute( dataStack , operatorStack );  
+						}
+						else if( opr->info->affix == INFIX )
+						{	tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack );		
+						  break;} 
+				token = getToken(expression);  
+				}
+			}
+		}
+		else if( opr->info->affix == INFIX )
+	  tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack );		 
+	}
 }
+
 
 int evaluate(String *expression) {
   int Result;

@@ -614,94 +614,86 @@ void test_executeClosingBracket_given_bracket_2_bracket_should_get_result_of_2(v
  
   //(2)
   stackPush(operatorStack,openBracket);
-	stackPush(operatorStack,closeBracket);
-  stackPush(dataStack, two);
-  
-
+  stackPush(dataStack, two); 
   executeClosingBracket( dataStack, operatorStack);
 
   result = (Number *)stackPop(dataStack);
   TEST_ASSERT_EQUAL(2, result->value);
-	stackDel(dataStack);
-  TEST_ASSERT_NULL ((Operator *)stackPeep(operatorStack));
+  TEST_ASSERT_NULL (stackPeep(dataStack));
+
+  TEST_ASSERT_NULL (stackPeep(operatorStack));
+  stackDel(dataStack);
+  stackDel(operatorStack);
 
 }
 
-void test_executeClosingBracket_given__double_bracket_2_bracket_should_get_result_of_2(void){
+void test_executeClosingBracket_given_2_should_get_result_of_2(void){
 
   Stack *dataStack = stackNew(10);
   Stack *operatorStack = stackNew(100);
 	Number *result;
 	Number *two = numberNew(2);
-  Operator *openBracket1	 = operatorNewByName("(");
-  Operator *openBracket2	 = operatorNewByName("(");
-	Operator *closeBracket1 = operatorNewByName(")");
-  Operator *closeBracket2 = operatorNewByName(")");
+  Operator *op;
+  CEXCEPTION_T err;
+ 
+  //2
+  Try{
+    stackPush(dataStack, two); 
+    executeClosingBracket( dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("should throw ERR_NO_OPENING_BRACKET exception");
+  }Catch(err){
+    TEST_ASSERT_EQUAL_MESSAGE( ERR_NO_OPENING_BRACKET , err , "Expected ERR_NO_OPENING_BRACKET exception");
+  }
+
+
+  stackDel(dataStack);
+  stackDel(operatorStack);
+
+}
+
+void test_executeClosingBracket_given_bracket_and_no_number_should_throw_exception(void){
+
+  Stack *dataStack = stackNew(10);
+  Stack *operatorStack = stackNew(100);
+	Number *result;
+  Number *two = numberNew(2);
+  Operator *openBracket	 = operatorNewByName("(");
+  CEXCEPTION_T err;
+
   Operator *op;
  
-  //((2))
-  stackPush(operatorStack,openBracket1);
-  stackPush(operatorStack,openBracket2);
-	stackPush(operatorStack,closeBracket1);
-  stackPush(operatorStack,closeBracket2);
-  stackPush(dataStack, two);
-  
-
-  executeClosingBracket( dataStack, operatorStack);
-
-  result = (Number *)stackPop(dataStack);
-  TEST_ASSERT_EQUAL(2, result->value);
-	stackDel(dataStack);
-  TEST_ASSERT_NULL ((Operator *)stackPop(operatorStack));
-
+  //(
+  Try{
+    stackPush(operatorStack,openBracket);
+    executeClosingBracket( dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("should throw ERR_NO_NUMBER exception");
+  }Catch(err){
+   TEST_ASSERT_EQUAL_MESSAGE( ERR_NO_NUMBER , err , "Expected ERR_NO_NUMBER exception");
+  }
 }
 
-void test_executeClosingBracket_given_unbalance_bracket__of_closing_should_throw_exception(void){
+void test_executeClosingBracket_given_2_plus_throw_exception(void){
 
-  CEXCEPTION_T err;
-  Stack *dataStack     = stackNew(10);
+  Stack *dataStack = stackNew(10);
   Stack *operatorStack = stackNew(100);
-  Number *two          = numberNew(2);
-  Operator *openBracket1= operatorNewByName("(");
-  Operator *openBracket2= operatorNewByName("(");
-  Operator *closeBracket = operatorNewByName(")");
-	
- 
-  Try{ //((2)
-      stackPush(operatorStack,openBracket1);
-      stackPush(operatorStack,openBracket2);
-      stackPush(operatorStack,closeBracket);
-      stackPush(dataStack, two);
-      executeClosingBracket( dataStack, operatorStack);
-      TEST_FAIL_MESSAGE("should throw ERR_UNBALANCE_BRACKET exception");
-  } Catch(err)
-      { TEST_ASSERT_EQUAL_MESSAGE( ERR_UNBALANCE_BRACKET , err , "Expected ERR_UNBALANCE_BRACKET exception"); }
- 
-}
-
-
-void test_executeClosingBracket_given_unbalance_bracket__of_opening_should_throw_exception(void){
-
+	Number *result;
+  Number *two = numberNew(2);
+  Operator *plus = operatorNewByName("+");
   CEXCEPTION_T err;
-  Stack *dataStack     = stackNew(10);
-  Stack *operatorStack = stackNew(100);
-  Number *two          = numberNew(2);
-  Operator *openBracket= operatorNewByName("(");
-  Operator *closeBracket1 = operatorNewByName(")");
-	Operator *closeBracket2 = operatorNewByName(")");
+
+  Operator *op;
  
-  Try{ //(2))
-      stackPush(operatorStack,openBracket);
-      stackPush(operatorStack,closeBracket1);
-      stackPush(operatorStack,closeBracket2);
-      stackPush(dataStack, two);
-      executeClosingBracket( dataStack, operatorStack);
-      TEST_FAIL_MESSAGE("should throw ERR_UNBALANCE_BRACKET exception");
-  } Catch(err)
-      { TEST_ASSERT_EQUAL_MESSAGE( ERR_UNBALANCE_BRACKET , err , "Expected ERR_UNBALANCE_BRACKET exception"); }
- 
+  //2+
+  Try{
+    stackPush(operatorStack,plus);
+    executeClosingBracket( dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("should throw ERR_NO_OPENING_BRACKET exception");
+  }Catch(err){
+   TEST_ASSERT_EQUAL_MESSAGE( ERR_NO_OPENING_BRACKET , err , "Expected ERR_NO_OPENING_BRACKET exception");
+  }
 }
 
+/*
 void test_executeClosingBracket_given_empty_operatorStack_should_throw_exception(void){
 
   CEXCEPTION_T err;
@@ -711,11 +703,11 @@ void test_executeClosingBracket_given_empty_operatorStack_should_throw_exception
 	
  
   Try{  //2
-        stackPush(dataStack, two);;
+        stackPush(dataStack, two);
         executeClosingBracket( dataStack, operatorStack);
-        TEST_FAIL_MESSAGE("should throw ERR_NO_CLOSING_BRACKET exception");
+        TEST_FAIL_MESSAGE("should throw ERR_NO_OPENING_BRACKET exception");
    } Catch(err)
-      { TEST_ASSERT_EQUAL_MESSAGE( ERR_NO_CLOSING_BRACKET , err , "Expected ERR_NO_CLOSING_BRACKET exception"); }
+      { TEST_ASSERT_EQUAL_MESSAGE( ERR_NO_OPENING_BRACKET , err , "Expected ERR_NO_OPENING_BRACKET exception"); }
 }
 
 void test_executeClosingBracket_given_no_closing_bracket_should_throw_exception(void){
@@ -773,7 +765,7 @@ void test_executeClosingBracket_given_empty_dataStack_should_throw_exception(voi
    } Catch(err)
       { TEST_ASSERT_EQUAL_MESSAGE( ERR_STACK_EMPTY , err , "Expected ERR_STACK_EMPTY exception"); }
 }
-
+*/
 void test_executePrefixSub_after_integer_2_pushed_in_it_should_return_value_negative_2(void)
 {
 	Stack *dataStack = stackNew(10);
@@ -850,6 +842,18 @@ void test_executeBitNot_after_integer_0_pushed_it_should_return_1(void)
 	stackDel(dataStack);
 }
 
-
+// test given open bracket 2 should throw an error due to ERR_NO_CLOSING_BRACKET
+void test_given_open_bracket_2_should_throw_an_error_due_to_ERR_NO_CLOSING_BRACKET(void) {
+	Stack *dataStack = stackNew(10);
+  Stack *operatorStack = stackNew(100);
+  CEXCEPTION_T err;
+  
+  Try { 
+    executeOpeningBracket(dataStack, operatorStack);
+    TEST_FAIL_MESSAGE("should throw an error due to ERR_NO_CLOSING_BRACKET");
+  } Catch(err) { 
+      TEST_ASSERT_EQUAL_MESSAGE(ERR_NO_CLOSING_BRACKET , err , "Expected ERR_NO_CLOSING_BRACKET exception"); 
+  }
+}
 
 

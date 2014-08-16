@@ -250,7 +250,7 @@ void consoleClearLine()
 
 void printBuffer(char buffer[])
 {
-	printf("%s", buffer);
+	printf(">>%s", buffer);
 }
 
 
@@ -261,6 +261,7 @@ void printBufferTill(char buffer[], int length)
 	int i;
 	
 	printf("\r");
+	printf(">>");
 	
 	for(i=0; i<length;i++)
 	{
@@ -374,12 +375,14 @@ void copystringtochararray(char array[] , char *string)
  */
 void handle_ENTER()
 {
-	historyBufferAdd(hb, user_input);
+	if(user_input[0] != '\0')				//if the user_input is empty, then dont add it into the historybuffer
+		historyBufferAdd(hb, user_input);
 	consoleClearLine();
 	copystringtochararray(user_input,"");
 	printBuffer(user_input);
 	previous_status = 0;		// to clear the previous status
 	arrow_left_right_home_insert_status = 0;
+	isInsert = 0;
 	cursor = 0;		// has to reinitialize length of input to 0 to get new input correctly
 }
 

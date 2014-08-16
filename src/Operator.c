@@ -234,44 +234,17 @@ void executeEqual(Stack *dataStack, Stack *operatorStack)
 /* this function is used to execute closingBracket in multiple case
 */
 void executeClosingBracket( Stack *dataStack, Stack *operatorStack)
-{
+{   
   Number *num ;
-  Operator *IsItClosingBracket ;
-  Operator *IsItOpenBracket;
   Operator *Remove;
-  int counter1=0, counter2=0 ;
-  
+    
+  Remove = stackPop(operatorStack);
+  if( Remove ==  NULL || Remove->info->id !=OPEN_BRACKET) 
+    Throw(ERR_NO_OPENING_BRACKET);
+    
   if( stackisEmpty(dataStack) ) 
-    { Throw (ERR_STACK_EMPTY); }
-
-  IsItClosingBracket  = stackPeep(operatorStack);
-   if ( IsItClosingBracket == NULL || IsItClosingBracket->info->id != CLOSE_BRACKET )
-     {   Throw ( ERR_NO_CLOSING_BRACKET);  }
-   else {  
-           
-           while (  IsItClosingBracket->info->id == CLOSE_BRACKET  ){  //to remove the closing bracket and ounting it      
-             Remove  = stackPop(operatorStack);
-             counter1 = counter1+1 ;
-             IsItClosingBracket  = stackPeep(operatorStack); 
-             
-             if( IsItClosingBracket  == NULL)     //if stackPeep is NULL, then means that is no open bracket
-               {   Throw( ERR_NO_OPEN_BRACKET); }
-           } 
-           
-          
-         IsItOpenBracket  = stackPeep(operatorStack);
-           if ( IsItOpenBracket == NULL  )
-             {      Throw( ERR_NO_OPEN_BRACKET); }
-            else {
-               while (  (IsItOpenBracket != NULL)){
-                Remove  = stackPop(operatorStack);
-                counter2 = counter2+1 ;
-                IsItOpenBracket  = stackPeep(operatorStack);
-              }  
-             } 
-            if(counter1 != counter2 || counter2!=counter1)
-            Throw ( ERR_UNBALANCE_BRACKET);
-       }   
+    Throw(  ERR_NO_NUMBER );
+  
 }
 
 void executePrefixSub(Stack *dataStack, Stack *operatorStack)
@@ -334,4 +307,8 @@ void executeBitNot(Stack *dataStack, Stack *operatorStack)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 	
 	num->value = !num->value;
+}
+
+void executeOpeningBracket(Stack *dataStack, Stack *operatorStack) {
+  Throw(ERR_NO_CLOSING_BRACKET);
 }

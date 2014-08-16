@@ -46,7 +46,8 @@ typedef enum
 	OPEN_BRACKET, // "("
 	CLOSE_BRACKET, // ")"
   PLUS_OP,
-  MINUS_OP
+  MINUS_OP,
+  DOLLAR_OP
 }OperatorID;
 
 typedef struct

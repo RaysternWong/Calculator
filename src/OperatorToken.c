@@ -8,9 +8,9 @@
 /* Operator Table contain all the operator information
  */
 OperatorInfo primaryOperatorTable[] = 
-{
-  {.name = "!", 	.id = NOT_OP,		     	        .precedence = 90 ,  .associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executeNot},
-	{.name = "~", 	.id = BITWISE_NOT_OP,	        .precedence = 90 ,  .associativity = RIGHT_TO_LEFT,	.affix = PREFIX, .execute = executeBitNot},
+{ {.name = "$", 	.id = DOLLAR_OP,		     	    .precedence = 40 ,.associativity = RIGHT_TO_LEFT,	.affix = PREFIX         },
+  {.name = "!", 	.id = NOT_OP,		     	        .precedence = 90 ,.associativity = RIGHT_TO_LEFT,	.affix = PREFIX,  .execute = executeNot},
+	{.name = "~", 	.id = BITWISE_NOT_OP,	        .precedence = 90 ,.associativity = RIGHT_TO_LEFT,	.affix = PREFIX,  .execute = executeBitNot},
 	{.name = "*", 	.id = MUL_OP, 			          .precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeMul},
 	{.name = "%", 	.id = NPERCENT_OP, 		        .precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeModulo},
 	{.name = "/", 	.id = DIV_OP, 		          	.precedence = 80, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeDiv},
@@ -27,7 +27,7 @@ OperatorInfo primaryOperatorTable[] =
 	{.name = "&&", 	.id = AND_OP, 			          .precedence = 30, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeAnd},
 	{.name = "||", 	.id = OR_OP, 			            .precedence = 20, .associativity = LEFT_TO_RIGHT, .affix = INFIX,   .execute = executeOr},
 	{.name = ")", 	.id = CLOSE_BRACKET,        	.precedence = 10, .associativity = LEFT_TO_RIGHT, .affix = POSTFIX, .execute = executeClosingBracket },
-	{.name = "(", 	.id = OPEN_BRACKET, 	        .precedence = 9,  .associativity = RIGHT_TO_LEFT, .affix = PREFIX}
+	{.name = "(", 	.id = OPEN_BRACKET, 	        .precedence = 9,  .associativity = RIGHT_TO_LEFT, .affix = PREFIX,  .execute = executeOpeningBracket}
 };
 
 /* Operator Table contain prefix operator "+" and "-" information
@@ -73,19 +73,20 @@ Operator *operatorNewByName(char *name)
 	int i = 0 , result;
 	Operator *op = malloc(sizeof(Operator)); //*op = operator pointer
 	op->type	 = OPERATOR_TOKEN;
-	
+
 	for(i ; i < PRIMARY_TABLE_SIZE ; i++)
 	{
 		result = strcmp(primaryOperatorTable[i].name, name);
-		
+    
 		if(result == 0)
 		{
+      
 			op->info = &primaryOperatorTable[i];
 			return op;
 		}
 		
 	}
-	
+
 	Throw(ERR_UNKNOWN_OPERATOR);
 }
 

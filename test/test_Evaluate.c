@@ -1236,23 +1236,25 @@ void test_evaluate_bracket_1_plus_2_bracket_multi_3_should_return_ans_9(void){
 void test_evaluate_2multi_bracket_1_plus_2_bracket_multi_3_should_return_ans_18(void){
 
    int result;
-   String expression = {.string = "1+2*3			"};
-	 Number *one   = numberNew(1);
-   Number *two   = numberNew(2);
+   String expression = {.string = "2*(1+2)*3			"};
+   Number *one   = numberNew(1);
+   Number *firstTwo   = numberNew(2);
+   Number *secondTwo   = numberNew(2);
 	 Number *three = numberNew(3);
 	 Operator *plus = operatorNewByName("+");
-	 Operator *multi = operatorNewByName("*");
+	 Operator *firstMulti = operatorNewByName("*");
+	 Operator *secondMulti = operatorNewByName("*");
    Operator *openBracket  = operatorNewByName("(");
    Operator *closeBracket = operatorNewByName(")");
 
-	 getToken_ExpectAndReturn(&expression, (Token *)two);						//2
-	 getToken_ExpectAndReturn(&expression, (Token *)multi); 				//*
+	 getToken_ExpectAndReturn(&expression, (Token *)firstTwo);						//2
+	 getToken_ExpectAndReturn(&expression, (Token *)firstMulti); 				//*
 	 getToken_ExpectAndReturn(&expression, (Token *)openBracket);		//(
 	 getToken_ExpectAndReturn(&expression, (Token *)one);						//1
 	 getToken_ExpectAndReturn(&expression, (Token *)plus);					//+
-   getToken_ExpectAndReturn(&expression, (Token *)two);						//2
+   getToken_ExpectAndReturn(&expression, (Token *)secondTwo);						//2
 	 getToken_ExpectAndReturn(&expression, (Token *)closeBracket);	//)
-	 getToken_ExpectAndReturn(&expression, (Token *)multi);					//*
+	 getToken_ExpectAndReturn(&expression, (Token *)secondMulti);					//*
    getToken_ExpectAndReturn(&expression, (Token *)three); 				//3
    getToken_ExpectAndReturn(&expression, NULL);
 

@@ -1208,7 +1208,7 @@ void test_evaluate_1plus2multi3__should_return_ans_7(void){
 void test_evaluate_bracket_1_plus_2_bracket_multi_3_should_return_ans_9(void){
 
    int result;
-   String expression = {.string = "1+2*3			"};
+   String expression = {.string = "(1+2)*3					"};
 	 Number *one   = numberNew(1);
    Number *two   = numberNew(2);
 	 Number *three = numberNew(3);

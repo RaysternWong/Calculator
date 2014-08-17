@@ -15,6 +15,7 @@ void setUp(void){}
 
 void tearDown(void){}
 
+// test given add operator should be able to return the info of it 
 void test_OperatorByID_should_print_out_ADD_OP_details_due_to_ADD_OP_parameter_is_passed_in(void)
 {
 	OperatorInfo *info = getOperatorByID(ADD_OP);
@@ -22,6 +23,7 @@ void test_OperatorByID_should_print_out_ADD_OP_details_due_to_ADD_OP_parameter_i
 	TEST_ASSERT_EQUAL(ADD_OP, info->id);	
 }
 
+// test given divide operator should be able to return the info of it 
 void test_OperatorByID_should_print_out_DIV_OP_details_due_to_DIV_OP_parameter_is_passed_in(void)
 {
 	OperatorInfo *info = getOperatorByID(DIV_OP);
@@ -30,6 +32,7 @@ void test_OperatorByID_should_print_out_DIV_OP_details_due_to_DIV_OP_parameter_i
 	
 }
 
+// test given or operator should be able to return the info of it 
 void test_OperatorByID_should_print_out_BITWISE_OR_OP_details_due_to_BITWISE_OR_OP_parameter_is_passed_in(void)
 {
 	OperatorInfo *info = getOperatorByID(OR_OP);
@@ -37,12 +40,14 @@ void test_OperatorByID_should_print_out_BITWISE_OR_OP_details_due_to_BITWISE_OR_
 	TEST_ASSERT_EQUAL(OR_OP, info->id);	
 }
 
+// test given unknown operator should be able to return NULL 
 void test_OperatorByID_should_not_print_out_due_to_the_operator_is_not_in_the_table(void)
 {
 	OperatorInfo *info = getOperatorByID(UNKNOWN_OP);
 	TEST_ASSERT_NULL(info);
 }
 
+// test given "+" name should return the info of it
 void test_OperatorByName_should_print_out_ADD_OP_details_due_to_ADD_OP_parameter_is_passed_in(void)
 {
 	OperatorInfo *info = getOperatorByName("+");
@@ -50,6 +55,7 @@ void test_OperatorByName_should_print_out_ADD_OP_details_due_to_ADD_OP_parameter
 	TEST_ASSERT_EQUAL_STRING("+", info->name);	
 }
 
+// test given "/" name should return the info of it
 void test_OperatorByName_should_print_out_DIV_OP_details_due_to_DIV_OP_parameter_is_passed_in(void)
 {
 	OperatorInfo *info = getOperatorByName("/");
@@ -57,6 +63,7 @@ void test_OperatorByName_should_print_out_DIV_OP_details_due_to_DIV_OP_parameter
 	TEST_ASSERT_EQUAL_STRING("/", info->name);	
 }
 
+// test given "||" name should return the info of it
 void test_OperatorByName_should_print_out_BITWISE_OR_OP_details_due_to_BITWISE_OR_OP_parameter_is_passed_in(void)
 {
 	OperatorInfo *info = getOperatorByName("||");
@@ -64,12 +71,14 @@ void test_OperatorByName_should_print_out_BITWISE_OR_OP_details_due_to_BITWISE_O
 	TEST_ASSERT_EQUAL_STRING("||", info->name);	
 }
 
+// test given "asd" name should return NULL
 void test_OperatorByName_should_not_print_out_UNKNOWN_OP_details_due_to_UNKNOWN_OP_parameter_is_passed_in(void)
 {
 	OperatorInfo *info = getOperatorByName("asd");
 	TEST_ASSERT_NULL(info);
 }
 
+// test given 1 and 2 should be able to get the result of 1 and 2 
 void test_getInfixValues_after_integer_1_and_2_is_pushed_should_display_out_1_and_2(void)
 {
 	Stack *dataStack = stackNew(10);
@@ -88,6 +97,7 @@ void test_getInfixValues_after_integer_1_and_2_is_pushed_should_display_out_1_an
 	stackDel(dataStack);
 }
 
+// test given operator that is being pushed into stack should throw and error due to ERR_NOT_NUMBER_TOKEN
 void test_getInfixValues_after_push_an_operator_type_should_throw_an_exception(void)
 {
 	Stack *dataStack = stackNew(10);
@@ -109,6 +119,7 @@ void test_getInfixValues_after_push_an_operator_type_should_throw_an_exception(v
 	stackDel(dataStack);
 }
 
+// test given one of the value is NULL should throw and error due to ERR_INCOMPLETE_NUMBER
 void test_getInfixValues_will_throw_an_exception_if_the_first_or_second_popResult_is_NULL(void)
 {
 	Stack *dataStack = stackNew(10);
@@ -129,6 +140,7 @@ void test_getInfixValues_will_throw_an_exception_if_the_first_or_second_popResul
 	stackDel(dataStack);
 }
 
+// test if nothing is pushed into the dataStack will throw an error due to ERR_INCOMPLETE_NUMBER
 void test_getInfixValues_will_throw_an_exception_if_nothing_is_pushed_into_the_dataStack(void)
 {
 	Stack *dataStack = stackNew(10);

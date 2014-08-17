@@ -276,6 +276,66 @@ void test_getToken_given_minus_18_BITWISE_OR_432_should_get_numToken_and_Operato
 	stringDel(str);
 }
 
+void test_getToken_given_complicated_expression_should_able_to_getToken(void)
+{
+	Number *num;
+	Operator *op;
+	String *str = stringNew(" (-2*4) &&  ");
+	
+	op = (Operator*)getToken(str);
+	TEST_ASSERT_NOT_NULL(op);
+	TEST_ASSERT_EQUAL_STRING("(" , op->info->name);
+	TEST_ASSERT_EQUAL(1 , op->line->startindex);
+	TEST_ASSERT_EQUAL(1 , op->line->length);	
+	TEST_ASSERT_EQUAL(2 , str->startindex);	
+	TEST_ASSERT_EQUAL(10 , str->length);
+	tokenDisplay((Token *)op);
+	operatorDel(op);	
+	
+	op = (Operator*)getToken(str);
+	TEST_ASSERT_NOT_NULL(op);
+	TEST_ASSERT_EQUAL_STRING("-" , op->info->name);
+	TEST_ASSERT_EQUAL(2 , op->line->startindex);
+	TEST_ASSERT_EQUAL(1 , op->line->length);	
+	TEST_ASSERT_EQUAL(3 , str->startindex);	
+	TEST_ASSERT_EQUAL(9 , str->length);
+	tokenDisplay((Token *)op);
+	operatorDel(op);	
+	
+	num = (Number*)getToken(str);
+	TEST_ASSERT_NOT_NULL(num);
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN , num->type);
+	TEST_ASSERT_EQUAL(2 , num->value);
+	TEST_ASSERT_EQUAL(3 , num->line->startindex);
+	TEST_ASSERT_EQUAL(1 , num->line->length);
+	TEST_ASSERT_EQUAL(4 , str->startindex);	
+	TEST_ASSERT_EQUAL(8 , str->length);
+	tokenDisplay((Token *)num);
+	numberDel(num);
+	
+	operatorDel((Operator*)getToken(str));
+	numberDel((Number*)getToken(str));
+	operatorDel((Operator*)getToken(str));
+	
+	op = (Operator*)getToken(str);
+	TEST_ASSERT_NOT_NULL(op);
+	TEST_ASSERT_EQUAL_STRING("&&" , op->info->name);
+	TEST_ASSERT_EQUAL(8 , op->line->startindex);
+	TEST_ASSERT_EQUAL(2 , op->line->length);	
+	TEST_ASSERT_EQUAL(10 , str->startindex);	
+	TEST_ASSERT_EQUAL(2 , str->length);
+	tokenDisplay((Token *)op);
+	operatorDel(op);	
+	
+	op = (Operator*)getToken(str);
+	TEST_ASSERT_NULL(op);
+	TEST_ASSERT_EQUAL(12 , str->startindex);	
+	TEST_ASSERT_EQUAL(0 , str->length);
+	operatorDel(op);
+	
+	stringDel(str);
+}
+
 void test_tokenDisplay_given_1_plus_2_should_display_and_pointing_1(void)
 {
 	String *expression = stringNew("1+2");

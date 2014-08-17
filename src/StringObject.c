@@ -5,7 +5,7 @@
 #include <malloc.h>
 
 char *numSet = "0123456789";
-char *opSet = "~!@#$%^&*_-+{}=|(;:)\'<,.>/?";
+char *opSet = "(~!@#$%^&*_-+{}=|;:)\'<,.>/?";
 char *alphaNumericSet = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 char *alphaSet = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -102,7 +102,6 @@ String *stringRemoveWordContaining(String *str , char *containSet)
 					removedWord->startindex = i; //first character found	
 					firstFound = 1; //make sure this statement wont run again when the first character is found
 				}
-				
 				removedWord->length++; //one word is detected in ContainSet
 				str->startindex = i+1;
 				notInSet = 0;
@@ -360,6 +359,7 @@ String *stringRemoveOperator(String *str , char *containSet)
 						removedWord->length = 2;
 						str->startindex = i+2;
 						str->length -= 2;
+						str->length = strlen(str->string) - str->startindex;
 						return removedWord;
 					}					
 					goto jump;
@@ -373,6 +373,7 @@ String *stringRemoveOperator(String *str , char *containSet)
 						removedWord->length = 2;
 						str->startindex = i+2;
 						str->length -= 2;
+						str->length = strlen(str->string) - str->startindex;
 						return removedWord;
 					}
 					goto jump;
@@ -386,6 +387,7 @@ String *stringRemoveOperator(String *str , char *containSet)
 						removedWord->length = 2;
 						str->startindex = i+2;
 						str->length -= 2;
+						str->length = strlen(str->string) - str->startindex;
 						return removedWord;
 					}
 					goto jump;
@@ -399,12 +401,13 @@ String *stringRemoveOperator(String *str , char *containSet)
 						removedWord->length = 2;
 						str->startindex = i+2;
 						str->length -= 2;
+						str->length = strlen(str->string) - str->startindex;
 						return removedWord;
 					}
 					goto jump;
 				}
 				
-        else if(str->string[i] == '=') //check "==" operator
+				else if(str->string[i] == '=') //check "==" operator
 				{
 					if(str->string[i+1] == '=')
 					{
@@ -412,6 +415,7 @@ String *stringRemoveOperator(String *str , char *containSet)
 						removedWord->length = 2;
 						str->startindex = i+2;
 						str->length -= 2;
+						str->length = strlen(str->string) - str->startindex;
 						return removedWord;
 					}
 					goto jump;
@@ -420,7 +424,7 @@ jump:
 				removedWord->startindex = i;
 				removedWord->length++;
 				str->startindex = i+1;
-				str->length--;
+				str->length = strlen(str->string) - str->startindex;
 				return removedWord;	
 			}
 				

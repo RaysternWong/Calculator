@@ -19,7 +19,13 @@
 #include <stdio.h>
 #include <malloc.h>
 
-
+/*
+  This function is the combination of the ShuntingYard algorithm and getToken
+  Input:
+    - String *expression
+  Output:
+    - the result that is being returned
+*/
 int Calculator(String *expression)
 {
 	int result;

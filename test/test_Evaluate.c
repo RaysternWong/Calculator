@@ -1260,5 +1260,4 @@ void test_evaluate_2multi_bracket_1_plus_2_bracket_multi_3_should_return_ans_18(
 
    result = evaluate ( &expression );
    TEST_ASSERT_EQUAL( 18  , result);
-
 }

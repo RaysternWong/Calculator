@@ -86,6 +86,13 @@ void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
   }
 }
 
+/*
+  This function will convert those INFIX operators to PREFIX
+  Input:
+    The operator and the info that is passed into this function
+  Output:
+    The returned token with new PREFIX OperatorInfo
+*/
 Token *convertToPrefixIfNotAlready(Operator *op) {
   if(op->info->affix == INFIX) {
     operatorTryConvertToPrefix(op);
@@ -94,6 +101,12 @@ Token *convertToPrefixIfNotAlready(Operator *op) {
   return (Token *)op;
 }
 
+/* 
+  This function will get the Token if it is Operator Token it will keep
+  get the token until it get a number token then it will stop
+  Input:
+    Token that is being passed in, expression of the string, dataStack and operatorStack
+*/
 void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStack, Stack *operatorStack) {
   if(token != NULL) {
     while(1) {
@@ -193,7 +206,13 @@ void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *dataStac
 	}
 }
 
-
+/* 
+  This function is the main evaluate function of the ShuntingYard algorithm
+  Input:
+    The string expression that is passed in by the user
+  Output:
+    The return of the final result after the arithmetic and logic process
+*/
 int evaluate(String *expression) {
   int Result;
   Token *token;

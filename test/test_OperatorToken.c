@@ -13,6 +13,7 @@ void setUp(void){}
 
 void tearDown(void){}
 
+// test given operatorID plus operator should return the operatorinfo of it
 void test_getOperatorByIDInSecondaryTable_after_ADD_OP_is_passed_in_it_should_return_back_the_info_of_it(void)
 {
 	OperatorInfo *info = getOperatorByIDInSecondaryTable(PLUS_OP);
@@ -22,6 +23,7 @@ void test_getOperatorByIDInSecondaryTable_after_ADD_OP_is_passed_in_it_should_re
   TEST_ASSERT_EQUAL_STRING("+", info->name);
 }
 
+// test given unknown operator should return NULL
 void test_getOperatorByIDInSecondaryTable_after_UNKNOWN_OP_is_passed_in_it_should_return_NULL(void)
 {
 	OperatorInfo *info = NULL;
@@ -29,6 +31,7 @@ void test_getOperatorByIDInSecondaryTable_after_UNKNOWN_OP_is_passed_in_it_shoul
 	TEST_ASSERT_NULL(info);
 }
 
+// test given the name "-" should return the operatorInfo of minus operator
 void test_getOperatorByNameInSecondaryTable_after_plus_is_passed_in_it_should_return_back_the_info_of_it(void)
 {
 	OperatorInfo *info = getOperatorByNameInSecondaryTable("-");
@@ -38,6 +41,7 @@ void test_getOperatorByNameInSecondaryTable_after_plus_is_passed_in_it_should_re
   TEST_ASSERT_EQUAL(MINUS_OP, info->id);
 }
 
+// test given a random string "asd" should return NULL
 void test_getOperatorByNameInSecondaryTable_after_unknown_string_is_passed_in_it_should_return_back_NULL(void)
 {
 	OperatorInfo *info = NULL;
@@ -45,6 +49,7 @@ void test_getOperatorByNameInSecondaryTable_after_unknown_string_is_passed_in_it
 	TEST_ASSERT_NULL(info);
 }
 
+// test given sub operator from primaryOperatorTable should return the operatorInfo of secondaryOperatorTable
 void test_operatorTryConvertToPrefix_will_convert_the_SUB_OP_to_prefix(void)
 {
 	OperatorInfo *info = getOperatorByID(SUB_OP);
@@ -55,6 +60,7 @@ void test_operatorTryConvertToPrefix_will_convert_the_SUB_OP_to_prefix(void)
 	TEST_ASSERT_EQUAL(90, subOp.info->precedence);
 }
 
+// test given div operator should throw an error due to ERR_NOT_PREFIX_OPERATOR
 void test_operatorTryConvertToPrefix_will_throw_an_exception_due_to_the_operator_is_not_in_the_table(void)
 {
 	OperatorInfo *info = getOperatorByID(DIV_OP);

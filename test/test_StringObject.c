@@ -168,6 +168,7 @@ void test_stringRemoveWordContaining_given_HELLO_should_remove_L(void)
 	TEST_ASSERT_EQUAL(5 , str->startindex);
 	TEST_ASSERT_EQUAL(1 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -188,6 +189,7 @@ void test_stringRemoveWordContaining_MAXIS_should_remove_A(void)
 	TEST_ASSERT_EQUAL(2 , str->startindex);
 	TEST_ASSERT_EQUAL(3 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -209,6 +211,7 @@ void test_stringRemoveWordContaining_space_tab_21_plus_32_space_tab_should_remov
 	TEST_ASSERT_EQUAL(5 , str->startindex);
 	TEST_ASSERT_EQUAL(9 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -231,6 +234,7 @@ void test_stringRemoveWordContaining_tab_space_negative_10_plus_2_space_should_r
 	TEST_ASSERT_EQUAL(5 , str->startindex);
 	TEST_ASSERT_EQUAL(5 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -252,6 +256,7 @@ void test_stringRemoveWordContaining_tab_AB_plus_CD_tab_should_remove_nothing(vo
 	TEST_ASSERT_EQUAL(5 , str->startindex);
 	TEST_ASSERT_EQUAL(4 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -275,6 +280,7 @@ void test_stringRemoveWordContaining_Beef_and_call_stringRemoveWordContaining_x2
 	TEST_ASSERT_EQUAL(6 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -302,6 +308,10 @@ void test_stringRemoveWordContaining_123_plus_65_times_91_should_remove_nothing(
 	TEST_ASSERT_EQUAL(15 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
+	stringDel(result);
+	stringDel(result);
+	stringDel(result);
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -323,6 +333,7 @@ void test_stringRemoveWordNotContaining_comma_ABC_comma_should_remove_ABC(void)
 	TEST_ASSERT_EQUAL(1 , str->startindex);
 	TEST_ASSERT_EQUAL(3 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -344,6 +355,7 @@ void test_stringRemoveWordNotContaining_Jel_apostrophe_ly_should_remove_Jel(void
 	TEST_ASSERT_EQUAL(3 , str->startindex);
 	TEST_ASSERT_EQUAL(3 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -365,6 +377,7 @@ void test_stringRemoveWordNotContaining_Lady_square_bracket_should_remove_square
 	TEST_ASSERT_EQUAL(6 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -386,6 +399,7 @@ void test_stringRemoveWordNotContaining_Oil_comma_should_remove_Oil_comma(void)
 	TEST_ASSERT_EQUAL(4 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -796,24 +810,24 @@ void test_stringSubstring_given_Cow_start_3_and_length_3_should_put_3_into_strin
 	stringDel(subStr);
 }
 
-// /*
- // * Given string "+-" and operator set
- // * should remove only one operator "+" 
- // */
-// void test_stringRemoveOperator_minus_plus_operator_and_opSet_should_get_minus_operator(void)
-// {
-	// String *str = stringNew("+-");
-	// String *removedOp = stringRemoveOperator(str , opSet);
+/*
+ * Given string "+-" and operator set
+ * should remove only one operator "+" 
+ */
+void test_stringRemoveOperator_minus_plus_operator_and_opSet_should_get_minus_operator(void)
+{
+	String *str = stringNew("+-");
+	String *removedOp = stringRemoveOperator(str , opSet);
 	
-	// TEST_ASSERT_NOT_NULL(removedOp);
-	// TEST_ASSERT_EQUAL_STRING("+-" , removedOp->string);
-	// TEST_ASSERT_EQUAL(0 , removedOp->startindex);
-	// TEST_ASSERT_EQUAL(1 , removedOp->length);
-	// TEST_ASSERT_EQUAL(1 , str->startindex);
-	// TEST_ASSERT_EQUAL(1 , str->length);
+	TEST_ASSERT_NOT_NULL(removedOp);
+	TEST_ASSERT_EQUAL_STRING("+-" , removedOp->string);
+	TEST_ASSERT_EQUAL(0 , removedOp->startindex);
+	TEST_ASSERT_EQUAL(1 , removedOp->length);
+	TEST_ASSERT_EQUAL(1 , str->startindex);
+	TEST_ASSERT_EQUAL(1 , str->length);
 	
-	// stringDel(str);
-// }
+	stringDel(str);
+}
 
 /*
  * Given string "&" and operator set

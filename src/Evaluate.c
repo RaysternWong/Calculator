@@ -177,6 +177,7 @@ void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *dataStac
       Throw( ERR_NOT_EXPECTING_PREFIX_OPERATOR);
     else if( opr->info->affix == POSTFIX ) {
 		 oprForExecute = stackPeep( operatorStack);     
+		 		// If I ever see this OPEN_BRACKET here again I am going to fail you!!! Please Redo!!!
 				if(( oprForExecute != NULL) && (oprForExecute->info->id!=OPEN_BRACKET) ){        //this process is used to execute the execution inside the bracket
 					oprForExecute = stackPop( operatorStack);																			 //if the operator is not openingBracket, then will do execution 
 					oprForExecute->info->execute( dataStack , operatorStack ); 

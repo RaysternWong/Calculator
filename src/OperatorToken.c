@@ -102,6 +102,13 @@ void operatorDel(Operator *op)
 		free(op);
 }
 
+/* 
+  This function is basically get the OperatorInfo by passing in the ID
+  Input:
+    The operator that is being passed into this function
+  Output:
+    It will return the information of the operator by passing in the ID
+*/
 OperatorInfo *getOperatorByID(OperatorID id)
 {
 	int i = 0;
@@ -114,6 +121,13 @@ OperatorInfo *getOperatorByID(OperatorID id)
   return NULL;
 }
 
+/* 
+  This function is used to get the OperatorInfo by passing in the name
+  Input:
+    The name that is pass into this function
+  Output:
+    The returned information of the operator after the name is passed in
+*/
 OperatorInfo *getOperatorByName(char *name)
 {
 	int i = 0, result;
@@ -130,6 +144,13 @@ OperatorInfo *getOperatorByName(char *name)
 	return NULL;
 }
 
+/*
+  This function is used to get the OperatorInfo from secondaryOperatorTable by passing in the ID
+  Input:
+    The operatorID that is passed into this function
+  Output:
+    The returned OperatorInfo from the secondaryOperatorTable
+*/
 OperatorInfo *getOperatorByIDInSecondaryTable(OperatorID id)
 {
 	int i = 0;
@@ -142,6 +163,13 @@ OperatorInfo *getOperatorByIDInSecondaryTable(OperatorID id)
 	return NULL;
 }
 
+/*
+  This function is used to get the OperatorInfo from secondaryOperatorTable by passing in the name
+  Input:
+    The name that is passed into this function
+  Output:
+    The returned OperatorInfo from the secondaryOperatorTable
+*/
 OperatorInfo *getOperatorByNameInSecondaryTable(char *name)
 {
 	int i = 0, result;
@@ -158,6 +186,11 @@ OperatorInfo *getOperatorByNameInSecondaryTable(char *name)
 	return NULL;
 }
 
+/*
+  This function is used to replace the OperatorInfo from the primaryOperatorTable to secondaryOperatorTable OperatorInfo
+  Input:
+    The Operator and the info of the operator from the primaryOperatorTable
+*/
 void operatorTryConvertToPrefix(Operator *operator)
 {
 	OperatorInfo *secondaryInfo = getOperatorByNameInSecondaryTable(operator->info->name);

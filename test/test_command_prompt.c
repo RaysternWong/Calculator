@@ -15,6 +15,7 @@ void setUp(void)
 	arrow_left_right_home_insert_status = 0;
 	end_of_program = 0;
 	isInsert = 0;
+	isEnter = 0;
 }
 
 void tearDown(void)

@@ -8,7 +8,7 @@
 
 char user_input[MAX_BUFFER_SIZE];
 char latest_input[MAX_BUFFER_SIZE];
-
+char expressiontoevaluate[MAX_BUFFER_SIZE];
 
 
 /*  To check for the input is special key or not
@@ -376,17 +376,17 @@ void copystringtochararray(char array[] , char *string)
 void handle_ENTER()
 {
 	if(user_input[0] != '\0')				//if the user_input is empty, then dont add it into the historybuffer
+	{
 		historyBufferAdd(hb, user_input);
-	consoleClearLine();
+		copystringtochararray(expressiontoevaluate,user_input);   
+		isEnter = 1;
+	}
 	copystringtochararray(user_input,"");
-	printBuffer(user_input);
 	previous_status = 0;		// to clear the previous status
 	arrow_left_right_home_insert_status = 0;
 	isInsert = 0;
 	cursor = 0;		// has to reinitialize length of input to 0 to get new input correctly
 }
-
-
 
 
 

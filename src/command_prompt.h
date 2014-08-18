@@ -48,11 +48,11 @@ int cursor;										//global variable for cursor,keep track where the cursor is
 int arrow_left_right_home_insert_status;		//the status for arrow left,right, HOME key and INSERT key, set to 1 means these keys are pressed
 int end_of_program;								//indicator for the end of the program, when escape key is press will set to 1, else is 0
 int isInsert;									//indicator for INSERT key, if INSERT key is press will set this to 1
+int isEnter;									//indicator for ENTER key, if ENTER key is press and user_input is not empty will set this to 1
 
-
-extern char user_input[MAX_BUFFER_SIZE];		//the char array use to store the user_input
-extern char latest_input[MAX_BUFFER_SIZE];		//the char array for the latest input
-
+extern char user_input[MAX_BUFFER_SIZE];			//the char array use to store the user_input
+extern char latest_input[MAX_BUFFER_SIZE];			//the char array for the latest input
+extern char expressiontoevaluate[MAX_BUFFER_SIZE];	//the char array which will be pass to the calculator function
 
 /*
 \a (alert) Produces an audible or visible alert. The active

@@ -90,7 +90,6 @@ extern char expressiontoevaluate[MAX_BUFFER_SIZE];	//the char array which will b
 Keycode get_key_press();  				   						// get key press 
 Keycode IsSpecialKey(int key_code);	   							// check whether input is special key or not
 Keycode user_input_interface();
-void copystringtochararray(char array[] , char *string);
 void mockspecialkeys(int key_code);
 void check_special_keys(int key_code);
 void handle_BACKSPACE();

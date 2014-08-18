@@ -10,7 +10,7 @@ void tokenDump(Token *token)
 	OperatorInfo *info;
 	if(token == NULL)
 	{
-		printf("token is NULL");
+		printf("token is NULL\n");
 		return;
 	}
 	if(((Number *)token)->type == NUMBER_TOKEN)

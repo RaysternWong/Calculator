@@ -96,7 +96,6 @@ void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
 Token *convertToPrefixIfNotAlready(Operator *op) {
   if(op->info->affix == INFIX) {
     operatorTryConvertToPrefix(op);
-    tokenDump((Token *)op);
   }
   return (Token *)op;
 }
@@ -112,16 +111,14 @@ void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStac
     while(1) {
       if(token->type == NUMBER_TOKEN) {
       Number *num = (Number *)token;
-      tokenDump(token);
       stackPush(dataStack, num);
       break;
       } else if(token->type == OPERATOR_TOKEN) {
         Operator *operator = (Operator *)token;
-        tokenDump(token);
         token = convertToPrefixIfNotAlready(operator);
         stackPush(operatorStack, (Operator *)token);
       } else {
-        tokenDisplay(token);
+        // tokenDisplay(token);
         Throw(ERR_IDENTIFIER_NOT_SUPPORT);
       }
       token = getToken(expression);
@@ -130,7 +127,7 @@ void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStac
     }
   }
   if(dataStack->size == 0) {
-    tokenDisplay(token);
+    // tokenDisplay(token);
     Throw(ERR_EXPECTING_NUMBER);
   }
 }

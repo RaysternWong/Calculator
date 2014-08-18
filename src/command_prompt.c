@@ -1,6 +1,7 @@
 #include "command_prompt.h"
 #include "history_buffer.h"
 #include <stdio.h>
+#include <string.h>
 #include <malloc.h>
 #include "get_ch.h"
 #include "putch.h"
@@ -85,7 +86,7 @@ Keycode user_input_interface()
 				if ( status == CODE_ARROWDOWN || status == CODE_ARROWUP || status == CODE_PAGEDOWN1 || status == CODE_PAGEDOWN2 ||
 					 status == CODE_PAGEUP1   || status == CODE_PAGEUP2);
 				else
-					copystringtochararray(latest_input, "");
+					strcpy(latest_input, "");
 			}
 			return status;
 		}
@@ -112,7 +113,7 @@ Keycode user_input_interface()
 			put_character(user_input[cursor]);
 			cursor++;
 		}
-		copystringtochararray(latest_input,user_input);
+		strcpy(latest_input,user_input);
 	}
 }
 
@@ -289,7 +290,7 @@ void movecharactersahead(int x, int y)
 
 
 
-//
+
 void movecharactersbackward(int endofinput, char buffer[])
 {
 	int y=0,x=1;
@@ -333,7 +334,7 @@ void handle_BACKSPACE()
 	
 	if(cursor < 0)
 		cursor=0;
-	copystringtochararray(latest_input , user_input);
+	strcpy(latest_input , user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 	printBufferTill(user_input,cursor);
@@ -353,23 +354,6 @@ void initialize_historybuffer(int length_of_buffer)
 
 
 
-
-//copy the content of a given string to char array
-void copystringtochararray(char array[] , char *string)
-{
-	int i;
-	
-	for( i=0 ; string[i] != '\0' ; i++)
-	{
-		array[i] = string[i];
-	}
-	array[i] = '\0';
-}
-
-
-
-
-
 /* To perform enter
  *
  */
@@ -378,10 +362,10 @@ void handle_ENTER()
 	if(user_input[0] != '\0')				//if the user_input is empty, then dont add it into the historybuffer
 	{
 		historyBufferAdd(hb, user_input);
-		copystringtochararray(expressiontoevaluate,user_input);   
+		strcpy(expressiontoevaluate,user_input);   
 		isEnter = 1;
 	}
-	copystringtochararray(user_input,"");
+	strcpy(user_input,"");
 	previous_status = 0;		// to clear the previous status
 	arrow_left_right_home_insert_status = 0;
 	isInsert = 0;
@@ -397,7 +381,7 @@ void handle_ARROWUP()
 {
 
 	char *temp = historyBufferReadPrevious(hb);
-	copystringtochararray(user_input, temp);
+	strcpy(user_input, temp);
 	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
@@ -413,7 +397,7 @@ void handle_ARROWUP()
 void handle_ARROWDOWN()
 {
 	char *temp = historyBufferReadNext(hb);
-	copystringtochararray(user_input, temp);
+	strcpy(user_input, temp);
 	cursor = movecursortoend(user_input);
 	consoleClearLine();
 	printBuffer(user_input);
@@ -475,7 +459,7 @@ void handle_DEL()
 	else
 		movecharactersahead(0, 1);
 		
-	copystringtochararray(latest_input , user_input);
+	strcpy(latest_input , user_input);
 	consoleClearLine();
 	printBuffer(user_input);
 	printBufferTill(user_input,cursor);
@@ -494,7 +478,7 @@ void handle_PAGEDOWN()
 	{
 		int index = hb->latestIndex;
 		index = readjustIndex(hb , index-1);
-		copystringtochararray(user_input, hb->buffer[index]);
+		strcpy(user_input, hb->buffer[index]);
 	}
 	cursor = movecursortoend(user_input);
 	consoleClearLine();
@@ -513,7 +497,7 @@ void handle_PAGEUP()
 	else
 	{
 		int index = hb->startIndex;
-		copystringtochararray(user_input, hb->buffer[index]);
+		strcpy(user_input, hb->buffer[index]);
 	}
 	previous_status = 1;
 	cursor = movecursortoend(user_input);

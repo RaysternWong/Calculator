@@ -30,8 +30,10 @@ void getInfixValues(int *left, int *right, Stack *dataStack)
 	numRight = (Number *)stackPop(dataStack);
 	tokenDump((Token *)numRight);
 	
-	if((Token *)numRight == NULL)
+	if((Token *)numRight == NULL) {
 		Throw(ERR_INCOMPLETE_NUMBER);
+    tokenDisplay((Token *)numRight);
+  }
 	
 	if(numRight->type != NUMBER_TOKEN)
 		Throw(ERR_NOT_NUMBER_TOKEN);

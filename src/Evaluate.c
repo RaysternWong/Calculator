@@ -36,7 +36,7 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
       (   ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence) ||
       (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )   
     ) 
-    {printf("here");
+    {
 		stackPush( operatorStack , opr );}  
 	else {
 			while( ptrOpr != NULL){     
@@ -120,15 +120,19 @@ void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStac
         tokenDump(token);
         token = convertToPrefixIfNotAlready(operator);
         stackPush(operatorStack, (Operator *)token);
-      } else
+      } else {
+        tokenDisplay(token);
         Throw(ERR_IDENTIFIER_NOT_SUPPORT);
+      }
       token = getToken(expression);
       if(token == NULL) 
         break;
     }
   }
-  if(dataStack->size == 0)
+  if(dataStack->size == 0) {
+    tokenDisplay(token);
     Throw(ERR_EXPECTING_NUMBER);
+  }
 }
 
 /* This function is evaluate evaluatePostfixesAndInfix for bracket execution

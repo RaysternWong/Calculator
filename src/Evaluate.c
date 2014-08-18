@@ -61,7 +61,7 @@ void doOperatorStackRewinding ( Stack *dataStack , Stack *operatorStack ){
   Operator *ptrOpr;   // pointer to operator
 	ptrOpr = (Operator *)stackPeep(operatorStack);
 
-  while( ptrOpr != NULL)	{
+  while( ptrOpr != NULL )	{
 		Operator *oprNew = stackPop( operatorStack);
 		oprNew->info->execute( dataStack , operatorStack );
 		ptrOpr = (Operator *)stackPeep(operatorStack);
@@ -168,41 +168,39 @@ void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStac
 void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *dataStack ,Stack *operatorStack ){
 
   Operator *opr;
-	Operator *oprForExecute ;
-  Stack *tempStack   = stackNew(STACK_LENGTH);
-
+	Operator *executionInBracket;
+	opr = (Operator *)token;
+	
   if( token == NULL)
     return;
   if ( token->type == NUMBER_TOKEN)
     Throw (ERR_NOT_EXPECTING_NUMBER);
-
-  opr = (Operator*)token;
-  if( opr->info->affix == PREFIX )
-   Throw( ERR_NOT_EXPECTING_PREFIX_OPERATOR);
-	else if( opr->info->affix == INFIX )
-	 tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack );
-  else if( opr->info->affix == POSTFIX ) {    																	// if the opr is POSTFIX, which means " ) "
-	 oprForExecute = stackPeep( operatorStack);
-		if( oprForExecute->info->affix == INFIX || ( oprForExecute->info->affix == PREFIX && oprForExecute->info->precedence>=10)){   //This process is used to checking is there a execution inside the bracket,
-			oprForExecute = stackPop( operatorStack);																																										//before the closing bracket push into stackPeep, I using function to checking it execition bracket?  (+,-,*)
-			oprForExecute->info->execute( dataStack , operatorStack ); 																																	//If there is infix operator, I stackPop it out and execute
+	if( opr->info->affix == PREFIX )
+    Throw( ERR_NOT_EXPECTING_PREFIX_OPERATOR);
+	if( opr->info->affix == POSTFIX ) { 
+		executionInBracket = stackPeep(operatorStack);
+			while( executionInBracket != NULL && executionInBracket->info->precedence != 9)	{
+				Operator *oprNew = stackPop( operatorStack);
+				oprNew->info->execute( dataStack , operatorStack );
+				executionInBracket = (Operator *)stackPeep(operatorStack);
 		}
-		opr->info->execute( dataStack , operatorStack ); 													  // execute the closingBracket
-		do{
-			token = getToken(expression);
-			if(token != NULL){
-				opr = (Operator*)token;
-          if( opr->info->affix == POSTFIX )
-						opr->info->execute( dataStack , operatorStack );
-					else if( opr->info->affix == INFIX ){
+		opr->info->execute( dataStack , operatorStack ); 
+
+		do{	token = getToken(expression);
+				if(token != NULL){
+					opr = (Operator*)token;
+						if( opr->info->affix == POSTFIX )
+							opr->info->execute( dataStack , operatorStack );
+						else if( opr->info->affix == INFIX ){
 						tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack );
 					  break;
 					}
 			}
 		}while (token != NULL);
- }
+	}
+	else
+	tryToPushOperatorAndEvaluate ( opr, operatorStack , dataStack );
 }
-
 /*
   This function is the main evaluate function of the ShuntingYard algorithm
   Input:

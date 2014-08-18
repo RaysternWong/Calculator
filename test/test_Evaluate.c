@@ -366,6 +366,25 @@ void test_doOperatorStackRewinding_given_open_bracket_2_should_throw_an_error_du
 	 if the string expression is closingBracet / Postfix, then next coming string expression has to pass in infix or NULL
 	 if the string expression is infix, then don't need to pass in anything and stop
 */
+
+//before: 				after:
+//2   NULL				2
+void test_evaluatePostfixesAndInfix_given_2_and_pass_in_NULL_should_return_only_2(void){
+
+  int Result;
+  Stack *dataStack       = stackNew(STACK_LENGTH);
+	Stack *operatorStack   = stackNew(STACK_LENGTH);
+  Number *two            = numberNew(2);
+  Operator *op;
+  String expression  = {.string="2"};
+
+  stackPush(dataStack    ,two);
+  evaluatePostfixesAndInfix( NULL , &expression, dataStack, operatorStack);
+  Number *num = (Number *)stackPop( dataStack );
+  TEST_ASSERT_EQUAL (	2 , num->value);
+  TEST_ASSERT_NULL  ( stackPop(operatorStack) );
+}
+
 //before: 				after:
 //2    5					Throw exception
 void test_evaluatePostfixesAndInfix_given_push_5_into_postfix_should_throw_exception_because_it_should_not_put_in_number(void){
@@ -415,24 +434,6 @@ void test_evaluatePostfixesAndInfix_given_2_and_pass_in__open_bracket_should_thr
   TEST_ASSERT_NULL  ( stackPop(operatorStack) );
 }
 
-//before: 				after:
-//2   NULL				2
-void test_evaluatePostfixesAndInfix_given_2_and_pass_in_NULL_should_return_only_2(void){
-
-  int Result;
-  Stack *dataStack       = stackNew(STACK_LENGTH);
-	Stack *operatorStack   = stackNew(STACK_LENGTH);
-  Number *two            = numberNew(2);
-  Operator *op;
-  String expression  = {.string="2"};
-
-  stackPush(dataStack    ,two);
-  evaluatePostfixesAndInfix( NULL , &expression, dataStack, operatorStack);
-  Number *num = (Number *)stackPop( dataStack );
-  TEST_ASSERT_EQUAL (	2 , num->value);
-
-  TEST_ASSERT_NULL  ( stackPop(operatorStack) );
-}
 
 //before: 				after:
 //2   +							2+
@@ -448,9 +449,9 @@ void test_evaluatePostfixesAndInfix_given_2_pass_in_plus_should_put_plus_into_st
 
   stackPush(dataStack    ,two);
   evaluatePostfixesAndInfix((Token*)plus , &expression, dataStack, operatorStack);
-  Number *num = (Number *)stackPop( dataStack );
+  	
+	Number *num = (Number *)stackPop( dataStack );
   TEST_ASSERT_EQUAL (	2 , num->value);
-
   op = (Operator *)stackPop( operatorStack );
   TEST_ASSERT_NOT_NULL ( op );
   TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
@@ -624,10 +625,10 @@ void test_evaluatePostfixesAndInfix_openbracket_2_and_pass_in_closeBracket_shoul
   Operator *op;
   String expression  = {.string="(2    )"};
 
+	getToken_ExpectAndReturn(&expression, NULL  );
   stackPush(operatorStack,openBracket);
   stackPush(dataStack    ,two         );
-  getToken_ExpectAndReturn(&expression, NULL  );
-
+  
   evaluatePostfixesAndInfix( (Token*)closeBracket , &expression, dataStack, operatorStack);
   Number *num = (Number *)stackPop(dataStack);
   TEST_ASSERT_EQUAL (	2 , num->value);
@@ -660,6 +661,34 @@ void test_evaluatePostfixesAndInfix_given_openBracket_2_and_pass_in_closeBracket
   TEST_ASSERT_NOT_NULL ( op );
   TEST_ASSERT_EQUAL (	OPERATOR_TOKEN, op->type);
 	TEST_ASSERT_EQUAL ( ADD_OP , op->info->id );
+  TEST_ASSERT_NULL  ( stackPop(operatorStack) );
+}
+
+
+//before: 				after:
+// (2+3   )		  	5
+void test_evaluatePostfixesAndInfix_given_openBrackt_2_plus_3_pass_in_closeBracket_should_execute_and_ans_5(void){
+
+  int Result;
+  Stack *dataStack       = stackNew(STACK_LENGTH);
+	Stack *operatorStack   = stackNew(STACK_LENGTH);
+  Number *two            = numberNew(2);
+  Number *three          = numberNew(3);
+  Operator *plus		     = operatorNewByName("+");
+  Operator *openBracket  = operatorNewByName("(");
+  Operator *closeBracket = operatorNewByName(")");
+  Operator *op;
+  String expression  = {.string="(2+3   )"};
+
+  stackPush(operatorStack,openBracket);
+  stackPush(dataStack    ,two);
+  stackPush(operatorStack,plus);
+  stackPush(dataStack    ,three);
+  getToken_ExpectAndReturn(&expression, NULL );
+  evaluatePostfixesAndInfix((Token*)closeBracket , &expression, dataStack, operatorStack);
+
+  Number *num = (Number *)stackPop( dataStack );
+  TEST_ASSERT_EQUAL (	5 , num->value);
   TEST_ASSERT_NULL  ( stackPop(operatorStack) );
 }
 

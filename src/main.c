@@ -20,7 +20,6 @@ int main()
       Try {
         int result = Calculator(str);
         printf("answer : %i\n", result);
-        isEnter = 0;
         printf(">>");
       } Catch(err) {
         dumpErrorCode(err);
@@ -28,6 +27,7 @@ int main()
         printf(">>");
       }
 		}
+		isEnter = 0;
 		
 	}
 	

@@ -6,7 +6,8 @@
 int main()
 {
 	int length_of_historybuffer=5;
-	
+	CEXCEPTION_T err;
+  
 	initialize_historybuffer(length_of_historybuffer);
 	printf(">>");
 	
@@ -16,10 +17,16 @@ int main()
 		if(isEnter == 1)
 		{
 			String *str = stringNew(expressiontoevaluate);
-			int result = Calculator(str);
-			printf("answer : %i\n", result);
-			isEnter = 0;
-			printf(">>");
+      Try {
+        int result = Calculator(str);
+        printf("answer : %i\n", result);
+        isEnter = 0;
+        printf(">>");
+      } Catch(err) {
+        dumpErrorCode(err);
+        tokenDisplay(currentToken);
+        printf(">>");
+      }
 		}
 		
 	}

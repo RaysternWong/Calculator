@@ -28,16 +28,15 @@ void getInfixValues(int *left, int *right, Stack *dataStack)
 	Number *numRight;
 	
 	numRight = (Number *)stackPop(dataStack);
-	tokenDump((Token *)numRight);
 	
-	if((Token *)numRight == NULL)
+	if((Token *)numRight == NULL) {
 		Throw(ERR_INCOMPLETE_NUMBER);
+  }
 	
 	if(numRight->type != NUMBER_TOKEN)
 		Throw(ERR_NOT_NUMBER_TOKEN);
 		
 	numLeft = (Number *)stackPop(dataStack);
-	tokenDump((Token *)numLeft);
 	
 	if((Token *)numLeft == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -252,7 +251,6 @@ void executePrefixSub(Stack *dataStack, Stack *operatorStack)
 	Number *num;
 	
 	num = (Number *)stackPeep(dataStack);
-	tokenDump((Token *)num);
 	
 	if((Token *)num == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -268,7 +266,6 @@ void executePrefixAdd(Stack *dataStack, Stack *operatorStack)
 	Number *num;
 	
 	num = (Number *)stackPeep(dataStack);
-	tokenDump((Token *)num);
 	
 	if((Token *)num == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -282,7 +279,6 @@ void executeNot(Stack *dataStack, Stack *operatorStack)
 	Number *num;
 	
 	num = (Number *)stackPeep(dataStack);
-	tokenDump((Token *)num);
 	
 	if((Token *)num == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);
@@ -298,7 +294,6 @@ void executeBitNot(Stack *dataStack, Stack *operatorStack)
 	Number *num;
 	
 	num = (Number *)stackPeep(dataStack);
-	tokenDump((Token *)num);
 	
 	if((Token *)num == NULL)
 		Throw(ERR_INCOMPLETE_NUMBER);

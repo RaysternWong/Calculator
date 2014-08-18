@@ -18,5 +18,7 @@ typedef enum{ERR_NO_ERROR,
 			 ERR_NO_NUMBER
 } ErrorCode;
 
+void dumpErrorCode(ErrorCode err);
+
 #endif // ErrorCode_H
 

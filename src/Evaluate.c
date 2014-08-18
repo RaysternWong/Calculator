@@ -34,10 +34,10 @@ void tryToPushOperatorAndEvaluate( Operator *opr, Stack *operatorStack,  Stack *
 
 	if(
       (   ptrOpr == NULL)  || (opr->info->precedence > ptrOpr->info->precedence) ||
-      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )
-    )
-    {printf("here");
-		stackPush( operatorStack , opr );}
+      (  (opr->info->precedence == ptrOpr->info->precedence) && ( opr->info->associativity == RIGHT_TO_LEFT ) )   
+    ) 
+    {
+		stackPush( operatorStack , opr );}  
 	else {
 			while( ptrOpr != NULL){
 				if  (opr->info->precedence <= ptrOpr->info->precedence || opr == NULL ){
@@ -96,7 +96,6 @@ void verifyAllStacksAreEmpty(Stack *dataStack, Stack *operatorStack) {
 Token *convertToPrefixIfNotAlready(Operator *op) {
   if(op->info->affix == INFIX) {
     operatorTryConvertToPrefix(op);
-    tokenDump((Token *)op);
   }
   return (Token *)op;
 }
@@ -112,23 +111,25 @@ void evaluatePrefixesAndNumber(Token *token, String *expression, Stack *dataStac
     while(1) {
       if(token->type == NUMBER_TOKEN) {
       Number *num = (Number *)token;
-      tokenDump(token);
       stackPush(dataStack, num);
       break;
       } else if(token->type == OPERATOR_TOKEN) {
         Operator *operator = (Operator *)token;
-        tokenDump(token);
         token = convertToPrefixIfNotAlready(operator);
         stackPush(operatorStack, (Operator *)token);
-      } else
+      } else {
+        // tokenDisplay(token);
         Throw(ERR_IDENTIFIER_NOT_SUPPORT);
+      }
       token = getToken(expression);
       if(token == NULL)
         break;
     }
   }
-  if(dataStack->size == 0)
+  if(dataStack->size == 0) {
+    // tokenDisplay(token);
     Throw(ERR_EXPECTING_NUMBER);
+  }
 }
 
 /* This function is evaluate evaluatePostfixesAndInfix for bracket execution

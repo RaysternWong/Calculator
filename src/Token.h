@@ -15,6 +15,8 @@ typedef struct
 	TokenType type;
 }Token;
 
+extern Token *currentToken;
+
 Token *getToken(String *expression);
 void tokenDisplay(Token *token);
 

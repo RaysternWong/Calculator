@@ -281,6 +281,7 @@ void test_stringRemoveWordContaining_Beef_and_call_stringRemoveWordContaining_x2
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
 	stringDel(result);
+	stringDel(result);
 	stringDel(str);
 }
 
@@ -752,8 +753,8 @@ void test_stringSubstring_given_123_start_0_and_length_3_should_put_into_string_
 	TEST_ASSERT_EQUAL(0 , subStr->startindex);
 	TEST_ASSERT_EQUAL(3 , subStr->length);
 	
-	stringDel(str);
 	stringDel(subStr);
+	stringDel(str);
 }
 
 /*
@@ -770,8 +771,8 @@ void test_stringSubstring_given_1_plus_23_start_3_and_length_1_should_put_into_s
 	TEST_ASSERT_EQUAL(3 , subStr->startindex);
 	TEST_ASSERT_EQUAL(1 , subStr->length);
 	
-	stringDel(str);
 	stringDel(subStr);
+	stringDel(str);
 }
 
 /*
@@ -788,8 +789,8 @@ void test_stringSubstring_given_12_minus_32_start_7_and_length_3_should_put_5_in
 	TEST_ASSERT_EQUAL(5 , subStr->startindex);
 	TEST_ASSERT_EQUAL(0 , subStr->length);
 	
-	stringDel(str);
 	stringDel(subStr);
+	stringDel(str);
 }
 
 /*
@@ -806,8 +807,8 @@ void test_stringSubstring_given_Cow_start_3_and_length_3_should_put_3_into_strin
 	TEST_ASSERT_EQUAL(3 , subStr->startindex);
 	TEST_ASSERT_EQUAL(0 , subStr->length);
 	
-	stringDel(str);
 	stringDel(subStr);
+	stringDel(str);
 }
 
 /*
@@ -826,6 +827,7 @@ void test_stringRemoveOperator_minus_plus_operator_and_opSet_should_get_minus_op
 	TEST_ASSERT_EQUAL(1 , str->startindex);
 	TEST_ASSERT_EQUAL(1 , str->length);
 	
+  stringDel(removedOp);
 	stringDel(str);
 }
 
@@ -845,7 +847,8 @@ void test_stringRemoveOperator_logical_AND_operatorx3_and_opSet_should_get_Bitwi
 	TEST_ASSERT_NOT_NULL(removedOp);
 	TEST_ASSERT_EQUAL(2 , removedOp->startindex);
 	TEST_ASSERT_EQUAL(2 , removedOp->length);
-	
+  stringDel(removedOp);
+  stringDel(removedOp);
 	stringDel(str);
 }
 
@@ -865,6 +868,7 @@ void test_stringRemoveOperator_logical_AND_operator_and_opSet_should_get_logical
 	TEST_ASSERT_EQUAL(2 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
+  stringDel(removedOp);
 	stringDel(str);
 }
 
@@ -882,14 +886,16 @@ void test_stringRemoveOperator_Three_OR_operator_and_should_remove_3_OR_Operator
 	TEST_ASSERT_EQUAL(2 , removedOp->length);
 	TEST_ASSERT_EQUAL(2 , str->startindex);
 	TEST_ASSERT_EQUAL(1 , str->length);
-	
+	stringDel(removedOp);
+  
 	removedOp = stringRemoveOperator(str , opSet);
 	TEST_ASSERT_NOT_NULL(removedOp);
 	TEST_ASSERT_EQUAL(2 , removedOp->startindex);
 	TEST_ASSERT_EQUAL(1 , removedOp->length);
 	TEST_ASSERT_EQUAL(3 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
-	
+	stringDel(removedOp);
+  
 	stringDel(str);
 }
 /*
@@ -908,6 +914,7 @@ void test_stringRemoveOperator_logical_OR_operator_and_opSet_should_get_logical_
 	TEST_ASSERT_EQUAL(2 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
+  stringDel(removedOp);
 	stringDel(str);
 }
 
@@ -928,5 +935,7 @@ void test_stringRemoveOperator_4_operator_and_opSet_should_get_logical_OR_operat
 	TEST_ASSERT_EQUAL(3 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
+  stringDel(removedOp);
+  stringDel(removedOp);
 	stringDel(str);
 }

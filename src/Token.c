@@ -17,6 +17,9 @@
  *			return idendifier token if identifier is found in string
  * 			return operator token if operator is found in string
  */
+ 
+ Token *currentToken = NULL;
+ 
 Token *getToken(String *expression)
 {	
 	Number *num;
@@ -44,6 +47,7 @@ Token *getToken(String *expression)
 		int integer = subStringToInteger(numSubString); //Convert substring to integer
 		num = numberNew(integer); //get integer from subStringToInteger and create a new Number Token
 		num->line = stringSubString(expression , tempStart , tempLength);
+    currentToken = (Token *)num;
 		return (Token *)num;
 	}
 	
@@ -56,7 +60,7 @@ Token *getToken(String *expression)
 		char *idenSubString = stringSubStringInChars(removedWord , removedWord->length); //Removed identifier become substring
 		iden = identifierNew(idenSubString); //create a new identifier token
 		iden->line = stringSubString(expression , tempStart , tempLength);
-		
+		currentToken = (Token *)iden;
 		return (Token *)iden;
 	}
 	
@@ -69,7 +73,7 @@ Token *getToken(String *expression)
 		char *opSubString = stringSubStringInChars(removedWord , removedWord->length); //Removed operator become substring	
 		op = operatorNewByName(opSubString);
 		op->line = stringSubString(expression , tempStart , tempLength);
-		
+		currentToken = (Token *)op;
 		return (Token *)op;
 	}		
 }

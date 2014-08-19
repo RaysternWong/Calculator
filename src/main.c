@@ -19,7 +19,7 @@ int main()
 			String *str = stringNew(expressiontoevaluate);
       Try {
         int result = Calculator(str);
-        printf("answer : %i\n", result);
+        printf("\nanswer : %i\n", result);
         printf(">>");
       } Catch(err) {
         dumpErrorCode(err);

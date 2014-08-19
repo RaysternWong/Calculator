@@ -213,17 +213,10 @@ void test_getToken_given_456_MAX_should_return_NULL(void)
 	String *str;
 	Identifier *iden = NULL;
 	
-	Try
-	{
-		str = stringNew("456_MAX");
-		iden = (Identifier*)getToken(str);
-		TEST_FAIL_MESSAGE("Should throw ERR_NOT_NUMBER_TOKEN exception");
-	}
-	Catch(err)
-	{
-		TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_NUMBER_TOKEN , err , "Expect ERR_NOT_NUMBER_TOKEN exception");
-		TEST_ASSERT_NULL(iden);
-	}
+	str = stringNew("456_MAX");
+	iden = (Identifier*)getToken(str);
+	TEST_ASSERT_NOT_NULL(iden);
+	TEST_ASSERT_EQUAL_STRING("456_MAX" , iden->name);
 	
 	identifierDel(iden);
 	stringDel(str);
@@ -239,17 +232,10 @@ void test_getToken_given_123zye_should_return_NULL(void)
 	String *str;
 	Identifier *iden = NULL;
 	
-	Try
-	{
-		str = stringNew("123zye");
-		iden = (Identifier*)getToken(str);
-		TEST_FAIL_MESSAGE("Should throw ERR_NOT_NUMBER_TOKEN exception");
-	}
-	Catch(err)
-	{
-		TEST_ASSERT_EQUAL_MESSAGE(ERR_NOT_NUMBER_TOKEN , err , "Expect ERR_NOT_NUMBER_TOKEN exception");
-		TEST_ASSERT_NULL(iden);
-	}
+	str = stringNew("123zye");
+	iden = (Identifier*)getToken(str);
+	TEST_ASSERT_NOT_NULL(iden);
+	TEST_ASSERT_EQUAL_STRING("123zye" , iden->name);
 	
 	identifierDel(iden);
 	stringDel(str);

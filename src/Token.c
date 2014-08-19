@@ -42,12 +42,20 @@ Token *getToken(String *expression)
 		charAtThisPos = expression->startindex;
 		
 		if(stringCharAtInSet(expression , charAtThisPos , alphaSet))
-			Throw(ERR_NOT_NUMBER_TOKEN);
+		{
+			removedWord = stringRemoveWordContaining (expression , alphaNumericSet);
+			char *idenSubString = stringSubStringInChars(removedWord , removedWord->length);
+			tempIden = strcat(numSubString , idenSubString);
+			iden = identifierNew(tempIden); //create a new identifier token
+			iden->line = stringSubString(expression , tempStart , strlen(tempIden));
+			currentToken = (Token *)iden;
+			return (Token *)iden;
+		}
 		
 		int integer = subStringToInteger(numSubString); //Convert substring to integer
 		num = numberNew(integer); //get integer from subStringToInteger and create a new Number Token
 		num->line = stringSubString(expression , tempStart , tempLength);
-    currentToken = (Token *)num;
+		currentToken = (Token *)num;
 		return (Token *)num;
 	}
 	

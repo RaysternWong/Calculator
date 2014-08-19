@@ -18,6 +18,29 @@ void tearDown(void)
 {
 }
 
+/*
+ * Given complicated expresison "4 + 99abc10" should able to get identifierToken
+ */
+void test_getToken_given_complicated_expression_should_able_to_identifierToken(void)
+{
+	CEXCEPTION_T err;
+	String *str;
+	Identifier *iden;
+	
+	str = stringNew(" 4 + 99abc10 ");	
+	numberDel((Number*)getToken(str));
+	operatorDel((Operator*)getToken(str));
+	
+	iden = (Identifier*)getToken(str);
+	TEST_ASSERT_NOT_NULL(iden);
+	TEST_ASSERT_EQUAL_STRING("99abc10" , iden->name);
+	tokenDisplay((Token *)iden);
+
+	
+	identifierDel(iden);
+	stringDel(str);
+}
+
 /* 
  * Given "2" 2 is a numToken , num->line should contain the location of numToken
  */
@@ -366,5 +389,16 @@ void test_tokenDisplay_given_plus_99_logical_AND_should_display_1_plus_2(void)
 	tokenDisplay((Token *)op);
 	
 	operatorDel(op);
+	stringDel(expression);
+}
+
+void test_tokenDisplay_given_99abc10_should_display_this_identifier(void)
+{
+	String *expression = stringNew("99abc10");
+	Identifier *iden = identifierNew("99abc10");
+	iden->line = stringSubString(expression , 0 , 7);
+	tokenDisplay((Token *)iden);
+	
+	identifierDel(iden);
 	stringDel(expression);
 }

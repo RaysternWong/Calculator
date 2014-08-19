@@ -260,6 +260,7 @@ void test_stringRemoveWordContaining_tab_AB_plus_CD_tab_should_remove_nothing(vo
 	stringDel(str);
 }
 
+// This test causes my machine to throw system protection fault
 /*
  * Given " Beef " and containSet "f"
  * when call stringRemoveWordContaining x2 should remove nothing and str->length should 0
@@ -285,6 +286,7 @@ void test_stringRemoveWordContaining_Beef_and_call_stringRemoveWordContaining_x2
 	stringDel(str);
 }
 
+// This test causes my machine to throw system protection fault
 /*
  * given " 123 + 65 * 91 " and containSet "0123456789"
  * After call stringRemoveWordContaining x4 should remove nothing and str->length is 0
@@ -831,6 +833,7 @@ void test_stringRemoveOperator_minus_plus_operator_and_opSet_should_get_minus_op
 	stringDel(str);
 }
 
+// This test causes my machine to throw system protection fault
 /*
  * Given string "&" and operator set
  * should remove only one operator "&", start index = 0 and length is 2
@@ -918,6 +921,7 @@ void test_stringRemoveOperator_logical_OR_operator_and_opSet_should_get_logical_
 	stringDel(str);
 }
 
+// This test causes my machine to throw system protection fault
 /*
  * Given string "4" and operator set
  * should remove only one operator "||", start index = 0 and length is 2

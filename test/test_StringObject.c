@@ -269,7 +269,8 @@ void test_stringRemoveWordContaining_Beef_and_call_stringRemoveWordContaining_x2
 	String *str = stringNew(" Beef ");
 	String *result;
 	stringTrim(str);
-	result = stringRemoveWordContaining(str , "f");
+	stringDel(stringRemoveWordContaining(str , "f"));
+	
 	stringTrim(str);
 	result = stringRemoveWordContaining(str , "f");
 	
@@ -279,9 +280,8 @@ void test_stringRemoveWordContaining_Beef_and_call_stringRemoveWordContaining_x2
 	/*Original String after Removed Word Containing*/
 	TEST_ASSERT_EQUAL(6 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
+	stringDel(result);
 	
-	stringDel(result);
-	stringDel(result);
 	stringDel(str);
 }
 
@@ -293,12 +293,16 @@ void test_stringRemoveWordContaining_123_plus_65_times_91_should_remove_nothing(
 {
 	String *str = stringNew(" 123 + 65 * 91 ");
 	String *result;
+	
 	stringTrim(str);
-	result = stringRemoveWordContaining(str , "0123456789");
+	stringDel(stringRemoveWordContaining(str , "0123456789"));
+
 	stringTrim(str);
-	result = stringRemoveWordContaining(str , "0123456789");
+	stringDel(stringRemoveWordContaining(str , "0123456789"));
+	
 	stringTrim(str);
-	result = stringRemoveWordContaining(str , "0123456789");
+	stringDel(stringRemoveWordContaining(str , "0123456789"));
+	
 	stringTrim(str);
 	result = stringRemoveWordContaining(str , "0123456789");
 	
@@ -309,9 +313,6 @@ void test_stringRemoveWordContaining_123_plus_65_times_91_should_remove_nothing(
 	TEST_ASSERT_EQUAL(15 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
-	stringDel(result);
-	stringDel(result);
-	stringDel(result);
 	stringDel(result);
 	stringDel(str);
 }
@@ -827,7 +828,7 @@ void test_stringRemoveOperator_minus_plus_operator_and_opSet_should_get_minus_op
 	TEST_ASSERT_EQUAL(1 , str->startindex);
 	TEST_ASSERT_EQUAL(1 , str->length);
 	
-  stringDel(removedOp);
+	stringDel(removedOp);
 	stringDel(str);
 }
 
@@ -838,17 +839,18 @@ void test_stringRemoveOperator_minus_plus_operator_and_opSet_should_get_minus_op
 void test_stringRemoveOperator_logical_AND_operatorx3_and_opSet_should_get_Bitwise_AND_operator(void)
 {
 	String *str = stringNew("& &&");
-	stringTrim(str);
-	String *removedOp = stringRemoveOperator(str , opSet);
+	String *removedOp;
+	
+	stringDel(stringRemoveOperator(str , opSet));
+
 	stringTrim(str);
 	removedOp = stringRemoveOperator(str , opSet);
-	stringTrim(str);
 	
 	TEST_ASSERT_NOT_NULL(removedOp);
 	TEST_ASSERT_EQUAL(2 , removedOp->startindex);
 	TEST_ASSERT_EQUAL(2 , removedOp->length);
-  stringDel(removedOp);
-  stringDel(removedOp);
+	
+	stringDel(removedOp);
 	stringDel(str);
 }
 
@@ -868,7 +870,7 @@ void test_stringRemoveOperator_logical_AND_operator_and_opSet_should_get_logical
 	TEST_ASSERT_EQUAL(2 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
-  stringDel(removedOp);
+	stringDel(removedOp);
 	stringDel(str);
 }
 
@@ -914,7 +916,7 @@ void test_stringRemoveOperator_logical_OR_operator_and_opSet_should_get_logical_
 	TEST_ASSERT_EQUAL(2 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
-  stringDel(removedOp);
+	stringDel(removedOp);
 	stringDel(str);
 }
 
@@ -925,8 +927,11 @@ void test_stringRemoveOperator_logical_OR_operator_and_opSet_should_get_logical_
 void test_stringRemoveOperator_4_operator_and_opSet_should_get_logical_OR_operator(void)
 {
 	String *str = stringNew("+||");
-	String *removedOp = stringRemoveOperator(str , opSet);
-	removedOp = stringRemoveOperator(str , opSet);
+	String *removedOp;
+	
+	stringDel(stringRemoveOperator(str , opSet));
+	
+	removedOp = stringRemoveOperator(str , opSet);	
 	
 	TEST_ASSERT_NOT_NULL(removedOp);
 	TEST_ASSERT_EQUAL_STRING("+||" , removedOp->string);
@@ -935,7 +940,6 @@ void test_stringRemoveOperator_4_operator_and_opSet_should_get_logical_OR_operat
 	TEST_ASSERT_EQUAL(3 , str->startindex);
 	TEST_ASSERT_EQUAL(0 , str->length);
 	
-  stringDel(removedOp);
-  stringDel(removedOp);
+	stringDel(removedOp);
 	stringDel(str);
 }

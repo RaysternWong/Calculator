@@ -640,6 +640,7 @@ void test_evaluatePostfixesAndInfix_openbracket_2_and_pass_in_closeBracket_shoul
 void test_evaluatePostfixesAndInfix_given_openBracket_2_and_pass_in_closeBracket_plus_should_execute_and_left_2_plus(void){
 
   int Result;
+  CEXCEPTION_T err;
   Stack *dataStack       = stackNew(STACK_LENGTH);
 	Stack *operatorStack   = stackNew(STACK_LENGTH);
   Number *two            = numberNew(2);
@@ -649,11 +650,12 @@ void test_evaluatePostfixesAndInfix_given_openBracket_2_and_pass_in_closeBracket
   Operator *op;
   String expression  = {.string="(2    )+"};
 
+
   stackPush(operatorStack,openBracket);
   stackPush(dataStack    ,two);
   getToken_ExpectAndReturn(&expression, (Token*)plus  );
   evaluatePostfixesAndInfix((Token*)closeBracket , &expression, dataStack, operatorStack);
-
+ 
   Number *num = (Number *)stackPop( dataStack );
   TEST_ASSERT_EQUAL (	2 , num->value);
 
@@ -663,7 +665,6 @@ void test_evaluatePostfixesAndInfix_given_openBracket_2_and_pass_in_closeBracket
 	TEST_ASSERT_EQUAL ( ADD_OP , op->info->id );
   TEST_ASSERT_NULL  ( stackPop(operatorStack) );
 }
-
 
 //before: 				after:
 // (2+3   )		  	5

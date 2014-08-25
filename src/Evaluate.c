@@ -179,7 +179,7 @@ void evaluatePostfixesAndInfix(Token *token, String *expression, Stack *dataStac
     Throw( ERR_NOT_EXPECTING_PREFIX_OPERATOR);      
    else if( opr->info->affix == POSTFIX ){
 		 executionInBracket = stackPeep(operatorStack);
-      while ( executionInBracket != NULL &&  executionInBracket->info->precedence > opr->info->precedence ){  //if the operator inside brackets is higher then closingBracket then do execution
+      while ( executionInBracket != NULL &&  executionInBracket->info->precedence > opr->info->precedence ){  //if the operator's precedence is higher then closingBracket then do execution
        executionInBracket = stackPop( operatorStack);
        executionInBracket->info->execute( dataStack , operatorStack );
        executionInBracket = (Operator *)stackPeep(operatorStack);
